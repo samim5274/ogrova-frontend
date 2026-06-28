@@ -126,10 +126,7 @@
                                 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
                         aria-label="Notifications"
                         @click.stop="toggleNotif">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
-                            <path stroke-linecap="round" stroke-width="2" d="M9 17a3 3 0 0 0 6 0" />
-                        </svg>
+                        <i class="fa-regular fa-bell"></i>
                         <span v-if="notices.length > 0" class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900"></span>
                     </button>
 
@@ -260,10 +257,10 @@ async function loadAuthUser() {
     try {
         const token = localStorage.getItem("token");
         if (!token) {
-        isLoggedIn.value = false;
-        authUser.value = null;
-        loading.value = false;
-        return;
+            isLoggedIn.value = false;
+            authUser.value = null;
+            loading.value = false;
+            return;
         }
         const res = await api.get("/user");
         authUser.value = res.data;
@@ -315,16 +312,16 @@ async function pickProfile(action) {
     }
     if (action === "logout") {
         try {
-        loading.value = true;
-        await api.post("/auth/logout");
+            loading.value = true;
+            await api.post("/auth/logout");
         } catch (error) {
-        console.error("Logout failed API side:", error);
+            console.error("Logout failed API side:", error);
         } finally {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        authUser.value = null;   
-        isLoggedIn.value = false;
-        router.push("/login"); 
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            authUser.value = null;   
+            isLoggedIn.value = false;
+            router.push("/login"); 
         }
     }
 }
@@ -387,8 +384,17 @@ function handleKeyDown(e) {
 
 onMounted(async () => {
     loadAuthUser();
-    loadNotice();
-    await cartStore.fetchCart()
+    
+
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        await cartStore.fetchCart()
+        await loadNotice();
+    } catch (error) {
+        console.error('Navbar cart error:', error)
+    }  
+
     document.addEventListener("click", onDocClick);
     window.addEventListener("keydown", onKey);
 
