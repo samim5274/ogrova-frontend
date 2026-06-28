@@ -1,56 +1,89 @@
 <template>
-    <footer class="bg-white dark:bg-[#0f172a] border-t border-slate-200 dark:border-white/10 transition-colors duration-500">
-        <div class="max-w-7xl mx-auto py-4">
+    <footer class="relative bg-white dark:bg-[#09090b] border-t border-slate-200 dark:border-white/5 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
 
-            <!-- Back to Top Button -->
-            <button 
-                v-show="showButton"
-                @click="scrollToTop"
-                class="fixed bottom-6 right-6 bg-slate-600 text-white p-2 rounded-full shadow-lg hover:bg-slate-700 transition">
-                <i class="fa-solid fa-angle-up"></i>
-            </button>
+            <!-- Back to Top Button (Light: Emerald | Dark: Orange) -->
+            <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+
+                <!-- Back to Top Button -->
+                <button 
+                    v-show="showButton"
+                    @click="scrollToTop"
+                    class="h-10 w-10 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95
+                        bg-emerald-600 hover:bg-emerald-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white">
+                    <i class="fa-solid fa-angle-up text-sm"></i>
+                </button>
+                
+                <!-- WhatsApp Button -->
+                <a 
+                    href="https://wa.me/8801533021557" 
+                    target="_blank"
+                    class="relative h-12 w-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95
+                        bg-[#25D366] hover:bg-[#20bd5a] text-white">
+                    
+                    <!-- Pulse Effect Layers -->
+                    <span class="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-40"></span>
+                    <span class="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-20"></span>
+                    
+                    <i class="fa-brands fa-whatsapp text-2xl relative z-10"></i>
+                </a>
+            </div>
         
-        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-            
-            <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-            <a href="https://mercuviax.vercel.app/" target="_blank" class="flex items-center gap-3 group">
-                <div class="h-9 w-9 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
-                <img src="/logo/logo.png" alt="Logo" class="w-6 h-6 object-contain dark:hidden" />
-                <img src="/logo/white-logo.png" alt="Logo" class="hidden dark:block w-6 h-6 object-contain drop-shadow-[0_4px_8px_rgba(163,217,33,0.3)]" />
+            <!-- Top Row: Identity & Live System Status -->
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6 pb-6 border-b border-slate-200/60 dark:border-white/5">
+                
+                <!-- Logo & Text -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                    <a href="https://mercuviax.com" target="_blank" class="flex items-center gap-3 group">
+                        <div class="h-10 w-10 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
+                            <img src="/logo/logo.png" alt="Logo" class="w-8 h-8 object-contain dark:hidden" />
+                            <img src="/logo/white-logo.png" alt="Logo" class="hidden dark:block w-8 h-8 object-contain" />
+                        </div>
+                        <span class="text-base font-black tracking-tight text-slate-900 dark:text-white uppercase">
+                            Ogro<span class="text-orange-500">v</span><span class="text-emerald-600">a</span> Business.
+                        </span>
+                    </a>
                 </div>
-                <span class="text-sm font-black tracking-tighter uppercase italic text-slate-900 dark:text-white">
-                Dynamic <span class="text-[#38808d]">Bazar</span> Merchant BD
-                </span>
-            </a>
-            
-            <div class="hidden md:block h-4 w-px bg-slate-300 dark:bg-slate-800"></div>
-                <p class="text-[11px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest">
-                    © {{ new Date().getFullYear() }} All Rights Reserved <a href="https://dynamicbazarmerchantbd.com/" class="hover:underline text-[#38808d]">Dynamic Bazar Merchant BD</a>.
-                </p>
-                <p class="text-[11px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest">
-                    Powered By:<a href="https://mercuviax.vercel.app/" target="_black" class="hover:underline italic text-[#A3D921]"> Mercuviax Business</a>.
-                </p>
+
+                <!-- Status Badge & Social Networks -->
+                <div class="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto justify-center">
+                    <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 shrink-0">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                            System: <span class="text-emerald-500">Active</span>
+                        </span>
+                    </div>
+
+                    <div class="flex items-center gap-5 text-slate-400 dark:text-slate-500">
+                        <a href="#" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center gap-6">
-            <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
-                <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                System: <span class="text-emerald-500">Healthy</span>
-                </span>
+            <!-- Merged Bottom Row: Copyrights & Gateway Panel -->
+            <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-400 dark:text-slate-500">
+                
+                <!-- Copyright & Powered by text -->
+                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-4 flex-wrap text-center md:text-left">
+                    <p>© {{ new Date().getFullYear() }} <a href="https://mercuviax.com" target="_blank" class="hover:text-emerald-600 dark:hover:text-orange-400 font-bold transition-colors">Ogrova</a>. All Rights Reserved.</p>
+                    <div class="hidden sm:block h-3.5 w-px bg-slate-200 dark:bg-slate-800"></div>
+                    <p>Powered By: <a href="https://mercuviax.com" target="_blank" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors font-bold italic">Mercuviax Business</a>.</p>
+                </div>
+
+                <!-- Payment Partners Premium Mock Icons -->
+                <div class="flex items-center gap-4 text-xl opacity-70 dark:opacity-50 select-none">
+                    <i class="fa-brands fa-cc-visa transition-all duration-300 cursor-pointer hover:scale-110 hover:opacity-100 hover:text-emerald-600 dark:hover:text-orange-500"></i>
+                    <i class="fa-brands fa-cc-mastercard transition-all duration-300 cursor-pointer hover:scale-110 hover:opacity-100 hover:text-emerald-600 dark:hover:text-orange-500"></i>
+                    <i class="fa-brands fa-cc-paypal transition-all duration-300 cursor-pointer hover:scale-110 hover:opacity-100 hover:text-emerald-600 dark:hover:text-orange-500"></i>
+                    <i class="fa-brands fa-cc-apple-pay transition-all duration-300 cursor-pointer hover:scale-110 hover:opacity-100 hover:text-emerald-600 dark:hover:text-orange-500"></i>
+                </div>
             </div>
 
-            <div class="flex items-center gap-4 text-slate-400 dark:text-slate-600">
-                <a href="#" class="hover:text-[#38808d] transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" class="hover:text-[#38808d] transition-colors"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="#" class="hover:text-[#38808d] transition-colors"><i class="fa-brands fa-github"></i></a>
-            </div>
-            </div>
-
-        </div>
         </div>
     </footer>
 </template>
@@ -60,12 +93,10 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const showButton = ref(false)
 
-// scroll detect
 const handleScroll = () => {
     showButton.value = window.scrollY > 300
 }
 
-// scroll to top
 const scrollToTop = () => {
     window.scrollTo({
         top: 0,
@@ -73,19 +104,13 @@ const scrollToTop = () => {
     })
 }
 
-// lifecycle
-onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
-})
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll)
-})
+onMounted(() => { window.addEventListener('scroll', handleScroll) })
+onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
 </script>
 
 <style scoped>
-/* Optional: Adding a soft glow to the footer in dark mode */
+/* Subtle Dark Mode Glow Match */
 .dark footer {
-    box-shadow: 0 -10px 40px -20px rgba(163, 217, 33, 0.05);
+    box-shadow: 0 -10px 40px -20px rgba(249, 115, 22, 0.04);
 }
 </style>

@@ -127,7 +127,7 @@ const C_MarketingStrategy = () => import('../components/Dashboard/customer/notic
 
 const routes = [
   // Public E-commerce Routes
-  { path: '/', component: Home, meta: {title: "Home - Ogrova"} },
+  { path: '/', component: Home, meta: {title: 'OGROVA - Bangladesh\'s Smart Online Marketplace'} },
   { path: '/product-details/:slug', component: productDetails, meta: { title: "Product Details"} },
   { path: '/cart', component: CartDetails, meta: { title: "Cart", requiresAuth: true} },
   { path: '/checkout/:reg', component: Checkout, meta: { title: "Checkout", requiresAuth: true} },

@@ -8,6 +8,11 @@
                 @toggle-menu="toggleMenu"
                 @search="handleSearch"
             />
+
+            <slider />
+            <Main />
+            <NewsLatter />
+            <footerSection />
         </div>
     </div>
 </template>
@@ -15,6 +20,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Navbar from './navbar.vue';
+import slider from './slider.vue';
+import Main from './main.vue';
+import NewsLatter from './news-latter.vue';
+import footerSection from "./footer.vue";
 
 const isDark = ref(false);
 const mobileMenu = ref(false);

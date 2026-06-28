@@ -76,7 +76,7 @@
                         ref="searchInput"
                         v-model="q"
                         type="text"
-                        placeholder="Search for projects..."
+                        placeholder="Search for Ogrova..."
                         class="w-full rounded-xl border pl-11 pr-16 py-2 md:py-2.5 text-sm outline-none transition-all duration-200
                                 bg-slate-50 text-slate-900 border-slate-200 placeholder:text-slate-400
                                 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 shadow-sm
