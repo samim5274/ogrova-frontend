@@ -3,10 +3,11 @@
         <div class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
         
         <Navbar 
-            :isDark="isDark"
-            :mobileMenu="mobileMenu"
+            :is-dark="isDark"
+            :mobile-menu="mobileMenu"
             @toggle-dark="toggleDarkMode"
             @toggle-menu="toggleMenu"
+            @search="handleSearch"
         />
 
         <Message
@@ -381,15 +382,26 @@ async function confirmPayment(){
 
 
 
-const isDark = ref(false)
-const mobileMenu = ref(false)
+const isDark = ref(false);
+const mobileMenu = ref(false);
 
-const toggleDarkMode = () => {
-    isDark.value = !isDark.value
+function toggleDarkMode() {
+    isDark.value = !isDark.value;
+    localStorage.setItem("theme", isDark.value ? "dark" : "light");
+    if (isDark.value) {
+        document.documentElement.classList.add("dark");
+    } else {
+        document.documentElement.classList.remove("dark");
+    }
 }
 
-const toggleMenu = () => {
-    mobileMenu.value = !mobileMenu.value
+function toggleMenu() {
+    mobileMenu.value = !mobileMenu.value;
+}
+
+function handleSearch(query) {
+    console.log("Searching for:", query);
+    // Add your redirect or search API routing logic here
 }
 
 const { loadUser } = useAuth();

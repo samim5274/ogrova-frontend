@@ -3,10 +3,11 @@
         <div class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
         
         <Navbar 
-            :isDark="isDark"
-            :mobileMenu="mobileMenu"
+            :is-dark="isDark"
+            :mobile-menu="mobileMenu"
             @toggle-dark="toggleDarkMode"
             @toggle-menu="toggleMenu"
+            @search="handleSearch"
         />
 
         <Message
@@ -34,178 +35,193 @@
 
         
         
-        <section class="py-12 bg-slate-50 dark:bg-[#0b1120] min-h-screen">
+        <section class="py-12 bg-zinc-50 dark:bg-[#0f172a] min-h-screen transition-colors duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
+                <!-- Header Section -->
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
                     <div>
-                        <nav class="flex mb-4 text-sm font-medium text-gray-500 dark:text-gray-400">
-                            <router-link to="/" class="hover:text-indigo-600">Home</router-link>
+                        <nav class="flex mb-4 text-sm font-semibold text-zinc-500 dark:text-zinc-400">
+                            <router-link to="/" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Home</router-link>
                             <span class="mx-2">/</span>
-                            <span class="text-gray-900 dark:text-white">Shopping Cart</span>
+                            <span class="text-zinc-900 dark:text-zinc-200">Shopping Cart</span>
                         </nav>
-                        <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-                            Shopping Cart <span class="text-indigo-600"></span>
+                        <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
+                            Shopping Cart <span class="text-emerald-600 dark:text-emerald-500">.</span>
                         </h1>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 px-5 py-2 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                        <p class="text-sm font-bold text-gray-500 dark:text-gray-400">
-                            Total Items: <span class="text-indigo-600 dark:text-indigo-400">{{ cartItems.length }}</span>
+                    <div class="bg-white dark:bg-[#1f2937] px-5 py-2.5 rounded-xl shadow-sm border border-zinc-200/80 dark:border-zinc-700/50 transition-all">
+                        <p class="text-sm font-bold text-zinc-600 dark:text-zinc-400">
+                            Total Items: <span class="text-emerald-600 dark:text-emerald-400 font-black">{{ cartItems.length }}</span>
                         </p>
                     </div>
                 </div>
 
+                <!-- Empty Cart State -->
                 <div v-if="cartItems.length === 0" 
-                    class="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-800 rounded-[2.5rem] border border-dashed border-gray-300 dark:border-gray-700 shadow-xl">
-                    <div class="w-24 h-24 bg-indigo-50 dark:bg-indigo-500/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-bag-shopping text-4xl text-indigo-600"></i>
+                    class="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#1f2937] rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-700 shadow-xl">
+                    <div class="w-24 h-24 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mb-6 ring-8 ring-emerald-50/50 dark:ring-emerald-500/5">
+                        <i class="fa-solid fa-bag-shopping text-4xl text-emerald-600 dark:text-emerald-500"></i>
                     </div>
-                    <h2 class="text-2xl font-black text-gray-900 dark:text-white">Your cart feels a bit light</h2>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">Add some items to make it happy!</p>
-                    <router-link to="/" class="mt-8 px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 dark:shadow-none">
+                    <h2 class="text-2xl font-black text-zinc-900 dark:text-white">Your cart feels a bit light</h2>
+                    <p class="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Add some items to make it happy!</p>
+                    <router-link to="/" class="mt-8 px-8 py-3.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-600/20 dark:shadow-none">
                         Go Shopping
                     </router-link>
                 </div>
 
+                <!-- Main Cart Content -->
                 <div v-else class="grid lg:grid-cols-12 gap-8">
                     
-                    <div class="lg:col-span-8 space-y-6">
+                    <!-- Cart Items List -->
+                    <div class="lg:col-span-8 space-y-5">
                         <div v-for="item in cartItems" :key="item.id"
-                            class="group relative bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-300 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                            class="group relative bg-white dark:bg-[#1f2937] p-5 rounded-2xl shadow-sm border border-zinc-200/80 dark:border-zinc-700/60 hover:shadow-xl hover:border-emerald-500/30 dark:hover:border-emerald-500/30 transition-all duration-300">
                             
                             <div class="flex flex-col sm:flex-row gap-6">
-                                <div @click="ProductDetails(item)" class="relative w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                <!-- Product Image -->
+                                <div @click="ProductDetails(item)" class="relative w-24 h-24 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-zinc-100 dark:bg-[#111827] cursor-pointer flex-shrink-0 mx-auto sm:mx-0">
                                     <img :src="getProductImage(item)" :alt="item.product?.name || 'Product Image'"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         @error="(e) => e.target.src = defaultProductImage" />
                                 </div>
 
+                                <!-- Item Details -->
                                 <div class="flex-1 flex flex-col justify-between">
-                                    <div class="flex justify-between items-start">
+                                    <div class="flex justify-between items-start gap-4">
                                         <div>
-                                            <h3  @click="ProductDetails(item)" class="text-lg font-black text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors line-clamp-1 hover:underline">
+                                            <h3 @click="ProductDetails(item)" class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1 cursor-pointer hover:underline">
                                                 {{ item.product?.name }}
                                             </h3>
+                                            
+                                            <!-- Variants -->
                                             <div class="flex flex-wrap gap-2 mt-2">
                                                 <span v-if="item.variant?.color" 
-                                                    class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 shadow-sm">
-                                                    <span class="w-2 h-2 rounded-full mr-2 shadow-inner" :style="{ backgroundColor: item.variant.color.toLowerCase() }"></span>
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-50 dark:bg-[#111827] text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 shadow-sm">
+                                                    <span class="w-2 h-2 rounded-full mr-2" :style="{ backgroundColor: item.variant.color.toLowerCase() }"></span>
                                                     {{ item.variant.color }}
                                                 </span>
 
                                                 <span v-if="item.variant?.size" 
-                                                    class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20">
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-100 dark:border-orange-500/20">
                                                     <i class="fa-solid fa-ruler-combined mr-1.5 opacity-70"></i>
                                                     Size: {{ item.variant.size }}
                                                 </span>
 
                                                 <span v-if="!item.variant" 
-                                                    class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400">
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-100 dark:bg-[#111827] text-zinc-500 dark:text-zinc-400">
                                                     Standard Edition
                                                 </span>
                                             </div>
                                         </div>
+                                        
+                                        <!-- Remove Button -->
                                         <button @click="remove(item)" 
-                                            class="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 dark:hover:bg-gray-700 hover:text-red-500 transition-all">
-                                            <i class="fa-solid fa-trash-can"></i>
+                                            class="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-400 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 transition-all flex-shrink-0">
+                                            <i class="fa-solid fa-trash-can text-sm"></i>
                                         </button>
                                     </div>
 
-                                    <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
-                                        <div class="flex items-center p-1 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700">
+                                    <!-- Footer Section of Item (Qty, Points, Price) -->
+                                    <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-700/50">
+                                        
+                                        <!-- Quantity Controls -->
+                                        <div class="flex items-center p-1 bg-zinc-50 dark:bg-[#111827] rounded-xl border border-zinc-200 dark:border-zinc-700">
                                             <button @click="decreaseQty(item)" 
-                                            :disabled="item.quantity <= 1"
-                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 shadow-sm text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                                :disabled="item.quantity <= 1"
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                                                 <i class="fa-solid fa-minus text-xs"></i>
                                             </button>
-                                            <span class="w-10 text-center font-black text-gray-900 dark:text-white">{{ item.quantity }}</span>
+                                            <span class="w-10 text-center font-bold text-zinc-900 dark:text-white">{{ item.quantity }}</span>
                                             <button @click="increaseQty(item)" 
-                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 shadow-sm text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition-colors">
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                                                 <i class="fa-solid fa-plus text-xs"></i>
                                             </button>
                                         </div>
 
-                                        <div class="flex flex-col items-end px-3 py-2 bg-indigo-50/50 dark:bg-indigo-500/5 rounded-xl border border-indigo-100/50 dark:border-indigo-500/10">
-                                            <p class="flex items-center gap-1 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.15em] mb-0.5">
-                                                <i class="fa-solid fa-arrows-to-circle"></i>
+                                        <!-- Points Section (Orange Energy/Offer Theme) -->
+                                        <div class="flex flex-col items-end px-3 py-1.5 bg-orange-50/60 dark:bg-orange-500/5 rounded-xl border border-orange-200/40 dark:border-orange-500/10">
+                                            <p class="flex items-center gap-1 text-[9px] font-black text-orange-600 dark:text-orange-500 uppercase tracking-wider mb-0.5">
+                                                <i class="fa-solid fa-bolt"></i>
                                                 Points Earned
                                             </p>
-
-                                            <div class="flex items-baseline gap-1">
-                                                <span class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">
+                                            <div class="flex items-baseline gap-0.5">
+                                                <span class="text-xl font-black text-zinc-900 dark:text-orange-400 tracking-tight leading-none">
                                                     {{ (Number(item.point) * item.quantity).toLocaleString() }}
                                                 </span>
-                                                <span class="text-[10px] font-bold text-indigo-500/80 dark:text-indigo-400/80 uppercase">pts</span>
+                                                <span class="text-[9px] font-bold text-orange-500/80 uppercase">pts</span>
                                             </div>
                                         </div>
+
+                                        <!-- Pricing Subtotal -->
                                         <div class="text-right flex flex-col items-end">
-                                            <div class="flex items-center gap-1.5 mb-1">
-                                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tight">Unit:</span>
-                                                <span class="text-sm font-bold text-gray-500 dark:text-gray-400">
+                                            <div class="flex items-center gap-1.5 mb-0.5">
+                                                <span class="text-[10px] font-semibold text-zinc-400 uppercase">Unit:</span>
+                                                <span class="text-xs font-bold text-zinc-500 dark:text-zinc-400">
                                                     ৳{{ Number(item.price).toLocaleString() }}
                                                 </span>
                                             </div>
 
-                                            <p class="text-[10px] font-black text-indigo-500/60 dark:text-indigo-400/60 uppercase tracking-widest mb-0.5">
-                                                Subtotal
-                                            </p>
-
-                                            <p class="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">
-                                                <span class="text-lg mr-0.5">৳</span>{{ (Number(item.price) * item.quantity).toLocaleString() }}
+                                            <p class="text-xl font-black text-zinc-900 dark:text-white tracking-tight">
+                                                <span class="text-sm font-bold mr-0.5 text-emerald-600 dark:text-emerald-500">৳</span>{{ (Number(item.price) * item.quantity).toLocaleString() }}
                                             </p>
                                             
-                                            <span v-if="item.discount > 0" class="text-[9px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-1.5 py-0.5 rounded mt-1">
-                                                You saved ৳{{ (item.discount * item.quantity).toLocaleString() }}
+                                            <!-- Dynamic Offer Highlight -->
+                                            <span v-if="item.discount > 0" class="text-[9px] font-bold text-orange-600 bg-orange-50 dark:bg-orange-500/10 dark:text-orange-400 px-1.5 py-0.5 rounded mt-1 border border-orange-100 dark:border-orange-500/10">
+                                                Saved ৳{{ (item.discount * item.quantity).toLocaleString() }}
                                             </span>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Order Summary Card -->
                     <div class="lg:col-span-4">
-                        <div class="sticky top-10 bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-gray-300 dark:border-gray-700">
-                            <h2 class="text-xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                                Order Summary <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                        <div class="sticky top-10 bg-white dark:bg-[#1f2937] rounded-2xl p-6 sm:p-8 shadow-md border border-zinc-200/80 dark:border-zinc-700/60 transition-all">
+                            <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
+                                Order Summary <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                             </h2>
 
                             <div class="space-y-4">                                
-                                <div class="flex justify-between font-bold">
-                                    <span class="text-gray-500">Subtotal</span>
-                                    <span class="text-gray-900 dark:text-white">৳ {{ subtotal.toLocaleString() }}</span>
+                                <div class="flex justify-between font-medium text-sm">
+                                    <span class="text-zinc-500 dark:text-zinc-400">Subtotal</span>
+                                    <span class="text-zinc-900 dark:text-white font-bold">৳ {{ subtotal.toLocaleString() }}</span>
                                 </div>
-                                <div class="flex justify-between font-bold text-sm">
-                                    <span class="text-gray-500">Shipping</span>
-                                    <span class="text-emerald-500">FREE</span>
+                                <div class="flex justify-between font-medium text-sm">
+                                    <span class="text-zinc-500 dark:text-zinc-400">Shipping</span>
+                                    <span class="text-emerald-600 dark:text-emerald-400 font-bold uppercase text-xs tracking-wider">Free</span>
                                 </div>
-                                <div class="flex justify-between font-bold text-sm">
-                                    <span class="text-gray-500">Point</span>
-                                    <span class="text-gray-500">{{ totalPoint.toLocaleString() }}</span>
+                                <div class="flex justify-between font-medium text-sm">
+                                    <span class="text-zinc-500 dark:text-zinc-400">Total Points</span>
+                                    <span class="text-orange-600 dark:text-orange-400 font-bold">{{ totalPoint.toLocaleString() }} pts</span>
                                 </div>
-                                <div class="flex justify-between font-bold text-sm">
-                                    <span class="text-gray-500">Estimated Tax</span>
-                                    <span class="text-gray-900 dark:text-white">৳ 0</span>
+                                <div class="flex justify-between font-medium text-sm">
+                                    <span class="text-zinc-500 dark:text-zinc-400">Estimated Tax</span>
+                                    <span class="text-zinc-900 dark:text-white font-bold">৳ 0</span>
                                 </div>
                                 
-                                <div class="h-px bg-gray-100 dark:bg-gray-700 my-6"></div>
+                                <div class="h-px bg-zinc-100 dark:bg-zinc-700 my-5"></div>
 
                                 <div class="flex justify-between items-end">
-                                    <span class="text-lg font-black text-gray-900 dark:text-white">Total</span>
+                                    <span class="text-base font-bold text-zinc-900 dark:text-white mb-1">Total Payable</span>
                                     <div class="text-right">
-                                        <p class="text-3xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter">
+                                        <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
                                             ৳ {{ subtotal.toLocaleString() }}
                                         </p>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase">VAT Included</p>
+                                        <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">VAT Included</p>
                                     </div>
                                 </div>
 
-                                <button @click="checkOut(cartItems)" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-black text-lg transition-all shadow-xl shadow-indigo-200 dark:shadow-none flex items-center justify-center gap-3 group">
+                                <!-- Emerald Green Primary Checkout Button -->
+                                <button @click="checkOut(cartItems)" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-black text-base tracking-wide transition-all shadow-lg shadow-emerald-600/10 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.99]">
                                     Checkout Now
                                     <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                                 </button>
 
-                                <p class="text-center text-xs font-bold text-gray-400 mt-6 flex items-center justify-center gap-2">
+                                <p class="text-center text-[11px] font-bold text-zinc-400 mt-6 flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-shield-check text-emerald-500"></i>
                                     Secure SSL Encrypted Checkout
                                 </p>
@@ -215,7 +231,7 @@
 
                 </div>
             </div>
-        </section>       
+        </section>      
 
 
 
@@ -447,15 +463,26 @@ function ProductDetails(item) {
 
 
 
-const isDark = ref(false)
-const mobileMenu = ref(false)
+const isDark = ref(false);
+const mobileMenu = ref(false);
 
-const toggleDarkMode = () => {
-    isDark.value = !isDark.value
+function toggleDarkMode() {
+    isDark.value = !isDark.value;
+    localStorage.setItem("theme", isDark.value ? "dark" : "light");
+    if (isDark.value) {
+        document.documentElement.classList.add("dark");
+    } else {
+        document.documentElement.classList.remove("dark");
+    }
 }
 
-const toggleMenu = () => {
-    mobileMenu.value = !mobileMenu.value
+function toggleMenu() {
+    mobileMenu.value = !mobileMenu.value;
+}
+
+function handleSearch(query) {
+    console.log("Searching for:", query);
+    // Add your redirect or search API routing logic here
 }
 
 const { loadUser } = useAuth()
