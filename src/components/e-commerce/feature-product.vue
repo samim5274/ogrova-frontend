@@ -50,7 +50,7 @@
 
                     <!-- Details -->
                     <div class="mt-5 px-1">
-                        <h3 @click="ProductDetails(product)" class="text-base font-bold text-slate-900 dark:text-white truncate">{{ product.name }}</h3>
+                        <h3 @click="ProductDetails(product)" class="text-base font-bold text-slate-900 dark:text-white truncate hover:underline hover:cursor-pointer">{{ product.name }}</h3>
                         <p class="text-xs text-slate-400 mt-1 mb-4 line-clamp-2">{{ product.description }}</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm font-black text-emerald-600 dark:text-orange-400">৳{{ product.discount_price ? (product.price - product.discount_price) : product.price }}</span>
