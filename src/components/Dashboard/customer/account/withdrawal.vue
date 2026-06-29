@@ -270,7 +270,7 @@ const fetchBalance = async () => {
 
 
 const transactions = ref([]);
-async function fetchTransection()
+async function fetchTransaction()
 {
     try {
         loading.value = true;
@@ -462,7 +462,7 @@ function onSearch(q) {
 onMounted(() => {
 
     fetchBalance();
-    fetchTransection();
+    fetchTransaction();
     
     window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") sidebarOpen.value = false;

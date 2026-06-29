@@ -227,7 +227,7 @@ const errorMsg = ref('');
 const searchQuery = ref('');
 const statusFilter = ref('');
 const transactions = ref([]);
-async function fetcheTransection()
+async function fetchTransaction()
 {
     try {
         loading.value = true;
@@ -380,7 +380,7 @@ const onSearch = (value) => {
 /* ESC to close drawer */
 onMounted(() => {
     
-    fetcheTransection();
+    fetchTransaction();
 
 
 

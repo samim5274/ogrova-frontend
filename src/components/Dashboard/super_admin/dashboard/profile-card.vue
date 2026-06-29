@@ -81,7 +81,7 @@
                 <div class="flex items-center justify-between text-sm">
                     <span class="text-slate-900 dark:text-slate-400">Member ID</span>
                     
-                    <span class="rounded-md bg-slate-50 px-2 py-1 font-mono font-semibold bg-slate-500 dark:bg-slate-800 text-slate-100 dark:text-slate-100">
+                    <span class="rounded-md px-2 py-1 font-mono font-semibold bg-slate-500 dark:bg-slate-800 text-slate-100 dark:text-slate-100">
                         {{ user.user_id || `USER${user.id}` }}
                     </span>
                 </div>

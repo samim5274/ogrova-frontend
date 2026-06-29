@@ -220,7 +220,7 @@ const errorMsg = ref('');
 
 
 // ===============================
-// Getting transection details
+// Getting transaction details
 // ===============================
 const details = ref(null)
 
@@ -233,7 +233,7 @@ const fetchTransactionDetails = async () => {
 
     try {
         loading.value = true
-        const response = await api.get(`/finance/transection-details/${transactionId}/${userId}`);
+        const response = await api.get(`/finance/transaction-details/${transactionId}/${userId}`);
         details.value = response.data.data;
         // console.log(details.value);
     } catch (error) {
