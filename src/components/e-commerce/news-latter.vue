@@ -1,5 +1,5 @@
 <template>
-    <footer class="mt-16 bg-slate-50 dark:bg-[#070708] border-t border-slate-200/60 dark:border-slate-900 transition-colors duration-500">
+    <footer class="mt-1 bg-slate-50 dark:bg-[#070708] border-t border-slate-200/60 dark:border-slate-900 transition-colors duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
             
             <!-- 1. INTEGRATED PREMIUM NEWSLETTER CARD -->

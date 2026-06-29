@@ -123,9 +123,9 @@
                                 {{ categoryName }}
                                 <span class="text-[9px] md:text-[10px] font-normal text-slate-400 px-1.5 py-0.5 bg-slate-100 dark:bg-slate-900 rounded-md">Qty: {{ items.length }}</span>
                             </h3>
-                            <router-link to="/" class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-[#16A34A] transition-colors">
+                            <button @click="getCategoryProducts(items)" class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-[#16A34A] transition-colors">
                                 See All <i class="fa-solid fa-angle-right text-[9px]"></i>
-                            </router-link>
+                            </button>
                         </div>
 
                         <!-- Modern Chevron Controllers (Independent Absolute Positioning with Safe Z-Index) -->
@@ -308,6 +308,11 @@ const scrollSlider = (index, direction) => {
 
 function ProductDetails(product) {
     router.push(`/product-details/${product.slug}`)
+}
+
+function getCategoryProducts(items) {
+    const category = items[0].category;
+    router.push(`/category/${category.slug}/${category.id}`);
 }
 
 onMounted(() => {

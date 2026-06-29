@@ -42,6 +42,7 @@ const Home = () => import('../components/e-commerce/home.vue');
 const productDetails = () => import('../components/e-commerce/product-details.vue');
 const CartDetails = () => import('../components/e-commerce/cart.vue');
 const Checkout = () => import('../components/e-commerce/checkout/checkout.vue');
+const CategoryProducts = () => import('../components/e-commerce/category-products.vue');
 
 
 
@@ -130,9 +131,11 @@ const C_MarketingStrategy = () => import('../components/Dashboard/customer/notic
 const routes = [
   // Public E-commerce Routes
   { path: '/', component: Home, meta: {title: 'OGROVA - Bangladesh\'s Smart Online Marketplace'} },
-  { path: '/product-details/:slug', component: productDetails, meta: { title: "Product Details"} },
-  { path: '/cart', component: CartDetails, meta: { title: "Cart", requiresAuth: true} },
-  { path: '/checkout/:reg', component: Checkout, meta: { title: "Checkout", requiresAuth: true} },
+  { path: '/product-details/:slug', component: productDetails, meta: { title: "Product Details - OGROVA | Bangladesh's Smart Online Marketplace" } },
+  { path: '/category/:slug/:id', component: CategoryProducts, meta: { title: "Category Products - OGROVA | Bangladesh's Smart Online Marketplace" } },
+
+  { path: '/cart', component: CartDetails, meta: { title: "Shopping Cart - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },
+  { path: '/checkout/:reg', component: Checkout, meta: { title: "Secure Checkout - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },
 
 
 
