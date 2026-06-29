@@ -146,16 +146,18 @@
                             <!-- Individual Premium Product Card Item -->
                             <div v-for="product in items" :key="product.id"
                                 class="flex-none w-[75%] sm:w-[46%] md:w-[31%] lg:w-[calc(25%-15px)] snap-start group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-100 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 
-                                hover:border-emerald-500 dark:hover:border-orange-500/60 
+                                hover:border-emerald-500 dark:hover:border-orange-500/60 border border-slate-200
                                 hover:shadow-[0_24px_48px_-15px_rgba(16,185,129,0.12)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)]">
                                 
                                 <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
                                     
                                     <span v-if="product.discount_price" 
-                                        class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300
-                                        bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-rose-500/20
+                                        class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300 text-white
+                                        /* Light Mode: Emerald Green Gradient */
+                                        bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20
+                                        /* Dark Mode: Orange/Amber Gradient */
                                         dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
-                                        -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
+                                        -{{ Math.round(((product.price - product.discount_price) / product.price) * 100) }}% OFF
                                     </span>
 
                                     <button class="absolute top-2.5 right-2.5 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-2 rounded-full text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm border border-slate-100 dark:border-slate-800/40">
