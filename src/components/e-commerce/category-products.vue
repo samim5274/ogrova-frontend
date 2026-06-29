@@ -9,9 +9,11 @@
                 @search="handleSearch"
             />
 
-            <slider />
+            
 
             <main class="container mx-auto px-4 sm:px-6 py-6 md:py-10 max-w-7xl transition-colors duration-300">
+
+                <featureProduct :products="categoryProducts"/>
 
                 <div class="w-full mb-8">
                     <div class="flex items-center gap-3 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x">
@@ -69,7 +71,7 @@
                                     bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20
                                     /* Dark Mode: Orange/Amber Gradient */
                                     dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
-                                    -{{ Math.round(((product.price - product.discount_price) / product.price) * 100) }}% OFF
+                                    -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
                                 </span>
 
                                 <button class="absolute top-2.5 right-2.5 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-2 rounded-full text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm border border-slate-100 dark:border-slate-800/40">
@@ -204,11 +206,10 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import api, { makeImg } from '../../services/api'
 
-import slider from './slider.vue';
 import Navbar from './navbar.vue';
 import NewsLatter from './news-latter.vue';
 import footerSection from "./footer.vue";
-
+import featureProduct from "./feature-product.vue";
 
 
 

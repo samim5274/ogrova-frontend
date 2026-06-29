@@ -66,11 +66,9 @@
                         <div class="lg:sticky lg:top-24 space-y-8">
                             <div class="relative group aspect-square lg:aspect-[16/14] rounded-[2rem] overflow-hidden bg-gray-50 dark:bg-[#141c2e] border border-gray-100 dark:border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] dark:shadow-none">
                                 
-                                <!-- মূল প্রোডাক্ট ইমেজ -->
                                 <img :src="activeImage || defaultProductImage" class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 
-                                <!-- ইমেজ এর উপরে প্রিমিয়াম ডিসকাউন্ট ব্যাজ (নতুন যুক্ত করা হয়েছে) -->
                                 <div v-if="product.discount_price" class="absolute top-6 left-6 z-10">
                                     <span class="bg-white/80 dark:bg-black/50 backdrop-blur-xl border border-white/20 dark:border-white/10 px-4 py-2 rounded-2xl text-xs font-black text-red-600 dark:text-red-400 shadow-2xl tracking-wider uppercase inline-block">
                                         -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
@@ -101,20 +99,20 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between flex-wrap gap-2">
                                     <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-gray-400">
-                                        <span v-if="product.brand?.name" class="text-indigo-500">{{ product.brand.name }}</span>
+                                        <span v-if="product.brand?.name" class="text-emerald-600 dark:text-orange-500">{{ product.brand.name }}</span>
                                         <span v-if="product.brand?.name" class="w-1 h-1 bg-gray-300 rounded-full"></span>
                                         <span>{{ product.category?.name }}</span>
                                     </nav>
 
                                     <!-- Modern Status Badges -->
                                     <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span v-if="product.discount_price" class="inline-flex items-center rounded-md bg-red-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-red-600 uppercase dark:bg-red-500/20 dark:text-red-400">
+                                        <span v-if="product.discount_price" class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-emerald-700 uppercase dark:bg-orange-500/20 dark:text-orange-400">
                                             -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
                                         </span>
                                         <span v-if="product.is_featured" class="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-amber-700 uppercase dark:bg-amber-400/10 dark:text-amber-400">
                                             <i class="fa-solid fa-star text-[9px]"></i> Featured
                                         </span>
-                                        <span v-if="product.is_on_sale" class="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-emerald-700 uppercase dark:bg-emerald-400/10 dark:text-emerald-400">
+                                        <span v-if="product.is_on_sale" class="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-emerald-700 uppercase dark:bg-orange-500/10 dark:text-orange-400">
                                             <i class="fa-solid fa-fire text-[9px]"></i> Sale
                                         </span>
                                     </div>
@@ -130,15 +128,15 @@
                                     <div class="flex text-amber-400 text-xs gap-0.5">
                                         <i v-for="i in 5" :key="i" class="fa-solid fa-star"></i>
                                     </div>
-                                    <span class="text-xs font-black text-gray-400 uppercase tracking-widest underline decoration-indigo-500/30 underline-offset-4 cursor-pointer hover:text-indigo-500 transition">
+                                    <span class="text-xs font-black text-gray-400 uppercase tracking-widest underline decoration-emerald-500/30 dark:decoration-orange-500/30 underline-offset-4 cursor-pointer hover:text-emerald-600 dark:hover:text-orange-500 transition">
                                         48 Verified Reviews
                                     </span>
                                     
                                     <div class="flex items-center gap-2 text-xs font-bold">
-                                        <span v-if="product.point" class="px-2.5 py-1 bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 rounded-md">
+                                        <span v-if="product.point" class="px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:bg-orange-500/10 dark:text-orange-400 rounded-md">
                                             {{ product.point }} Pts
                                         </span>
-                                        <span v-if="product.sv" class="px-2.5 py-1 bg-purple-500/10 text-purple-500 dark:text-purple-400 rounded-md">
+                                        <span v-if="product.sv" class="px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:bg-orange-500/10 dark:text-orange-400 rounded-md">
                                             SV: {{ product.sv }}
                                         </span>
                                     </div>
@@ -155,16 +153,17 @@
                                 <div class="flex flex-col">
                                     <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Market Price</span>
                                     <div class="flex items-baseline gap-3">
-                                        <span class="text-5xl font-black text-indigo-600 dark:text-white tracking-tighter transition-all group-hover:text-indigo-800">
+                                        <span class="text-5xl font-black text-emerald-600 dark:text-orange-500 tracking-tighter transition-all group-hover:text-emerald-800 dark:group-hover:text-orange-400">
                                             ৳{{ selectedVariant?.price || product.price - product.discount_price || product.price }}
                                         </span>
                                         <span v-if="product.discount_price" class="text-lg text-gray-400 line-through font-bold opacity-50">
-                                            ৳{{ product.price }}
+                                            ৳{{ product.discount_price }}
                                         </span>
                                     </div>
                                 </div>
-                                <div class="h-14 w-14 rounded-full border-2 border-gray-200 dark:border-gray-500 flex items-center justify-center group-hover:border-indigo-500 transition-colors">
-                                    <i class="fa-solid fa-tag text-xl text-gray-200 group-hover:text-indigo-500 transition-colors"></i>
+                                
+                                <div class="h-14 w-14 rounded-full border-2 border-gray-200 dark:border-gray-500 flex items-center justify-center group-hover:border-emerald-500 dark:group-hover:border-orange-500 transition-colors">
+                                    <i class="fa-solid fa-tag text-xl text-gray-300 group-hover:text-emerald-500 dark:group-hover:text-orange-500 transition-colors"></i>
                                 </div>
                             </div>
 
@@ -172,7 +171,7 @@
                             <div class="space-y-6">
                                 <div class="flex items-center justify-between">
                                     <h4 class="text-xs font-black uppercase tracking-widest text-gray-500">Configure Variant</h4>
-                                    <button class="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider">Size Guide</button>
+                                    <button class="text-[10px] font-bold text-emerald-600 dark:text-orange-500 underline uppercase tracking-wider">Size Guide</button>
                                 </div>
                                 
                                 <div class="flex flex-wrap gap-3">
@@ -181,8 +180,8 @@
 
                                         <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl border border-gray-300 transition-all duration-300
                                                     bg-white dark:bg-white/[0.03] dark:border-white/10
-                                                    peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 dark:peer-checked:bg-indigo-500/10 
-                                                    peer-checked:shadow-sm hover:border-gray-300 dark:hover:border-white/20">
+                                                    peer-checked:border-emerald-600 peer-checked:bg-emerald-50/50 dark:peer-checked:border-orange-500 dark:peer-checked:bg-orange-500/10 
+                                                    peer-checked:shadow-sm hover:border-emerald-500 dark:hover:border-orange-500">
                                             
                                             <div class="w-3 h-3 rounded-full border border-black/5 shadow-inner shrink-0 transition-transform group-hover:scale-125"
                                                 :style="{ backgroundColor: variant.color_code || variant.color }">
@@ -199,16 +198,16 @@
                                                     </span>
                                                 </div>
                                                 <div class="mt-1 flex items-center gap-1">
-                                                    <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400">
+                                                    <span class="text-[10px] font-black text-emerald-600 dark:text-orange-400">
                                                         ৳{{ variant.price }}
                                                     </span>
                                                     <span class="w-px h-2 bg-gray-200 dark:bg-gray-700"></span>
-                                                    <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400">
-                                                        {{ variant.stock_quantity }}
-                                        presidential             </span>
+                                                    <span class="text-[10px] font-black text-emerald-600 dark:text-orange-400">
+                                                        {{ variant.stock_quantity }} Left
+                                                    </span>
                                                 </div>
                                             </div>
-                                            <i class="fa-solid fa-circle-check text-[10px] text-indigo-600 opacity-0 transition-opacity peer-checked:opacity-100"></i>
+                                            <i class="fa-solid fa-circle-check text-[10px] text-emerald-600 dark:text-orange-500 opacity-0 transition-opacity peer-checked:opacity-100"></i>
                                         </div>
                                     </label>
                                 </div>
@@ -217,27 +216,25 @@
                             <!-- Cart Operations -->
                             <div class="space-y-4 pt-4">
                                 <div class="flex flex-col sm:flex-row items-center gap-4 w-full">
-                                    <!-- Quantity selector -->
                                     <div class="flex items-center justify-between bg-gray-50 dark:bg-white/[0.03] p-1.5 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-inner w-full sm:w-auto">
                                         <button @click="qty > 1 ? qty-- : null" class="w-12 h-12 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white dark:bg-white/10 shadow-sm hover:shadow-md transition-all active:scale-90 group">
-                                            <i class="fa-solid fa-minus text-xs text-gray-400 group-hover:text-indigo-500"></i>
+                                            <i class="fa-solid fa-minus text-xs text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-orange-500"></i>
                                         </button>
                                         <div class="flex-1 sm:w-14 flex flex-col items-center">
                                             <span class="text-[7px] font-black text-gray-400 uppercase tracking-widest mb-[-2px]">Amount</span>
                                             <input type="number" v-model="qty" class="w-full bg-transparent text-center font-black text-xl sm:text-lg outline-none cursor-default text-gray-900 dark:text-white" readonly>
                                         </div>
                                         <button @click="qty++" class="w-12 h-12 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white dark:bg-white/10 shadow-sm hover:shadow-md transition-all active:scale-90 group">
-                                            <i class="fa-solid fa-plus text-xs text-gray-400 group-hover:text-indigo-500"></i>
+                                            <i class="fa-solid fa-plus text-xs text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-orange-500"></i>
                                         </button>
                                     </div>
 
-                                    <!-- CTA Button -->
-                                    <button @click="addToCart(product)" class="relative w-full sm:flex-1 h-[68px] sm:h-[64px] group overflow-hidden rounded-[2.2rem] bg-gray-950 dark:bg-indigo-600 transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(79,70,229,0.5)] active:scale-[0.98]">
+                                    <button @click="addToCart(product)" class="relative w-full sm:flex-1 h-[68px] sm:h-[64px] group overflow-hidden rounded-[2.2rem] bg-gray-950 dark:bg-orange-500 transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(5,150,105,0.4)] dark:hover:shadow-[0_25px_50px_-12px_rgba(249,115,22,0.4)] active:scale-[0.98]">
                                         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -skew-x-[35deg] -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] ease-in-out"></div>
                                         <div class="relative flex items-center justify-center gap-4">
                                             <div class="relative flex items-center justify-center">
                                                 <i class="fa-solid fa-bag-shopping text-white text-lg group-hover:scale-110 transition-transform duration-500"></i>
-                                                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-gray-950 dark:border-indigo-600 scale-0 group-hover:scale-100 transition-transform duration-300"></span>
+                                                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-gray-950 dark:border-orange-500 scale-0 group-hover:scale-100 transition-transform duration-300"></span>
                                             </div>
                                             <div class="flex flex-col items-start leading-tight">
                                                 <span class="text-white text-[11px] font-black uppercase tracking-[0.3em] group-hover:tracking-[0.4em] transition-all duration-500">Add to Cart</span>
@@ -250,13 +247,18 @@
                             </div>
 
                             <!-- Shipping Alert -->
-                            <div class="bg-indigo-500/5 rounded-3xl p-6 border border-indigo-500/10 flex items-start gap-4">
-                                <div class="h-10 w-10 bg-indigo-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/30">
+                            <div class="bg-emerald-500/5 dark:bg-orange-500/5 rounded-3xl p-6 border border-emerald-500/10 dark:border-orange-500/10 flex items-start gap-4">
+                                <div class="h-10 w-10 bg-emerald-600 dark:bg-orange-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30 dark:shadow-orange-500/30">
                                     <i class="fa-solid fa-bolt"></i>
                                 </div>
+                                
                                 <div>
-                                    <h5 class="text-xs font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-1">Express Delivery Available</h5>
-                                    <p class="text-xs text-gray-500 leading-relaxed font-medium">Order within <span class="text-indigo-500 font-bold">02h 45m</span> to receive your package by tomorrow.</p>
+                                    <h5 class="text-xs font-black uppercase tracking-widest text-emerald-600 dark:text-orange-400 mb-1">
+                                        Express Delivery Available
+                                    </h5>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+                                        Order within <span class="text-emerald-600 dark:text-orange-500 font-bold">02h 45m</span> to receive your package by tomorrow.
+                                    </p>
                                 </div>
                             </div>
 
@@ -269,12 +271,14 @@
                     <div>
                         <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Product Information</h3>
                         
-                        <!-- Full Description Area -->
-                        <div v-if="product.description" class="prose prose-sm dark:prose-invert text-gray-600 dark:text-gray-300 max-w-none leading-relaxed space-y-4" v-html="product.description"></div>
+                        <div v-if="product.description" 
+                            class="prose prose-sm dark:prose-invert prose-emerald dark:prose-orange max-w-none leading-relaxed space-y-4" 
+                            v-html="product.description">
+                        </div>
 
-                        <!-- Meta Keywords Container -->
                         <div v-if="product.meta_keywords" class="mt-8 flex flex-wrap gap-2 pt-6 border-t border-gray-100 dark:border-white/5">
-                            <span v-for="tag in product.meta_keywords.split(',')" :key="tag" class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider bg-gray-50 dark:bg-white/[0.02] px-3 py-1.5 rounded-lg border border-gray-100 dark:border-white/5">
+                            <span v-for="tag in product.meta_keywords.split(',')" :key="tag" 
+                                class="text-[10px] font-bold text-emerald-600/80 dark:text-orange-400/80 uppercase tracking-wider bg-emerald-50 dark:bg-orange-500/[0.05] px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-orange-500/10">
                                 #{{ tag.trim() }}
                             </span>
                         </div>
@@ -291,12 +295,12 @@
                             
                             <div class="relative aspect-[10/12] overflow-hidden rounded-[1rem] bg-gray-50/70 dark:bg-gray-800/50 border border-gray-100/50 dark:border-white/[0.03]">
                                 <div class="absolute top-3.5 left-3.5 z-10 flex flex-col gap-1.5">
-                                    <span v-if="product.discount_price > 0" class="bg-red-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-red-500/10">
+                                    <span v-if="product.discount_price > 0" class="bg-emerald-600 dark:bg-orange-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20">
                                         -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
                                     </span>
                                 </div>
 
-                                <button class="absolute top-3.5 right-3.5 z-10 bg-white/70 dark:bg-[#1f2937]/60 backdrop-blur-md p-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-[#1f2937] transition-all duration-300 active:scale-90 shadow-sm border border-white/40 dark:border-white/5">
+                                <button class="absolute top-3.5 right-3.5 z-10 bg-white/70 dark:bg-[#1f2937]/60 backdrop-blur-md p-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-orange-400 transition-all duration-300 active:scale-90 shadow-sm border border-white/40 dark:border-white/5">
                                     <i class="fa-regular fa-heart text-sm"></i>
                                 </button>
 
@@ -304,7 +308,7 @@
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s] ease-out cursor-pointer">
                                 
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
-                                    <button @click="ProductDetails(product)" class="w-full bg-white/95 dark:bg-indigo-600/95 backdrop-blur-md text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 rounded-xl shadow-xl hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                                    <button @click="ProductDetails(product)" class="w-full bg-white/95 dark:bg-orange-500/95 backdrop-blur-md text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 rounded-xl shadow-xl hover:bg-emerald-600 dark:hover:bg-orange-600 hover:text-white transition-all duration-300 translate-y-4 group-hover:translate-y-0">
                                         Quick View
                                     </button>
                                 </div>
@@ -313,7 +317,7 @@
                             <div class="mt-5 flex-1 flex flex-col justify-between px-1">
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
-                                        <span class="text-[9px] font-black uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
+                                        <span class="text-[9px] font-black uppercase tracking-[0.18em] text-emerald-600 dark:text-orange-400">
                                             {{ product.category?.name || categoryName }}
                                         </span>
                                         <div class="flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-md">
@@ -322,7 +326,7 @@
                                         </div>
                                     </div>
 
-                                    <h3 @click="ProductDetails(product)" class="text-base font-black text-gray-800 dark:text-gray-100 truncate cursor-pointer group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors tracking-tight">
+                                    <h3 @click="ProductDetails(product)" class="text-base font-black text-gray-800 dark:text-gray-100 truncate cursor-pointer group-hover:text-emerald-600 dark:group-hover:text-orange-400 transition-colors tracking-tight">
                                         {{ product.name }} 
                                         <span v-if="product.point" class="text-xs font-medium text-gray-400 ml-1">({{ product.point }} Pts)</span>
                                     </h3>
@@ -336,7 +340,7 @@
                                         </span>
                                     </div>
 
-                                    <button @click="ProductDetails(product)" class="relative h-11 w-11 group/btn overflow-hidden rounded-full bg-gray-900 dark:bg-indigo-600 text-white shadow-md shadow-gray-900/5 dark:shadow-indigo-500/10 transition-all duration-500 hover:w-28 hover:bg-indigo-600 dark:hover:bg-indigo-500 active:scale-95 flex items-center justify-center">
+                                    <button @click="ProductDetails(product)" class="relative h-11 w-11 group/btn overflow-hidden rounded-full bg-gray-900 dark:bg-orange-500 text-white shadow-md transition-all duration-500 hover:w-28 hover:bg-emerald-600 dark:hover:bg-orange-600 active:scale-95 flex items-center justify-center">
                                         <div class="absolute flex items-center justify-center transition-all duration-500 group-hover/btn:translate-x-10 group-hover/btn:opacity-0">
                                             <i class="fa-solid fa-plus text-base"></i>
                                         </div>
@@ -347,7 +351,6 @@
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

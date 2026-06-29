@@ -1,5 +1,6 @@
 <template>
     <main class="container mx-auto px-4 sm:px-6 py-6 md:py-10 max-w-7xl transition-colors duration-300">
+        <featureProduct :products="products"/>
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
             
             <!-- 1. Sidebar Navigation -->
@@ -9,27 +10,25 @@
                     <!-- Premium Categories Card -->
                     <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800/80 shadow-[0_8px_30px_rgb(0,0,0,0.015)] dark:shadow-none transition-all duration-300">
                         <h3 class="font-bold text-slate-800 dark:text-slate-200 text-xs mb-4 flex items-center gap-2 uppercase tracking-widest opacity-90">
-                            <span class="w-1 h-3.5 bg-[#16A34A] rounded-full"></span> 
+                            <span class="w-1 h-3.5 bg-emerald-600 dark:bg-orange-500 rounded-full"></span> 
                             Categories
                         </h3>
                         
                         <ul class="space-y-1 overflow-y-auto max-h-[500px] pr-1 custom-scrollbar">
-                            <!-- All Products Option for Large Devices -->
                             <li @click="selectedCategory = null"
                                 class="group flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer transition-all duration-300"
                                 :class="!selectedCategory 
-                                    ? 'bg-gradient-to-r from-[#16A34A] to-emerald-600 text-white font-semibold shadow-md shadow-[#16A34A]/15' 
+                                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-orange-500 dark:to-orange-600 text-white font-semibold shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20' 
                                     : 'hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'">
                                 <span class="text-xs tracking-wide transition-colors">All Products</span>
                                 <i class="fa-solid fa-chevron-right text-[9px] transition-all duration-300" 
                                 :class="!selectedCategory ? 'text-white translate-x-0.5 opacity-100' : 'opacity-30 group-hover:opacity-80 group-hover:translate-x-0.5'"></i>
                             </li>
 
-                            <!-- Dynamic Categories List -->
                             <li v-for="cat in categories" :key="cat.id" @click="selectedCategory = cat.id"
                                 class="group flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer transition-all duration-300"
                                 :class="selectedCategory === cat.id 
-                                    ? 'bg-gradient-to-r from-[#16A34A] to-emerald-600 text-white font-semibold shadow-md shadow-[#16A34A]/15' 
+                                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-orange-500 dark:to-orange-600 text-white font-semibold shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20' 
                                     : 'hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'">
                                 <span class="text-xs tracking-wide transition-colors">{{ cat.name }}</span>
                                 <i class="fa-solid fa-chevron-right text-[9px] transition-all duration-300" 
@@ -157,7 +156,7 @@
                                         bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20
                                         /* Dark Mode: Orange/Amber Gradient */
                                         dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
-                                        -{{ Math.round(((product.price - product.discount_price) / product.price) * 100) }}% OFF
+                                        -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
                                     </span>
 
                                     <button class="absolute top-2.5 right-2.5 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-2 rounded-full text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm border border-slate-100 dark:border-slate-800/40">
@@ -233,6 +232,8 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import api, { makeImg } from '../../services/api'
 import newsLatter from './news-latter.vue'
+
+import featureProduct from "./feature-product.vue";
 
 const router = useRouter()
 const loading = ref(false)
