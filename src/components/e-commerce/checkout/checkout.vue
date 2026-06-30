@@ -72,7 +72,7 @@
                     
                     <!-- Left Side: Forms -->
                     <div class="lg:col-span-8 space-y-6">
-                        <div class="group relative bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-300 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                        <div class="group relative bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-gray-300 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 <!-- Full Name -->
                                 <div class="space-y-1">
@@ -137,17 +137,7 @@
                                     ></textarea>
                                 </div>
 
-                                <!-- Remarks -->
-                                <div class="sm:col-span-2 space-y-1">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
-                                        Remarks (Optional)
-                                    </label>
-                                    <textarea 
-                                        rows="3" v-model="form.remarks"
-                                        class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none resize-none" 
-                                        placeholder="Type your external note."
-                                    ></textarea>
-                                </div>
+                                
                             </div>
 
                             <!-- Checkboxes -->
@@ -186,11 +176,159 @@
 
                             </div>
                         </div>
+
+                        <div class="w-full border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-900 rounded-xl p-4 mt-4 sm:p-5 shadow-sm flex flex-col justify-between">
+                                    
+                            <div>
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 bg-[#F97316]/10 p-2 rounded-lg text-[#F97316]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base font-bold text-slate-800 dark:text-slate-100">
+                                            অর্ডারটি কনফার্ম করতে ডেলিভারি চার্জ অগ্রিম প্রদান করুন
+                                        </h4>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+                                            ভুয়া অর্ডার প্রতিরোধ এবং আপনার পার্সেলটি নিশ্চিত করতে অনুগ্রহ করে নিচের যেকোনো একটি পার্সোনাল নম্বরে ডেলিভারি চার্জ সেন্ড মানি করুন।
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <hr class="border-slate-100 dark:border-slate-800/60 my-4" />
+
+                                <div class="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 transition-all hover:border-[#16A34A]/30">
+                                        <div class="w-8 h-8 rounded-lg bg-pink-100 dark:bg-pink-950/40 flex items-center justify-center font-bold text-xs text-pink-600 dark:text-pink-400 flex-shrink-0">
+                                            bK
+                                        </div>
+                                        <div class="truncate">
+                                            <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">bKash (Personal)</p>
+                                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200">01762164746</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 transition-all hover:border-[#16A34A]/30">
+                                        <div class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950/40 flex items-center justify-center font-bold text-xs text-orange-600 dark:text-orange-400 flex-shrink-0">
+                                            Ng
+                                        </div>
+                                        <div class="truncate">
+                                            <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Nagad (Personal)</p>
+                                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200">01762164746</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 transition-all hover:border-[#16A34A]/30">
+                                        <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-950/40 flex items-center justify-center font-bold text-xs text-purple-600 dark:text-purple-400 flex-shrink-0">
+                                            Rk
+                                        </div>
+                                        <div class="truncate">
+                                            <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Rocket (Personal)</p>
+                                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200">017621647466</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 p-3.5 rounded-xl border border-blue-200/60 dark:border-blue-900/40 bg-blue-50/40 dark:bg-blue-950/20">
+                                    <div class="flex items-center gap-2 text-[#1E40AF] dark:text-blue-400 mb-2.5">
+                                        <i class="fa-solid fa-building-columns"></i>
+                                        <span class="text-xs font-bold uppercase tracking-wide">Bank Account Transfer</span>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs">
+                                        <div class="flex flex-col">
+                                            <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Bank Name</span>
+                                            <span class="font-bold text-slate-700 dark:text-slate-200">Islami Bank Bangladesh PLC</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Account Name</span>
+                                            <span class="font-bold text-slate-700 dark:text-slate-200">Your Company/Name</span>
+                                        </div>
+                                        <div class="flex flex-col sm:col-span-2 bg-white dark:bg-slate-900/60 p-2 rounded-lg border border-slate-100 dark:border-slate-800 mt-1">
+                                            <span class="text-slate-400 dark:text-slate-500 text-[10px] font-medium uppercase tracking-wider">Account Number</span>
+                                            <span class="font-mono text-sm font-bold text-blue-600 dark:text-blue-400 tracking-wider">2050XXXXXXXXXXXXX</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Branch</span>
+                                            <span class="font-semibold text-slate-600 dark:text-slate-300">Dhaka Main Branch</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Routing Number</span>
+                                            <span class="font-mono font-semibold text-slate-600 dark:text-slate-300">125XXXXXXXX</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="mt-4 flex items-start gap-2 bg-[#16A34A]/5 dark:bg-[#16A34A]/10 p-3 rounded-lg border border-[#16A34A]/10">
+                                    <span class="flex h-2 w-2 translate-y-1.5 rounded-full bg-[#16A34A] flex-shrink-0"></span>
+                                    <p class="text-xs font-medium text-slate-600 dark:text-slate-300 leading-normal">
+                                        <strong class="text-[#16A34A] dark:text-[#16A34A]">বিশেষ দ্রষ্টব্য:</strong> ব্যাংক বা মোবাইল ব্যাংকিংয়ে টাকা পাঠানোর পর আপনার পেমেন্টকৃত নম্বর/নাম এবং Transaction ID (TrxID) নিচের ইনপুট বক্সে লিখে অর্ডার সম্পন্ন করুন।
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                        যে নম্বর থেকে টাকা পাঠিয়েছেন <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative flex items-center">
+                                        <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                            </svg>
+                                        </span>
+                                        <input 
+                                            type="tel" 
+                                            v-model="form.payment_number"
+                                            placeholder="017XXXXXXXX"
+                                            class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                        ট্রানজেকশন আইডি (TrxID) <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative flex items-center">
+                                        <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                            </svg>
+                                        </span>
+                                        <input 
+                                            type="text" 
+                                            v-model="form.payment_transaction_code"
+                                            placeholder="ট্রানজেকশন. BK24X7890"
+                                            class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2 flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                        Remarks / Note (Optional)
+                                    </label>
+                                    <textarea 
+                                        rows="3" 
+                                        v-model="form.remarks"
+                                        class="w-full px-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316] resize-none" 
+                                        placeholder="Type your external note here..."
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!-- Right Side: Payment Details -->
                     <div class="lg:col-span-4">
-                        <div class="sticky top-10 bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-gray-300 dark:border-gray-700">
+                        <div class="sticky top-20 bg-white dark:bg-slate-900 rounded-xl p-8 shadow-sm border border-gray-300 dark:border-gray-700">
                             <h2 class="text-xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                                 Payment Details <span class="w-2 h-2 rounded-full bg-[#16A34A] dark:bg-[#F97316]"></span>
                             </h2>
@@ -310,6 +448,9 @@ const form = reactive({
     user_id: '',
     address: '',
     remarks: '',
+
+    payment_number: '',
+    payment_transaction_code: '',
 });
 
 
@@ -391,6 +532,9 @@ async function confirmPayment() {
         user_id: form.user_id,
         address: form.address,
         remarks: form.remarks,
+
+        payment_number: form.payment_number,
+        payment_transaction_code: form.payment_transaction_code,
     };
 
     try {

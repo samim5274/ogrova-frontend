@@ -260,6 +260,22 @@
                                                     <span class="leading-relaxed">{{ order.transaction_id }}</span>
                                                 </div>
 
+                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                                    <i class="fa-solid fa-phone w-4 text-center mt-0.5 text-slate-400 dark:text-slate-500"></i>
+                                                    <span class="leading-relaxed">
+                                                        <span class="font-medium text-slate-500 dark:text-slate-500 mr-1">Acc. No:</span>
+                                                        {{ order.payment_number }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400 mt-1.5">
+                                                    <i class="fa-solid fa-money-bill-transfer w-4 text-center mt-0.5 text-slate-400 dark:text-slate-500"></i>
+                                                    <span class="leading-relaxed">
+                                                        <span class="font-medium text-slate-500 dark:text-slate-500 mr-1">TrxID:</span>
+                                                        {{ order.payment_transaction_code }}
+                                                    </span>
+                                                </div>
+
                                                 <!-- Remarks -->
                                                 <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-regular fa-comment-dots w-4 text-center mt-0.5"></i>
