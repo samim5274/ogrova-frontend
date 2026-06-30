@@ -22,9 +22,10 @@
             :modules="[Autoplay]"
             :slides-per-view="1"
             :space-between="24"
-            :loop="true"
+            :loop="enableLoop"
             :autoplay="{ delay: 3500, disableOnInteraction: false }"
             :breakpoints="{
+                320: { slidesPerView: 1 },
                 640: { slidesPerView: 2 },
                 768: { slidesPerView: 3 },
                 1024: { slidesPerView: 5 },
@@ -81,6 +82,10 @@ const props = defineProps({
         type: Array,
         default: () => []
     }
+});
+
+const enableLoop = computed(() => {
+    return props.products.length > 6;
 });
 
 // No need for watch + ref
