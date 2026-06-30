@@ -42,17 +42,17 @@
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
                     <div>
                         <nav class="flex mb-4 text-sm font-semibold text-zinc-500 dark:text-zinc-400">
-                            <router-link to="/" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Home</router-link>
+                            <router-link to="/" class="hover:text-[#16A34A] dark:hover:text-[#F97316] transition-colors">Home</router-link>
                             <span class="mx-2">/</span>
                             <span class="text-zinc-900 dark:text-zinc-200">Shopping Cart</span>
                         </nav>
                         <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
-                            Shopping Cart <span class="text-emerald-600 dark:text-emerald-500">.</span>
+                            Shopping Cart <span class="text-[#16A34A] dark:text-[#F97316]">.</span>
                         </h1>
                     </div>
                     <div class="bg-white dark:bg-[#1f2937] px-5 py-2.5 rounded-xl shadow-sm border border-zinc-200/80 dark:border-zinc-700/50 transition-all">
                         <p class="text-sm font-bold text-zinc-600 dark:text-zinc-400">
-                            Total Items: <span class="text-emerald-600 dark:text-emerald-400 font-black">{{ cartItems.length }}</span>
+                            Total Items: <span class="text-[#16A34A] dark:text-[#F97316] font-black">{{ cartItems.length }}</span>
                         </p>
                     </div>
                 </div>
@@ -61,11 +61,11 @@
                 <div v-if="cartItems.length === 0" 
                     class="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#1f2937] rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-700 shadow-xl">
                     <div class="w-24 h-24 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mb-6 ring-8 ring-emerald-50/50 dark:ring-emerald-500/5">
-                        <i class="fa-solid fa-bag-shopping text-4xl text-emerald-600 dark:text-emerald-500"></i>
+                        <i class="fa-solid fa-bag-shopping text-4xl text-[#16A34A] dark:text-[#0f853a]"></i>
                     </div>
                     <h2 class="text-2xl font-black text-zinc-900 dark:text-white">Your cart feels a bit light</h2>
                     <p class="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Add some items to make it happy!</p>
-                    <router-link to="/" class="mt-8 px-8 py-3.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-600/20 dark:shadow-none">
+                    <router-link to="/" class="mt-8 px-8 py-3.5 bg-[#16A34A] text-white rounded-xl font-bold hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-[#16A34A]/20 dark:shadow-none">
                         Go Shopping
                     </router-link>
                 </div>
@@ -76,7 +76,7 @@
                     <!-- Cart Items List -->
                     <div class="lg:col-span-8 space-y-5">
                         <div v-for="item in cartItems" :key="item.id"
-                            class="group relative bg-white dark:bg-[#1f2937] p-5 rounded-2xl shadow-sm border border-zinc-200/80 dark:border-zinc-700/60 hover:shadow-xl hover:border-emerald-500/30 dark:hover:border-emerald-500/30 transition-all duration-300">
+                            class="group relative bg-white dark:bg-[#1f2937] p-5 rounded-2xl shadow-sm border border-zinc-200/80 dark:border-zinc-700/60 hover:shadow-xl hover:border-[#16A34A] dark:hover:border-[#F97316] transition-all duration-300">
                             
                             <div class="flex flex-col sm:flex-row gap-6">
                                 <!-- Product Image -->
@@ -90,7 +90,7 @@
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div class="flex justify-between items-start gap-4">
                                         <div>
-                                            <h3 @click="ProductDetails(item)" class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1 cursor-pointer hover:underline">
+                                            <h3 @click="ProductDetails(item)" class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#F97316] transition-colors line-clamp-1 cursor-pointer hover:underline">
                                                 {{ item.product?.name }}
                                             </h3>
                                             
@@ -103,7 +103,7 @@
                                                 </span>
 
                                                 <span v-if="item.variant?.size" 
-                                                    class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-100 dark:border-orange-500/20">
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-500/10 text-[#16A34A] dark:text-orange-400 border border-[#16A34A] dark:border-[#ffa362]">
                                                     <i class="fa-solid fa-ruler-combined mr-1.5 opacity-70"></i>
                                                     Size: {{ item.variant.size }}
                                                 </span>
@@ -129,27 +129,27 @@
                                         <div class="flex items-center p-1 bg-zinc-50 dark:bg-[#111827] rounded-xl border border-zinc-200 dark:border-zinc-700">
                                             <button @click="decreaseQty(item)" 
                                                 :disabled="item.quantity <= 1"
-                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-[#16A34A] dark:hover:text-[#F97316] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                                                 <i class="fa-solid fa-minus text-xs"></i>
                                             </button>
                                             <span class="w-10 text-center font-bold text-zinc-900 dark:text-white">{{ item.quantity }}</span>
                                             <button @click="increaseQty(item)" 
-                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-[#16A34A] dark:hover:text-[#F97316] transition-colors">
                                                 <i class="fa-solid fa-plus text-xs"></i>
                                             </button>
                                         </div>
 
                                         <!-- Points Section (Orange Energy/Offer Theme) -->
-                                        <div class="flex flex-col items-end px-3 py-1.5 bg-orange-50/60 dark:bg-orange-500/5 rounded-xl border border-orange-200/40 dark:border-orange-500/10">
-                                            <p class="flex items-center gap-1 text-[9px] font-black text-orange-600 dark:text-orange-500 uppercase tracking-wider mb-0.5">
-                                                <i class="fa-solid fa-bolt"></i>
-                                                Points Earned
+                                        <div class="flex flex-col items-end px-2 py-0.5 bg-orange-50/60 dark:bg-orange-500/5 rounded-lg border border-green-200/80 dark:border-orange-500/10">
+                                            <p class="flex items-center gap-0.5 text-[8px] font-black text-[#16A34A] dark:text-orange-500 uppercase tracking-wider mb-0">
+                                                <i class="fa-solid fa-bolt text-[7px]"></i>
+                                                Points
                                             </p>
-                                            <div class="flex items-baseline gap-0.5">
-                                                <span class="text-xl font-black text-zinc-900 dark:text-orange-400 tracking-tight leading-none">
+                                            <div class="flex items-baseline gap-0.5 leading-none">
+                                                <span class="text-sm font-black text-[#16A34A] dark:text-orange-400 tracking-tight">
                                                     {{ (Number(item.point) * item.quantity).toLocaleString() }}
                                                 </span>
-                                                <span class="text-[9px] font-bold text-orange-500/80 uppercase">pts</span>
+                                                <span class="text-[8px] font-bold text-[#16A34A]/80 dark:text-[#F97316]/80 uppercase">pts</span>
                                             </div>
                                         </div>
 
@@ -163,11 +163,11 @@
                                             </div>
 
                                             <p class="text-xl font-black text-zinc-900 dark:text-white tracking-tight">
-                                                <span class="text-sm font-bold mr-0.5 text-emerald-600 dark:text-emerald-500">৳</span>{{ (Number(item.price) * item.quantity).toLocaleString() }}
+                                                <span class="text-sm font-bold mr-0.5 text-[#16A34A] dark:text-[#16A34A]">৳</span>{{ (Number(item.price) * item.quantity).toLocaleString() }}
                                             </p>
                                             
                                             <!-- Dynamic Offer Highlight -->
-                                            <span v-if="item.discount > 0" class="text-[9px] font-bold text-orange-600 bg-orange-50 dark:bg-orange-500/10 dark:text-orange-400 px-1.5 py-0.5 rounded mt-1 border border-orange-100 dark:border-orange-500/10">
+                                            <span v-if="item.discount > 0" class="text-[9px] font-bold text-green-600 bg-orange-50 dark:bg-orange-500/10 dark:text-orange-400 px-1.5 py-0.5 rounded mt-1 border border-green-100 dark:border-orange-500/10">
                                                 Saved ৳{{ (item.discount * item.quantity).toLocaleString() }}
                                             </span>
                                         </div>
@@ -180,24 +180,33 @@
 
                     <!-- Order Summary Card -->
                     <div class="lg:col-span-4">
+                        
                         <div class="sticky top-10 bg-white dark:bg-[#1f2937] rounded-2xl p-6 sm:p-8 shadow-md border border-zinc-200/80 dark:border-zinc-700/60 transition-all">
+                            
                             <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
-                                Order Summary <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                                Order Summary <span class="w-2.5 h-2.5 rounded-full bg-[#16a34a] dark:bg-[#F97316] animate-pulse"></span>
                             </h2>
 
                             <div class="space-y-4">                                
+                                <!-- Subtotal -->
                                 <div class="flex justify-between font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">Subtotal</span>
                                     <span class="text-zinc-900 dark:text-white font-bold">৳ {{ subtotal.toLocaleString() }}</span>
                                 </div>
+                                
                                 <div class="flex justify-between font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">Shipping</span>
-                                    <span class="text-emerald-600 dark:text-emerald-400 font-bold uppercase text-xs tracking-wider">Free</span>
+                                    <span class="text-[#16a34a] dark:text-[#F97316] font-bold uppercase text-xs tracking-wider">Free</span>
                                 </div>
+                                
                                 <div class="flex justify-between font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">Total Points</span>
-                                    <span class="text-orange-600 dark:text-orange-400 font-bold">{{ totalPoint.toLocaleString() }} pts</span>
+                                    <span class="text-[#16a34a] dark:text-[#fb923c] font-bold bg-[#16a34a]/10 dark:bg-[#f97316]/20 px-2 py-0.5 rounded text-xs flex items-center gap-1">
+                                        <i class="fa-solid fa-star text-[10px]"></i> {{ totalPoint.toLocaleString() }} pts
+                                    </span>
                                 </div>
+                                
+                                <!-- Estimated Tax -->
                                 <div class="flex justify-between font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">Estimated Tax</span>
                                     <span class="text-zinc-900 dark:text-white font-bold">৳ 0</span>
@@ -208,21 +217,20 @@
                                 <div class="flex justify-between items-end">
                                     <span class="text-base font-bold text-zinc-900 dark:text-white mb-1">Total Payable</span>
                                     <div class="text-right">
-                                        <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
+                                        <p class="text-3xl font-black text-[#16a34a] dark:text-[#F97316] tracking-tight">
                                             ৳ {{ subtotal.toLocaleString() }}
                                         </p>
                                         <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">VAT Included</p>
                                     </div>
                                 </div>
 
-                                <!-- Emerald Green Primary Checkout Button -->
-                                <button @click="checkOut(cartItems)" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-black text-base tracking-wide transition-all shadow-lg shadow-emerald-600/10 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.99]">
+                                <button @click="checkOut(cartItems)" class="w-full mt-8 bg-[#16a34a] hover:bg-[#15803d] dark:bg-[#F97316] hover:dark:bg-[#d85a00] text-white py-4 rounded-xl font-black text-base tracking-wide transition-all shadow-lg shadow-[#16a34a]/20 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.99]">
                                     Checkout Now
                                     <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                                 </button>
 
                                 <p class="text-center text-[11px] font-bold text-zinc-400 mt-6 flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-shield-check text-emerald-500"></i>
+                                    <i class="fa-solid fa-shield-check text-[#16a34a]"></i>
                                     Secure SSL Encrypted Checkout
                                 </p>
                             </div>
