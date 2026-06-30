@@ -80,7 +80,7 @@
                                         Full Name
                                     </label>
                                     <input 
-                                        type="text" readonly v-model="form.name"
+                                        type="text" v-model="form.name"
                                         class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none" 
                                         placeholder="Enter your full name" 
                                     />
@@ -94,7 +94,7 @@
                                     <div class="relative">
                                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">+88</span>
                                         <input 
-                                            type="text" readonly v-model="form.phone"
+                                            type="text" v-model="form.phone"
                                             class="w-full pl-12 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none" 
                                             placeholder="01XXXXXXXXX" 
                                         />
@@ -107,7 +107,7 @@
                                         Email Address
                                     </label>
                                     <input 
-                                        type="email" readonly v-model="form.email"
+                                        type="email" v-model="form.email"
                                         class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none" 
                                         placeholder="example@mail.com" 
                                     />
@@ -134,6 +134,18 @@
                                         rows="3" v-model="form.address"
                                         class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none resize-none" 
                                         placeholder="Enter your detailed shipping address"
+                                    ></textarea>
+                                </div>
+
+                                <!-- Remarks -->
+                                <div class="sm:col-span-2 space-y-1">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
+                                        Remarks (Optional)
+                                    </label>
+                                    <textarea 
+                                        rows="3" v-model="form.remarks"
+                                        class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none resize-none" 
+                                        placeholder="Type your external note."
                                     ></textarea>
                                 </div>
                             </div>
@@ -297,6 +309,7 @@ const form = reactive({
     email: '',
     user_id: '',
     address: '',
+    remarks: '',
 });
 
 
@@ -377,6 +390,7 @@ async function confirmPayment() {
         email: form.email,
         user_id: form.user_id,
         address: form.address,
+        remarks: form.remarks,
     };
 
     try {
