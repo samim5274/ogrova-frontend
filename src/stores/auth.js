@@ -1,36 +1,41 @@
-import { ref, computed } from 'vue'
-import api, { makeImg } from '../services/api'
+import { ref, computed } from "vue";
+import api, { makeImg } from "../services/api";
 
-const authUser = ref(null)
+const authUser = ref(
+    JSON.parse(localStorage.getItem("user")) || null
+);
 
-const isLoggedIn = computed(() => !!authUser.value)
+const isLoggedIn = computed(() => !!authUser.value);
 
-const avatarUrl = computed(() => {
-    return authUser.value?.photo
+const avatarUrl = computed(() =>
+    authUser.value?.photo
         ? makeImg(authUser.value.photo)
         : "/images/avatar.png"
-})
+);
 
 async function loadUser() {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
 
     if (!token) {
-        authUser.value = null
-        return
+        authUser.value = null;
+        return;
     }
 
     try {
-        const res = await api.get("/user")
-        authUser.value = res.data
-    } catch (e) {
-        logout()
+        const { data } = await api.get("/user");
+
+        authUser.value = data;
+
+        localStorage.setItem("user", JSON.stringify(data));
+    } catch (err) {
+        logout();
     }
 }
 
 function logout() {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    authUser.value = null
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    authUser.value = null;
 }
 
 export function useAuth() {
@@ -39,6 +44,6 @@ export function useAuth() {
         isLoggedIn,
         avatarUrl,
         loadUser,
-        logout
-    }
+        logout,
+    };
 }
