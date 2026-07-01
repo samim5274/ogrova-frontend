@@ -145,18 +145,18 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <!-- ক্যাশ অন ডেলিভারি অপশন -->
                                         <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
-                                            :class="payment_method === 'cod' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
-                                            <input type="radio" v-model="payment_method" value="cod" class="accent-[#16A34A] h-4 w-4" />
+                                            :class="form.payment_method === 'cod' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
+                                            <input type="radio" v-model="form.payment_method" value="cod" class="accent-[#16A34A] h-4 w-4" />
                                             <div class="flex flex-col">
-                                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Cash on Delivery (COD)</span>
+                                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Cash on Delivery</span>
                                                 <span class="text-[10px] text-slate-400 dark:text-slate-500">পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন</span>
                                             </div>
                                         </label>
                                         
                                         <!-- অগ্রিম পেমেন্ট অপশন -->
                                         <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
-                                            :class="payment_method === 'advance' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
-                                            <input type="radio" v-model="payment_method" value="advance" class="accent-[#16A34A] h-4 w-4" />
+                                            :class="form.payment_method === 'advance' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
+                                            <input type="radio" v-model="form.payment_method" value="advance" class="accent-[#16A34A] h-4 w-4" />
                                             <div class="flex flex-col">
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Advance Payment</span>
                                                 <span class="text-[10px] text-slate-400 dark:text-slate-500">ডেলিভারি চার্জ অগ্রিম প্রদান করুন</span>
@@ -165,7 +165,7 @@
                                     </div>
                                 </div>
 
-                                <div v-if="payment_method === 'cod'" class="sm:col-span-2 mt-2 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 space-y-4">
+                                <div v-if="form.payment_method === 'cod'" class="sm:col-span-2 mt-2 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 space-y-4">
     
                                     <div>
                                         <div class="flex items-start gap-3">
@@ -261,14 +261,14 @@
                                         </label>
                                         <div class="grid grid-cols-2 gap-3">
                                             <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all"
-                                                :class="d_payment_method === 'mobile' ? 'border-[#16A34A] dark:border-[#E0640D] bg-[#16A34A]/5 dark:bg-[#E0640D]/5' : 'border-slate-200 dark:border-slate-800'">
-                                                <input type="radio" v-model="d_payment_method" value="mobile" class="accent-[#16A34A]" />
+                                                :class="form.d_payment_method === 'mobile' ? 'border-[#16A34A] dark:border-[#E0640D] bg-[#16A34A]/5 dark:bg-[#E0640D]/5' : 'border-slate-200 dark:border-slate-800'">
+                                                <input type="radio" v-model="form.d_payment_method" value="mobile" class="accent-[#16A34A]" />
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
                                             </label>
                                             
                                             <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all"
-                                                :class="d_payment_method === 'bank' ? 'border-[#16A34A] dark:border-[#E0640D] bg-[#16A34A]/5 dark:bg-[#E0640D]/5' : 'border-slate-200 dark:border-slate-800'">
-                                                <input type="radio" v-model="d_payment_method" value="bank" class="accent-[#16A34A]" />
+                                                :class="form.d_payment_method === 'bank' ? 'border-[#16A34A] dark:border-[#E0640D] bg-[#16A34A]/5 dark:bg-[#E0640D]/5' : 'border-slate-200 dark:border-slate-800'">
+                                                <input type="radio" v-model="form.d_payment_method" value="bank" class="accent-[#16A34A]" />
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Bank Transfer</span>
                                             </label>
                                         </div>
@@ -276,7 +276,7 @@
 
                                     <hr class="border-slate-100 dark:border-slate-800/60 my-4" />
 
-                                    <template v-if="d_payment_method === 'mobile'">
+                                    <template v-if="form.d_payment_method === 'mobile'">
                                         <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div class="flex flex-col gap-1.5">
                                                 <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -316,7 +316,7 @@
                                         </div>
                                     </template>
 
-                                    <template v-if="d_payment_method === 'bank'">
+                                    <template v-if="form.d_payment_method === 'bank'">
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div class="flex flex-col gap-1.5">
                                                 <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -557,8 +557,6 @@ const errorMsg = ref('');
 
 
 
-const payment_method = ref('cod');
-const d_payment_method = ref('mobile');
 
 
 
@@ -578,10 +576,10 @@ const form = reactive({
     email: '',
     user_id: '',
     address: '',
-    payment_method: '',
+    payment_method: 'advance',
     remarks: '',
 
-    d_payment_method: '',
+    d_payment_method: 'mobile',
     bank_name: '',
     account_number: '',
     account_holder_name: '',
@@ -639,7 +637,7 @@ const total = computed(() => {
 
 
 
-
+const validationErrors = ref({});
 const submitting = ref(false);
 async function confirmPayment() {
 
@@ -652,10 +650,81 @@ async function confirmPayment() {
         return;
     }
 
+    if (!form.name.trim()) {
+        errorMsg.value = "Full name is required.";
+        return;
+    }
+
+    if (form.payment_method !== "advance") {
+        if (!form.phone.trim()) {
+            errorMsg.value = "Phone number is required.";
+            return;
+        }
+    }
+
+    if (!/^01[3-9]\d{8}$/.test(form.phone)) {
+        errorMsg.value = "Please enter a valid phone number.";
+        return;
+    }
+
+    if (!form.email.trim()) {
+        errorMsg.value = "Email address is required.";
+        return;
+    }
+
     if (!form.address.trim()) {
         errorMsg.value = "Shipping address is required.";
         return;
     }
+
+    if (!form.payment_method) {
+        errorMsg.value = "Please select a payment method.";
+        return;
+    }
+
+    // COD enable
+    if(form.payment_method==="cod"){
+
+        if(!form.d_payment_method){
+            errorMsg.value="Please select delivery charge payment method.";
+            return;
+        }
+
+        if(form.d_payment_method==="mobile"){
+
+            if(!form.mobile_number.trim()){
+                errorMsg.value="Sender mobile number is required.";
+                return;
+            }
+
+            if(!form.transaction_id.trim()){
+                errorMsg.value="Transaction ID is required.";
+                return;
+            }
+
+        }
+
+        if(form.d_payment_method==="bank"){
+
+            if(!form.bank_name.trim()){
+                errorMsg.value="Bank name is required.";
+                return;
+            }
+
+            if(!form.account_holder_name.trim()){
+                errorMsg.value="Account holder name is required.";
+                return;
+            }
+
+            if(!form.account_number.trim()){
+                errorMsg.value="Account number is required.";
+                return;
+            }
+
+        }
+
+    }
+
 
     submitting.value = true;
 
@@ -666,18 +735,19 @@ async function confirmPayment() {
         name: form.name,
         phone: form.phone,
         email: form.email,
-        user_id: form.user_id,
         address: form.address,
         payment_method: form.payment_method,
         remarks: form.remarks,
-
-        d_payment_method: form.d_payment_method,
-        bank_name: form.bank_name,
-        account_number: form.account_number,
-        account_holder_name: form.account_holder_name,
-        mobile_number: form.mobile_number,
-        transaction_id: form.transaction_id,
     };
+
+    if (form.payment_method === "cod") {
+        payload.d_payment_method = form.d_payment_method;
+        payload.bank_name = form.bank_name;
+        payload.account_number = form.account_number;
+        payload.account_holder_name = form.account_holder_name;
+        payload.mobile_number = form.mobile_number;
+        payload.transaction_id = form.transaction_id;
+    }
 
     try {
         const res = await api.post(`/orders/confirm/${routeReg}`, payload);
@@ -686,7 +756,18 @@ async function confirmPayment() {
         setTimeout(() => {
             router.push("/");
         }, 1500);
+
+        // await router.replace({
+        //     name:'order-success',
+        //     params:{
+        //         id:res.data.data.order_id
+        //     }
+        // })
     } catch (err) {
+        if(err.response?.status===422){
+            validationErrors.value=err.response.data.errors;
+        }
+
         errorMsg.value =
             err.response?.data?.message ||
             err.response?.data?.error ||
