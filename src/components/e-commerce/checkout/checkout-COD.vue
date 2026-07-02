@@ -125,76 +125,6 @@
                                     />
                                 </div>
 
-                                <!-- Division -->
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
-                                        Divison
-                                    </label>
-                                    <select v-model="selectedDivision" @change="handleDivisionChange" class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none">
-                                        <option :value="null" selected disabled>-- Select Division --</option>
-                                        <option v-for="division in divisions" :key="division.id" :value="division.id">
-                                            {{ division.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                                
-
-                                <!-- District -->
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
-                                        District
-                                    </label>
-                                    <select v-model="selectedDistrict" @change="handleDistrictChange" :disabled="!selectedDivision" class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none">
-                                        <option :value="null" selected disabled>-- Select District --</option>
-                                        <option v-for="district in districts" :key="district.id" :value="district.id">
-                                            {{ district.name }}
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <!-- Upazila -->
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
-                                        District
-                                    </label>
-                                    <select v-model="selectedUpazila" @change="handleUpazilaChange" :disabled="!selectedDistrict" class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none">
-                                        <option :value="null" selected disabled>-- Select Upazila --</option>
-                                        <option v-for="upazila in upazilas" :key="upazila.id" :value="upazila.id">
-                                            {{ upazila.name }}
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <!-- Police Station -->
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
-                                        Police Station (Optional)
-                                    </label>
-                                    <select v-model="selectedPoliceStation" :disabled="!selectedUpazila" class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none">
-                                        <option :value="null" selected disabled>-- Select Police Station --</option>
-                                        <option v-for="station in policeStations" :key="station.id" :value="station.id">
-                                            {{ station.name }}
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
-                                        Default Address
-                                    </label>
-                                    <select v-model="selectedAddressId" @change="handleAddressChange" class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-[#16A34A]/20 dark:focus:ring-[#F97316]/20 focus:border-[#16A34A] dark:focus:border-[#F97316] transition-all outline-none">
-                                        <option
-                                            v-for="address in userAddress"
-                                            :key="address.id"
-                                            :value="address.id"
-                                        >
-                                            {{ address.label }}
-                                            {{ address.is_default ? '(Default)' : '' }}
-                                        </option>
-                                    </select>
-                                </div>
-                                
-
                                 <!-- Address -->
                                 <div class="sm:col-span-2 space-y-1">
                                     <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">
@@ -233,6 +163,234 @@
                                             </div>
                                         </label>
                                     </div>
+                                </div>
+
+                                <div v-if="form.payment_method === 'cod'" class="sm:col-span-2 mt-2 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 space-y-4">
+    
+                                    <div>
+                                        <div class="flex items-start gap-3">
+                                            <div class="flex-shrink-0 bg-[#F97316]/10 p-2 rounded-lg text-[#F97316]">
+                                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-100">
+                                                    অর্ডারটি কনফার্ম করতে ডেলিভারি চার্জ অগ্রিম প্রদান করুন
+                                                </h4>
+                                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+                                                    ভুয়া অর্ডার প্রতিরোধ এবং আপনার পার্সেলটি নিশ্চিত করতে অনুগ্রহ করে নিচের যেকোনো একটি পার্সোনাল নম্বরে ডেলিভারি চার্জ সেন্ড মানি করুন।
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <hr class="border-slate-100 dark:border-slate-800/60 my-4" />
+
+                                        <div class="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-1 md:grid-cols-3 gap-3">
+                                            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 transition-all hover:border-[#16A34A]/30">
+                                                <div class="w-8 h-8 rounded-lg bg-pink-100 dark:bg-pink-950/40 flex items-center justify-center font-bold text-xs text-pink-600 dark:text-pink-400 flex-shrink-0">
+                                                    bK
+                                                </div>
+                                                <div class="truncate">
+                                                    <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">bKash (Personal)</p>
+                                                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">01762164746</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 transition-all hover:border-[#16A34A]/30">
+                                                <div class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950/40 flex items-center justify-center font-bold text-xs text-orange-600 dark:text-orange-400 flex-shrink-0">
+                                                    Ng
+                                                </div>
+                                                <div class="truncate">
+                                                    <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Nagad (Personal)</p>
+                                                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">01762164746</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 transition-all hover:border-[#16A34A]/30">
+                                                <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-950/40 flex items-center justify-center font-bold text-xs text-purple-600 dark:text-purple-400 flex-shrink-0">
+                                                    Rk
+                                                </div>
+                                                <div class="truncate">
+                                                    <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Rocket (Personal)</p>
+                                                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">017621647466</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4 p-3.5 rounded-xl border border-blue-200/60 dark:border-blue-900/40 bg-blue-50/40 dark:bg-blue-950/20">
+                                            <div class="flex items-center gap-2 text-[#1E40AF] dark:text-blue-400 mb-2.5">
+                                                <i class="fa-solid fa-building-columns"></i>
+                                                <span class="text-xs font-bold uppercase tracking-wide">Bank Account Transfer</span>
+                                            </div>
+                                            
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs">
+                                                <div class="flex flex-col">
+                                                    <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Bank Name</span>
+                                                    <span class="font-bold text-slate-700 dark:text-slate-200">Islami Bank Bangladesh PLC</span>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Account Name</span>
+                                                    <span class="font-bold text-slate-700 dark:text-slate-200">Your Company/Name</span>
+                                                </div>
+                                                <div class="flex flex-col sm:col-span-2 bg-white dark:bg-slate-900/60 p-2 rounded-lg border border-slate-100 dark:border-slate-800 mt-1">
+                                                    <span class="text-slate-400 dark:text-slate-500 text-[10px] font-medium uppercase tracking-wider">Account Number</span>
+                                                    <span class="font-mono text-sm font-bold text-blue-600 dark:text-blue-400 tracking-wider">2050XXXXXXXXXXXXX</span>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Branch</span>
+                                                    <span class="font-semibold text-slate-600 dark:text-slate-300">Dhaka Main Branch</span>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-slate-400 dark:text-slate-500 text-[11px] font-medium uppercase tracking-wider">Routing Number</span>
+                                                    <span class="font-mono font-semibold text-slate-600 dark:text-slate-300">125XXXXXXXX</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mt-4 flex items-start gap-2 bg-[#16A34A]/5 dark:bg-[#16A34A]/10 p-3 rounded-lg border border-[#16A34A]/10">
+                                            <span class="flex h-2 w-2 translate-y-1.5 rounded-full bg-[#16A34A] flex-shrink-0"></span>
+                                            <p class="text-xs font-medium text-slate-600 dark:text-slate-300 leading-normal">
+                                                <strong class="text-[#16A34A] dark:text-[#16A34A]">বিশেষ দ্রষ্টব্য:</strong> ব্যাংক বা মোবাইল ব্যাংকিংয়ে টাকা পাঠানোর পর আপনার পেমেন্টকৃত নম্বর/নাম এবং Transaction ID (TrxID) নিচের ইনপুট বক্সে লিখে অর্ডার সম্পন্ন করুন।
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-5 mb-4">
+                                        <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-2">
+                                            পেমেন্টের মাধ্যম নির্বাচন করুন <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all"
+                                                :class="form.d_payment_method === 'mobile' ? 'border-[#16A34A] dark:border-[#E0640D] bg-[#16A34A]/5 dark:bg-[#E0640D]/5' : 'border-slate-200 dark:border-slate-800'">
+                                                <input type="radio" v-model="form.d_payment_method" value="mobile" class="accent-[#16A34A]" />
+                                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
+                                            </label>
+                                            
+                                            <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all"
+                                                :class="form.d_payment_method === 'bank' ? 'border-[#16A34A] dark:border-[#E0640D] bg-[#16A34A]/5 dark:bg-[#E0640D]/5' : 'border-slate-200 dark:border-slate-800'">
+                                                <input type="radio" v-model="form.d_payment_method" value="bank" class="accent-[#16A34A]" />
+                                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Bank Transfer</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <hr class="border-slate-100 dark:border-slate-800/60 my-4" />
+
+                                    <template v-if="form.d_payment_method === 'mobile'">
+                                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                    যে নম্বর থেকে টাকা পাঠিয়েছেন <span class="text-red-500">*</span>
+                                                </label>
+                                                <div class="relative flex items-center">
+                                                    <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-solid fa-phone h-4 w-4"></i>
+                                                    </span>
+                                                    <input 
+                                                        type="tel" 
+                                                        v-model="form.mobile_number"
+                                                        placeholder="017XXXXXXXX"
+                                                        class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                    ট্রানজেকশন আইডি (TrxID) <span class="text-red-500">*</span>
+                                                </label>
+                                                <div class="relative flex items-center">
+                                                    <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-solid fa-shield-halved h-4 w-4"></i>
+                                                    </span>
+                                                    <input 
+                                                        type="text" 
+                                                        v-model="form.transaction_id"
+                                                        placeholder="ট্রানজেকশন. BK24X7890"
+                                                        class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <template v-if="form.d_payment_method === 'bank'">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                    আপনার ব্যাংকের নাম <span class="text-red-500">*</span>
+                                                </label>
+                                                <div class="relative flex items-center">
+                                                    <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-solid fa-building-columns h-4 w-4"></i>
+                                                    </span>
+                                                    <input 
+                                                        type="text" 
+                                                        v-model="form.bank_name"
+                                                        placeholder="যেমন: Islami Bank, BRAC Bank"
+                                                        class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                    অ্যাকাউন্ট নাম (Account Name) <span class="text-red-500">*</span>
+                                                </label>
+                                                <div class="relative flex items-center">
+                                                    <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-solid fa-user h-4 w-4"></i>
+                                                    </span>
+                                                    <input 
+                                                        type="text" 
+                                                        v-model="form.account_holder_name" 
+                                                        placeholder="যে নাম থেকে টাকা পাঠিয়েছেন"
+                                                        class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                    অ্যাকাউন্ট নম্বর <span class="text-red-500">*</span>
+                                                </label>
+                                                <div class="relative flex items-center">
+                                                    <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-solid fa-file-lines h-4 w-4"></i>
+                                                    </span>
+                                                    <input 
+                                                        type="text" 
+                                                        v-model="form.account_number"
+                                                        placeholder="আপনার ব্যাংক অ্যাকাউন্ট নম্বর"
+                                                        class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                    ব্যাংক ট্রানজেকশন আইডি / স্লিপ নম্বর
+                                                </label>
+                                                <div class="relative flex items-center">
+                                                    <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-solid fa-charging-station h-4 w-4"></i>
+                                                    </span>
+                                                    <input 
+                                                        type="text" 
+                                                        v-model="form.transaction_id"
+                                                        placeholder="ক্রাফট বা রেফারেন্স আইডি (ঐচ্ছিক)"
+                                                        class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-[#16A34A] dark:focus:border-[#F97316] focus:ring-1 focus:ring-[#16A34A] dark:focus:ring-[#F97316]"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+
                                 </div>
 
                             </div>
@@ -386,20 +544,10 @@ const router = useRouter();
 
 
 
-
-
-
-
-
-
-
-
-
 const loading = ref(false);
 const successMsg = ref('');
 const errorMsg = ref('');
 
-const selectedAddressId = ref(null);
 
 
 
@@ -408,189 +556,6 @@ const selectedAddressId = ref(null);
 
 
 
-
-
-
-
-
-// User address
-const userAddress = ref([]);
-async function getAddress() {
-    loading.value = true;
-    errorMsg.value = '';
-
-    try{
-        const { data } = await api.get('/customer/get-addresses');
-        userAddress.value =  Array.isArray(data?.data) ? data.data : [];
-        if (userAddress.value.length) {
-
-            const defaultAddress =
-                userAddress.value.find(item => item.is_default) ??
-                userAddress.value[0];
-
-            selectedAddressId.value = defaultAddress.id;
-
-            await fillAddress(defaultAddress);
-        }
-    } catch (err){
-        if(err.response?.status===422){
-            validationErrors.value=err.response.data.errors;
-        }
-
-        errorMsg.value =
-            err.response?.data?.message ||
-            err.response?.data?.error ||
-            "Unable to load your addresses. Please try again.";
-    } finally {
-        loading.value = false;
-    }
-}
-
-const handleAddressChange = async () => {
-
-    const address = userAddress.value.find(
-        item => item.id === selectedAddressId.value
-    );
-
-    if (!address) return;
-
-    await fillAddress(address);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-const divisions = ref([]);
-const districts = ref([]);
-const upazilas = ref([]);
-const policeStations = ref([]);
-
-const selectedDivision = ref(null);
-const selectedDistrict = ref(null);
-const selectedUpazila = ref(null);
-const selectedPoliceStation = ref(null);
-
-async function getDivision() {
-    loading.value = true
-    try {
-        const res = await api.get(`/public/get-division`);
-        divisions.value = res.data.data;
-    } catch (err) {
-        errorMsg.value =
-            err.response?.data?.message ||
-            err.response?.data?.error ||
-            "Something went wrong.";
-    } finally {
-        loading.value = false;
-    }
-}
-
-const handleDivisionChange = async () => {
-    selectedDistrict.value = null;
-    selectedUpazila.value = null;
-    selectedPoliceStation.value = null;
-
-    districts.value = [];
-    upazilas.value = [];
-    policeStations.value = [];
-
-    if (!selectedDivision.value) return;
-
-    await getDistrict();
-};
-
-async function getDistrict() {
-    loading.value = true;
-
-    try {
-        const { data } = await api.get('/public/get-district', {
-            params: {
-                division_id: selectedDivision.value
-            }
-        });
-
-        districts.value = data.data ?? [];
-    } catch (err) {
-        districts.value = [];
-        errorMsg.value =
-            err.response?.data?.message ||
-            "Failed to load districts.";
-    } finally {
-        loading.value = false;
-    }
-}
-
-const handleDistrictChange = async () => {
-    selectedUpazila.value = null;
-    selectedPoliceStation.value = null;
-
-    upazilas.value = [];
-    policeStations.value = [];
-
-    if (!selectedDistrict.value) return;
-
-    await getUpazila();
-};
-
-async function getUpazila() {
-    loading.value = true;
-
-    try {
-        const { data } = await api.get('/public/get-upazila', {
-            params: {
-                district_id: selectedDistrict.value
-            }
-        });
-
-        upazilas.value = data.data ?? [];
-    } catch (err) {
-        upazilas.value = [];
-        errorMsg.value =
-            err.response?.data?.message ||
-            "Failed to load upazilas.";
-    } finally {
-        loading.value = false;
-    }
-}
-
-const handleUpazilaChange = async () => {
-    selectedPoliceStation.value = null;
-    policeStations.value = [];
-
-    if (!selectedUpazila.value) return;
-
-    await getPoliceStation();
-};
-
-async function getPoliceStation() {
-    loading.value = true;
-
-    try {
-        const { data } = await api.get('/public/get-police-station', {
-            params: {
-                upazila_id: selectedUpazila.value
-            }
-        });
-
-        policeStations.value = data.data ?? [];
-    } catch (err) {
-        policeStations.value = [];
-        errorMsg.value =
-            err.response?.data?.message ||
-            "Failed to load police stations.";
-    } finally {
-        loading.value = false;
-    }
-}
 
 
 
@@ -610,12 +575,17 @@ const form = reactive({
     phone: '',
     email: '',
     user_id: '',
-    selectedDivision: '',
-    selectedDistrict: '',
-    selectedUpazila: '',
     address: '',
     payment_method: 'advance',
     remarks: '',
+
+    d_payment_method: 'mobile',
+    bank_name: '',
+    account_number: '',
+    account_holder_name: '',
+    mobile_number: '',
+    transaction_id: '',
+
 });
 
 
@@ -712,6 +682,49 @@ async function confirmPayment() {
         return;
     }
 
+    // COD enable
+    if(form.payment_method==="cod"){
+
+        if(!form.d_payment_method){
+            errorMsg.value="Please select delivery charge payment method.";
+            return;
+        }
+
+        if(form.d_payment_method==="mobile"){
+
+            if(!form.mobile_number.trim()){
+                errorMsg.value="Sender mobile number is required.";
+                return;
+            }
+
+            if(!form.transaction_id.trim()){
+                errorMsg.value="Transaction ID is required.";
+                return;
+            }
+
+        }
+
+        if(form.d_payment_method==="bank"){
+
+            if(!form.bank_name.trim()){
+                errorMsg.value="Bank name is required.";
+                return;
+            }
+
+            if(!form.account_holder_name.trim()){
+                errorMsg.value="Account holder name is required.";
+                return;
+            }
+
+            if(!form.account_number.trim()){
+                errorMsg.value="Account number is required.";
+                return;
+            }
+
+        }
+
+    }
+
 
     submitting.value = true;
 
@@ -725,12 +738,16 @@ async function confirmPayment() {
         address: form.address,
         payment_method: form.payment_method,
         remarks: form.remarks,
-
-        division_id: selectedDivision.value,
-        district_id: selectedDistrict.value,
-        upazila_id: selectedUpazila.value,
-        police_station_id: selectedPoliceStation.value,
     };
+
+    if (form.payment_method === "cod") {
+        payload.d_payment_method = form.d_payment_method;
+        payload.bank_name = form.bank_name;
+        payload.account_number = form.account_number;
+        payload.account_holder_name = form.account_holder_name;
+        payload.mobile_number = form.mobile_number;
+        payload.transaction_id = form.transaction_id;
+    }
 
     try {
         const res = await api.post(`/orders/confirm/${routeReg}`, payload);
@@ -739,6 +756,13 @@ async function confirmPayment() {
         setTimeout(() => {
             router.push("/");
         }, 1500);
+
+        // await router.replace({
+        //     name:'order-success',
+        //     params:{
+        //         id:res.data.data.order_id
+        //     }
+        // })
     } catch (err) {
         if(err.response?.status===422){
             validationErrors.value=err.response.data.errors;
@@ -796,35 +820,11 @@ function fillUserForm() {
     form.address = authUser.value.present_address ?? "";
 }
 
-const fillAddress = async (address) => {
-
-    form.address = address.address;
-    form.name = address.name;
-    form.phone = address.phone;
-
-    selectedDivision.value = address.division_id;
-
-    await getDistrict();
-
-    selectedDistrict.value = address.district_id;
-
-    await getUpazila();
-
-    selectedUpazila.value = address.upazila_id;
-
-    await getPoliceStation();
-
-    selectedPoliceStation.value = address.police_station_id;
-};
-
 onMounted(async () => {
-    await Promise.all([
-        getAddress(),
-        getDivision(),
-        loadUser(),
-        fillUserForm(),
-        getCartItems(),
-    ]);
+    await loadUser();
+
+    fillUserForm();
+    getCartItems();
 })
 
 </script>
