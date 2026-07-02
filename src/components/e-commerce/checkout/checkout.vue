@@ -524,12 +524,12 @@
 <script setup>
 import { ref, onMounted, computed, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import api from '../../../services/api';
+import api from '../../../services/api.js';
 
 import Message from '../../Message/message.vue';
 import Navbar from '../navbar.vue';
 import FooterSection from '../footer.vue';
-import { useAuth } from '../../../stores/auth';
+import { useAuth } from '../../../stores/auth.js';
 
 const { authUser, loadUser } = useAuth();
 
