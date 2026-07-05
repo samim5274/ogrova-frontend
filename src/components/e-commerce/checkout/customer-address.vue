@@ -128,7 +128,12 @@ const props = defineProps({
     divisions: { type: Array, default: () => [] }
 })
 
-const emit = defineEmits(['close', 'address-created'])
+const emit = defineEmits([
+    'close',
+    'address-created',
+    'success',
+    'error'
+])
 
 const isSubmitting = ref(false)
 const localDivisions = ref([])
@@ -238,14 +243,26 @@ const handleSubmit = async () => {
     
     try {
         const res = await api.post('/customer/addresses/create', payload)
-        emit('address-created', res.data.data) 
+        emit('address-created', res.data.data);
+        emit(
+            'success',
+            res.data.message || 'Address created successfully.'
+        );
         closeModal()
     } catch (err) {
-        console.log("FULL ERROR:", err);
-        console.log("MESSAGE:", err.message);
-        console.log("RESPONSE:", err.response);
-        console.log("REQUEST:", err.request);
-        console.log("CONFIG:", err.config);
+        let message =
+            err.response?.data?.message ||
+            err.response?.data?.error ||
+            'Failed to create address.';
+
+        // Laravel validation error
+        if (err.response?.status === 422 && err.response.data.errors) {
+            message = Object.values(err.response.data.errors)
+                .flat()
+                .join('\n');
+        }
+
+        emit('error', message);
     } finally {
         isSubmitting.value = false
     }

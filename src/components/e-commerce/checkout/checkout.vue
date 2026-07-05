@@ -158,6 +158,13 @@
                                                     <span v-if="address.postal_code"> - {{ address.postal_code }}</span>
                                                 </p>
                                             </div>
+                                            <button 
+                                                @click.stop="deleteAddress(address.id)"
+                                                class="absolute bottom-3 right-3 h-7 w-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                                                title="Delete Address"
+                                            >
+                                                <i class="fa-solid fa-trash-can text-xs"></i>
+                                            </button>
                                         </div>
 
                                         <!-- Empty State (যখন কোনো অ্যাড্রেস থাকবে না) -->
@@ -178,6 +185,8 @@
                                     :divisions="divisions"
                                     @close="isAddressModalOpen = false"
                                     @address-created="handleAddressCreated"
+                                    @success="showSuccess"
+                                    @error="showError"
                                 />
 
 
@@ -540,6 +549,28 @@ const router = useRouter();
 
 
 
+
+
+
+
+
+
+
+
+const loading = ref(false);
+const successMsg = ref('');
+const errorMsg = ref('');
+
+
+
+
+
+
+
+
+
+
+
 const isAddressModalOpen = ref(false);
 const userAddress = ref([]);
 const divisions = ref([]);
@@ -560,18 +591,66 @@ const handleAddressCreated = async(newAddress) => {
 };
 
 
+const showSuccess = (msg) => {
+    successMsg.value = msg;
+    errorMsg.value = '';
+
+    setTimeout(() => {
+        successMsg.value = '';
+    }, 3000);
+};
+
+const showError = (msg) => {
+    errorMsg.value = msg;
+    successMsg.value = '';
+
+    setTimeout(() => {
+        errorMsg.value = '';
+    }, 4000);
+};
 
 
 
 
+const deleteAddress = async (id) => {
+    if (!confirm("Are you sure you want to delete this address?")) {
+        return;
+    }
+
+    try {
+        const { data } = await api.delete(`/customer/addresses/delete/${id}`);
+
+        userAddress.value = userAddress.value.filter(
+            address => address.id !== id
+        );
+
+        // Reset selected address if deleted
+        if (selectedAddressId.value === id) {
+            selectedAddressId.value =
+                userAddress.value.length > 0
+                    ? (userAddress.value.find(a => a.is_default)?.id ??
+                       userAddress.value[0].id)
+                    : null;
+        }
+
+        successMsg.value =
+            data.message || "Address deleted successfully.";
+
+        errorMsg.value = "";
+
+    } catch (err) {
+        errorMsg.value =
+            err.response?.data?.message ||
+            err.response?.data?.error ||
+            "Failed to delete address.";
+
+        successMsg.value = "";
+    }
+};
 
 
 
 
-
-const loading = ref(false);
-const successMsg = ref('');
-const errorMsg = ref('');
 
 
 
