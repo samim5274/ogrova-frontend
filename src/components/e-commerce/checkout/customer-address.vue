@@ -152,7 +152,7 @@ const initialFormState = {
 
 const form = reactive({ ...initialFormState })
 
-// ১. Division ফেচ করার ব্যাকআপ ফাংশন (যদি Props ফাকা থাকে)
+// ১. Division 
 const fetchDivisions = async () => {
     if (props.divisions && props.divisions.length > 0) {
         localDivisions.value = props.divisions
@@ -166,7 +166,7 @@ const fetchDivisions = async () => {
     }
 }
 
-// ২. District ফেচ করার ফাংশন
+// ২. District 
 const handleDivisionChange = async () => {
     form.district_id = null
     form.upazila_id = null
@@ -184,7 +184,7 @@ const handleDivisionChange = async () => {
     }
 }
 
-// ৩. Upazila ফেচ করার ফাংশন
+// ৩. Upazila 
 const handleDistrictChange = async () => {
     form.upazila_id = null
     form.police_station_id = null
@@ -200,14 +200,13 @@ const handleDistrictChange = async () => {
     }
 }
 
-// ৪. Police Station ফেচ করার ফাংশন (ফিক্সড টাইপো)
+// ৪. Police Station
 const handleUpazilaChange = async () => {
     form.police_station_id = null
     policeStations.value = []
 
     if (!form.upazila_id) return
     try {
-        // এখানে আগে আপনার কোডে form.form.upazila_id লেখা ছিল যা ফিক্স করা হয়েছে 
         const { data } = await api.get('/public/get-police-station', { params: { upazila_id: form.upazila_id } })
         policeStations.value = data.data ?? []
     } catch (err) {
@@ -221,30 +220,45 @@ const closeModal = () => {
 
 // Form Submission (Laravel Backend Request)
 const handleSubmit = async () => {
-    if (!form.recipient_name || !form.phone || !form.division_id || !form.district_id || !form.upazila_id || !form.address) {
-        return
-    }
-
+    
     isSubmitting.value = true
+
+    const payload = {
+        label: form.label,
+        recipient_name: form.recipient_name.trim(),
+        phone: form.phone.trim(),
+        division_id: Number(form.division_id),
+        district_id: Number(form.district_id),
+        upazila_id: Number(form.upazila_id),
+        police_station_id: form.police_station_id || null,
+        address: form.address.trim(),
+        postal_code: form.postal_code || null,
+        is_default: Boolean(form.is_default),
+    }
+    
     try {
-        const res = await api.post('/customer/addresses', form)
+        const res = await api.post('/customer/addresses/create', payload)
         emit('address-created', res.data.data) 
         closeModal()
     } catch (err) {
-        console.error("Error creating address:", err)
+        console.log("FULL ERROR:", err);
+        console.log("MESSAGE:", err.message);
+        console.log("RESPONSE:", err.response);
+        console.log("REQUEST:", err.request);
+        console.log("CONFIG:", err.config);
     } finally {
         isSubmitting.value = false
     }
 }
 
-// মোডাল ওপেন হলে রিসেট করার পাশাপাশি ডিভিশন ডাটা কল করা হচ্ছে
+
 watch(() => props.isOpen, (newVal) => {
     if (newVal) {
         Object.assign(form, initialFormState)
         districts.value = []
         upazilas.value = []
         policeStations.value = []
-        fetchDivisions() // মোডাল খুলামাত্র প্রথম এপিআই ব্যাকআপ রান হবে
+        fetchDivisions() 
     }
 })
 </script>

@@ -175,6 +175,7 @@
 
                                 <AddressModel 
                                     :is-open="isAddressModalOpen"
+                                    :divisions="divisions"
                                     @close="isAddressModalOpen = false"
                                     @address-created="handleAddressCreated"
                                 />
@@ -541,15 +542,21 @@ const router = useRouter();
 
 const isAddressModalOpen = ref(false);
 const userAddress = ref([]);
+const divisions = ref([]);
+const selectedAddressId = ref(null);
 
-const handleAddressCreated = (newAddress) => {
+const handleAddressCreated = async(newAddress) => {
+    if (!newAddress) return;
     if (newAddress.is_default) {
-        userAddress.value.forEach(addr => addr.is_default = false);
+        userAddress.value.forEach(item => {
+            item.is_default = false;
+        });
     }
-    userAddress.value.push(newAddress);
-    selectedAddressId.value = newAddress.id; 
-    
-    successMsg.value = "Address saved successfully!";
+
+    userAddress.value.unshift(newAddress);
+    selectedAddressId.value = newAddress.id;
+    isAddressModalOpen.value = false;
+    await getAddress();
 };
 
 
@@ -580,13 +587,12 @@ const errorMsg = ref('');
 
 
 // User address
-const selectedAddressId = ref(null);
 async function getAddress() {
     loading.value = true;
     errorMsg.value = '';
 
     try{
-        const { data } = await api.get('/customer/get-addresses');
+        const { data } = await api.get('/customer/addresses/get');
         userAddress.value =  Array.isArray(data?.data) ? data.data : [];
         if (userAddress.value.length) {
             const defaultAddress = userAddress.value.find(item => item.is_default) ?? userAddress.value[0];
@@ -701,7 +707,7 @@ async function confirmPayment() {
         return;
     }
 
-    if (form.d_payment_method == "mobile_baking") {
+    if (form.d_payment_method == "mobile_banking") {
         if (!form.mobile_number.trim()) {
             errorMsg.value = "Phone number is required.";
             return;
