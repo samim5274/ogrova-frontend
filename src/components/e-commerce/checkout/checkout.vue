@@ -84,7 +84,7 @@
                                         </label>
                                         
                                         <!-- Add New Address Button (Optional) -->
-                                        <button type="button" class="text-xs font-semibold text-emerald-600 dark:text-orange-500 hover:underline flex items-center gap-1">
+                                        <button @click="isAddressModalOpen = true" type="button" class="text-xs font-semibold text-emerald-600 dark:text-orange-500 hover:underline flex items-center gap-1">
                                             <i class="fa-solid fa-plus text-[10px]"></i> Add New Address
                                         </button>
                                     </div>
@@ -166,12 +166,18 @@
                                                 <i class="fa-solid fa-map-location-dot"></i>
                                             </div>
                                             <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">No shipping addresses found.</p>
-                                            <button type="button" class="text-xs font-bold text-emerald-600 dark:text-orange-500 hover:opacity-80">
+                                            <button @click="isAddressModalOpen = true" type="button" class="text-xs font-bold text-emerald-600 dark:text-orange-500 hover:opacity-80">
                                                 Create your first address
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+
+                                <AddressModel 
+                                    :is-open="isAddressModalOpen"
+                                    @close="isAddressModalOpen = false"
+                                    @address-created="handleAddressCreated"
+                                />
 
 
 
@@ -521,6 +527,7 @@ import api from '../../../services/api.js';
 
 import Message from '../../Message/message.vue';
 import Navbar from '../navbar.vue';
+import AddressModel from './customer-address.vue';
 import FooterSection from '../footer.vue';
 import TransactionDetailsSection from './transaction-details.vue';
 import { useAuth } from '../../../stores/auth.js';
@@ -532,10 +539,18 @@ const router = useRouter();
 
 
 
+const isAddressModalOpen = ref(false);
+const userAddress = ref([]);
 
-
-
-
+const handleAddressCreated = (newAddress) => {
+    if (newAddress.is_default) {
+        userAddress.value.forEach(addr => addr.is_default = false);
+    }
+    userAddress.value.push(newAddress);
+    selectedAddressId.value = newAddress.id; 
+    
+    successMsg.value = "Address saved successfully!";
+};
 
 
 
@@ -566,7 +581,6 @@ const errorMsg = ref('');
 
 // User address
 const selectedAddressId = ref(null);
-const userAddress = ref([]);
 async function getAddress() {
     loading.value = true;
     errorMsg.value = '';
