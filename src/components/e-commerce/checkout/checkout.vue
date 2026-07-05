@@ -193,7 +193,7 @@
                                         Payment Method <span class="text-red-500">*</span>
                                     </label>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <!-- ক্যাশ অন ডেলিভারি অপশন -->
+                                        <!-- Cash on delivery -->
                                         <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
                                             :class="form.payment_method === 'cod' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
                                             <input type="radio" v-model="form.payment_method" value="cod" class="accent-[#16A34A] h-4 w-4" />
@@ -203,7 +203,7 @@
                                             </div>
                                         </label>
                                         
-                                        <!-- অগ্রিম পেমেন্ট অপশন -->
+                                        <!-- advance payment -->
                                         <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
                                             :class="form.payment_method === 'advance' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
                                             <input type="radio" v-model="form.payment_method" value="advance" class="accent-[#16A34A] h-4 w-4" />
@@ -217,99 +217,7 @@
 
                                 <div v-if="form.payment_method === 'advance'" class="sm:col-span-2 mt-2 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 space-y-5">
                                     
-                                    <div>
-                                        <!-- Alert / Instruction Header -->
-                                        <div class="flex items-start gap-3">
-                                            <div class="flex-shrink-0 bg-amber-500/10 p-2 rounded-lg text-amber-600 dark:text-amber-500">
-                                                <i class="fa-solid fa-circle-info text-lg"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-100">
-                                                    অগ্রিম পেমেন্ট সম্পন্ন করে নিচের তথ্যগুলো পূরণ করুন
-                                                </h4>
-                                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                                                    আপনার অর্ডারটি সফলভাবে কনফার্ম করতে অনুগ্রহ করে নিচের যেকোনো একটি পেমেন্ট মাধ্যমে নির্ধারিত ডেলিভারি চার্জ অথবা অগ্রিম মূল্য পাঠাতে পারেন। টাকা পাঠানো শেষ হলে সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন।
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <hr class="border-slate-100 dark:border-slate-800/60 my-4" />
-
-                                        <!-- MFS Wallet Cards -->
-                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                            <!-- bKash -->
-                                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
-                                                <div class="w-9 h-9 rounded-lg bg-pink-50 dark:bg-pink-950/20 flex items-center justify-center font-bold text-xs text-pink-600 dark:text-pink-400 flex-shrink-0">
-                                                    bK
-                                                </div>
-                                                <div class="truncate">
-                                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">bKash (Personal)</p>
-                                                    <p class="text-xs font-mono font-bold text-slate-700 dark:text-slate-200">01762164746</p>
-                                                </div>
-                                            </div>
-
-                                            <!-- Nagad -->
-                                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
-                                                <div class="w-9 h-9 rounded-lg bg-orange-50 dark:bg-orange-950/20 flex items-center justify-center font-bold text-xs text-orange-600 dark:text-orange-400 flex-shrink-0">
-                                                    Ng
-                                                </div>
-                                                <div class="truncate">
-                                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Nagad (Personal)</p>
-                                                    <p class="text-xs font-mono font-bold text-slate-700 dark:text-slate-200">01762164746</p>
-                                                </div>
-                                            </div>
-
-                                            <!-- Rocket -->
-                                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
-                                                <div class="w-9 h-9 rounded-lg bg-purple-50 dark:bg-purple-950/20 flex items-center justify-center font-bold text-xs text-purple-600 dark:text-purple-400 flex-shrink-0">
-                                                    Rk
-                                                </div>
-                                                <div class="truncate">
-                                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Rocket (Personal)</p>
-                                                    <p class="text-xs font-mono font-bold text-slate-700 dark:text-slate-200">017621647466</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bank Account Details Card -->
-                                        <div class="mt-4 p-4 rounded-xl border border-blue-100 dark:border-blue-900/30 bg-blue-50/20 dark:bg-blue-950/10">
-                                            <div class="flex items-center gap-2 text-blue-700 dark:text-blue-400 mb-3">
-                                                <i class="fa-solid fa-building-columns text-sm"></i>
-                                                <span class="text-xs font-bold uppercase tracking-wider">Bank Transfer Information</span>
-                                            </div>
-                                            
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                                                <div class="flex flex-col bg-white/60 dark:bg-slate-900/40 p-2.5 rounded-lg border border-slate-100/80 dark:border-slate-800/60">
-                                                    <span class="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider">Bank Name</span>
-                                                    <span class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Islami Bank Bangladesh PLC</span>
-                                                </div>
-                                                <div class="flex flex-col bg-white/60 dark:bg-slate-900/40 p-2.5 rounded-lg border border-slate-100/80 dark:border-slate-800/60">
-                                                    <span class="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider">Account Name</span>
-                                                    <span class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Your Company/Name</span>
-                                                </div>
-                                                <div class="flex flex-col sm:col-span-2 bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
-                                                    <span class="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider">Account Number</span>
-                                                    <span class="font-mono text-sm font-bold text-emerald-600 dark:text-orange-400 tracking-wider mt-0.5">2050XXXXXXXXXXXXX</span>
-                                                </div>
-                                                <div class="flex flex-col bg-white/60 dark:bg-slate-900/40 p-2.5 rounded-lg border border-slate-100/80 dark:border-slate-800/60">
-                                                    <span class="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider">Branch</span>
-                                                    <span class="font-semibold text-slate-600 dark:text-slate-300 mt-0.5">Dhaka Main Branch</span>
-                                                </div>
-                                                <div class="flex flex-col bg-white/60 dark:bg-slate-900/40 p-2.5 rounded-lg border border-slate-100/80 dark:border-slate-800/60">
-                                                    <span class="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider">Routing Number</span>
-                                                    <span class="font-mono font-semibold text-slate-600 dark:text-slate-300 mt-0.5">125XXXXXXXX</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Note Section -->
-                                        <div class="mt-4 flex items-start gap-2 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.06] p-3 rounded-xl border border-emerald-500/10">
-                                            <span class="flex h-2 w-2 translate-y-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
-                                            <p class="text-xs font-medium text-slate-600 dark:text-slate-300 leading-relaxed">
-                                                <strong class="text-emerald-600 dark:text-emerald-500 font-bold">নির্দেশনা:</strong> সফলভাবে সেন্ড মানি বা ব্যাংক ট্রান্সফার করার পর, যে পেমেন্ট মাধ্যমটি ব্যবহার করেছেন তা সিলেক্ট করুন এবং নিচের ফর্মে পেমেন্টের সঠিক তথ্যগুলো সাবমিট করুন।
-                                            </p>
-                                        </div>
-                                    </div>
+                                    <TransactionDetailsSection />
 
                                     <!-- Payment Type Selection Switch -->
                                     <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm">
@@ -320,7 +228,7 @@
                                             <!-- Mobile Banking Radio Box -->
                                             <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
                                                 :class="form.d_payment_method === 'mobile' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
-                                                <input type="radio" v-model="form.d_payment_method" value="mobile" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                                <input type="radio" v-model="form.d_payment_method" value="mobile_banking" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
                                             </label>
                                             
@@ -336,7 +244,7 @@
                                     <hr class="border-slate-100 dark:border-slate-800/60 my-2" />
 
                                     <!-- Template for Mobile Banking Input -->
-                                    <template v-if="form.d_payment_method === 'mobile'">
+                                    <template v-if="form.d_payment_method === 'mobile_banking'">
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
                                             <div class="flex flex-col gap-1.5">
                                                 <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
@@ -614,6 +522,7 @@ import api from '../../../services/api.js';
 import Message from '../../Message/message.vue';
 import Navbar from '../navbar.vue';
 import FooterSection from '../footer.vue';
+import TransactionDetailsSection from './transaction-details.vue';
 import { useAuth } from '../../../stores/auth.js';
 
 const { authUser, loadUser } = useAuth();
@@ -705,16 +614,15 @@ const form = reactive({
     sameAddress: true,
     saveInfo: false,
 
-    name: '',
-    phone: '',
-    email: '',
-    user_id: '',
-    selectedDivision: '',
-    selectedDistrict: '',
-    selectedUpazila: '',
-    address: '',
     payment_method: 'cod',
     remarks: '',
+
+    d_payment_method: 'mobile',
+    bank_name: '',
+    account_number: '',
+    account_holder_name: '',
+    mobile_number: '',
+    transaction_id: '',
 });
 
 
@@ -779,8 +687,8 @@ async function confirmPayment() {
         return;
     }
 
-    if (form.payment_method !== "advance") {
-        if (!form.phone.trim()) {
+    if (form.d_payment_method == "mobile_baking") {
+        if (!form.mobile_number.trim()) {
             errorMsg.value = "Phone number is required.";
             return;
         }
@@ -798,8 +706,18 @@ async function confirmPayment() {
         same_address: form.sameAddress,
         save_info: form.saveInfo,
 
+        address_id: selectedAddressId.value,
         payment_method: form.payment_method,
         remarks: form.remarks,
+
+        ...(form.payment_method === "advance" && {
+            d_payment_method: form.d_payment_method,
+            bank_name: form.bank_name,
+            account_number: form.account_number,
+            account_holder_name: form.account_holder_name,
+            mobile_number: form.mobile_number,
+            transaction_id: form.transaction_id,
+        }),
     };
 
     try {
