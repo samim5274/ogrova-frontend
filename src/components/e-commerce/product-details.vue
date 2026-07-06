@@ -154,10 +154,10 @@
                                     <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Market Price</span>
                                     <div class="flex items-baseline gap-3">
                                         <span class="text-5xl font-black text-emerald-600 dark:text-orange-500 tracking-tighter transition-all group-hover:text-emerald-800 dark:group-hover:text-orange-400">
-                                            ৳{{ selectedVariant?.price || product.price - product.discount_price || product.price }}
+                                            ৳{{ selectedVariant?.price - selectedVariant?.discount || product.price - product.discount_price || product.price }}
                                         </span>
                                         <span v-if="product.discount_price" class="text-lg text-gray-400 line-through font-bold opacity-50">
-                                            ৳{{ product.discount_price }}
+                                            ৳{{ product.price }}
                                         </span>
                                     </div>
                                 </div>

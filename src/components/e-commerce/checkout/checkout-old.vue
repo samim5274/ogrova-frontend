@@ -215,7 +215,7 @@
                                             <input type="radio" v-model="form.payment_method" value="cod" class="accent-[#16A34A] h-4 w-4" />
                                             <div class="flex flex-col">
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Cash on Delivery</span>
-                                                <span class="text-[10px] text-slate-400 dark:text-slate-500">Pay the price after receiving the product.</span>
+                                                <span class="text-[10px] text-slate-400 dark:text-slate-500">পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন</span>
                                             </div>
                                         </label>
                                         
@@ -225,7 +225,7 @@
                                             <input type="radio" v-model="form.payment_method" value="advance" class="accent-[#16A34A] h-4 w-4" />
                                             <div class="flex flex-col">
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Advance Payment</span>
-                                                <span class="text-[10px] text-slate-400 dark:text-slate-500">Pay delivery charges and product price in advance.</span>
+                                                <span class="text-[10px] text-slate-400 dark:text-slate-500">ডেলিভারি চার্জ অগ্রিম প্রদান করুন</span>
                                             </div>
                                         </label>
                                     </div>
@@ -238,20 +238,20 @@
                                     <!-- Payment Type Selection Switch -->
                                     <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm">
                                         <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider mb-3">
-                                           Choose payment method <span class="text-red-500">*</span>
+                                            পেমেন্টের মাধ্যমটি বেছে নিন <span class="text-red-500">*</span>
                                         </label>
                                         <div class="grid grid-cols-2 gap-3">
                                             <!-- Mobile Banking Radio Box -->
                                             <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
-                                                :class="form.trans_payment_method === 'mobile' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
-                                                <input type="radio" v-model="form.trans_payment_method" value="mobile" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                                :class="form.d_payment_method === 'mobile' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
+                                                <input type="radio" v-model="form.d_payment_method" value="mobile_banking" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
                                             </label>
                                             
                                             <!-- Bank Radio Box -->
                                             <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
-                                                :class="form.trans_payment_method === 'bank' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
-                                                <input type="radio" v-model="form.trans_payment_method" value="bank" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                                :class="form.d_payment_method === 'bank' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
+                                                <input type="radio" v-model="form.d_payment_method" value="bank" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Bank Transfer</span>
                                             </label>
                                         </div>
@@ -260,7 +260,7 @@
                                     <hr class="border-slate-100 dark:border-slate-800/60 my-2" />
 
                                     <!-- Template for Mobile Banking Input -->
-                                    <template v-if="form.trans_payment_method === 'mobile'">
+                                    <template v-if="form.d_payment_method === 'mobile_banking'">
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
                                             <div class="flex flex-col gap-1.5">
                                                 <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
@@ -271,9 +271,9 @@
                                                         <i class="fa-solid fa-phone text-xs"></i>
                                                     </span>
                                                     <input 
-                                                        type="text" 
-                                                        v-model="form.account_number"
-                                                        placeholder="01XXXXXXXXX"
+                                                        type="tel" 
+                                                        v-model="form.mobile_number"
+                                                        placeholder="017XXXXXXXX"
                                                         class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
                                                         required
                                                     />
@@ -326,7 +326,7 @@
                                     </template>
 
                                     <!-- Template for Bank Transfer Input -->
-                                    <template v-if="form.trans_payment_method === 'bank'">
+                                    <template v-if="form.d_payment_method === 'bank'">
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
                                             <div class="flex flex-col gap-1.5">
                                                 <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
@@ -739,16 +739,14 @@ const form = reactive({
     saveInfo: false,
 
     payment_method: 'cod',
+    remarks: '',
 
-    // Advance Payment
-    trans_payment_method: 'mobile', // mobile | bank
-
+    d_payment_method: 'mobile',
     bank_name: '',
     account_number: '',
-    transaction_id: '',
     account_holder_name: '',
-
-    remarks: '',
+    mobile_number: '',
+    transaction_id: '',
 });
 
 
@@ -813,32 +811,16 @@ async function confirmPayment() {
         return;
     }
 
+    if (form.d_payment_method == "mobile_banking") {
+        if (!form.mobile_number.trim()) {
+            errorMsg.value = "Phone number is required.";
+            return;
+        }
+    }
+
     if (!form.payment_method) {
         errorMsg.value = "Please select a payment method.";
         return;
-    }
-
-    if (form.payment_method === 'advance') {
-
-        if (!form.trans_payment_method) {
-            errorMsg.value = "Please select advance payment method.";
-            return;
-        }
-
-        if (!form.account_number) {
-            errorMsg.value = "Account number is required.";
-            return;
-        }
-
-        if (!form.transaction_id) {
-            errorMsg.value = "Transaction ID is required.";
-            return;
-        }
-
-        if (!form.bank_name) {
-            errorMsg.value = "Please select bKash/Nagad/Rocket.";
-            return;
-        }
     }
 
 
@@ -851,22 +833,16 @@ async function confirmPayment() {
         address_id: selectedAddressId.value,
         payment_method: form.payment_method,
         remarks: form.remarks,
+
+        ...(form.payment_method === "advance" && {
+            d_payment_method: form.d_payment_method,
+            bank_name: form.bank_name,
+            account_number: form.account_number,
+            account_holder_name: form.account_holder_name,
+            mobile_number: form.mobile_number,
+            transaction_id: form.transaction_id,
+        }),
     };
-
-    if (form.payment_method === 'advance') {
-
-        payload.trans_payment_method = form.trans_payment_method;
-
-        payload.bank_name = form.bank_name;
-
-        payload.account_number = form.account_number;
-
-        payload.transaction_id = form.transaction_id;
-
-        if (form.trans_payment_method === 'bank') {
-            payload.account_holder_name = form.account_holder_name;
-        }
-    }
 
     try {
         const res = await api.post(`/orders/confirm/${routeReg}`, payload);
