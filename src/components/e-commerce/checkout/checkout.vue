@@ -491,7 +491,7 @@
                             <div class="space-y-4">                                
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Subtotal</span>
-                                    <span class="text-gray-900 dark:text-white">৳ {{ subtotal.toLocaleString() }}</span>
+                                    <span class="text-gray-900 dark:text-white">৳ {{ payableAmount.toLocaleString('en-BD') }}</span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Shipping</span>
@@ -504,6 +504,97 @@
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Estimated Tax</span>
                                     <span class="text-gray-900 dark:text-white">৳ 0</span>
+                                </div>
+                                <div v-if="couponSuccess" class="flex justify-between font-bold text-sm">
+                                    <span class="text-gray-500">Coupon</span>
+                                    <span class="text-red-900 dark:text-white" 
+                                    v-if="couponData.discount_type === 'percent'">
+                                        - ৳ {{ couponData.discount }}%
+                                    </span>
+                                    <span v-else class="text-red-900 dark:text-white">
+                                        - ৳ {{ couponData.discount }}
+                                    </span>
+                                </div>
+
+                                <div class="max-w-md mx-auto p-6 bg-white dark:bg-[#0F172A] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors duration-200">
+                                    <!-- Label -->
+                                    <label for="coupon" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Have a coupon or promo code?
+                                    </label>
+                                    
+                                    <!-- Input Group -->
+                                    <div class="flex items-center gap-2">
+                                        <div class="relative flex-grow">
+                                            <!-- Tag Icon -->
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <i class="fa-solid fa-tags text-gray-400 dark:text-gray-500"></i>
+                                            </div>
+                                            
+                                            <!-- Input Field -->
+                                            <input 
+                                                type="text" 
+                                                id="coupon" 
+                                                v-model="coupon"
+                                                placeholder="Enter coupon code" 
+                                                class="block w-full pl-10 pr-3 py-2.5 text-sm bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 transition-colors duration-200"
+                                            />
+                                        </div>
+                                        
+                                        <!-- Apply Button -->
+                                        <button 
+                                            type="button" @click="checkCoupon"
+                                            class="px-5 py-2.5 text-sm font-semibold text-white bg-[#16A34A] hover:bg-[#15803D] active:bg-[#166534] dark:bg-[#F97316] dark:hover:bg-[#EA580C] dark:active:bg-[#C2410C] rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1F2937] focus:ring-[#16A34A] dark:focus:ring-[#F97316] shadow-sm">
+                                            Apply
+                                        </button>
+                                    </div>
+
+                                    <!-- Success Banner -->
+                                    <div
+                                        v-if="couponSuccess"
+                                        class="mt-4 flex items-start gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-green-700 dark:border-green-800 dark:bg-green-950/20 dark:text-green-400"
+                                    >
+                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/40">
+                                            <i class="fa-solid fa-circle-check text-green-600 dark:text-green-400"></i>
+                                        </div>
+
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold">Coupon Applied</h4>
+                                            <p class="mt-1 text-sm">
+                                                {{ couponSuccess }}
+                                            </p>
+                                            <div
+                                                v-if="couponData"
+                                                class="mt-2 text-xs text-green-600 dark:text-green-300">
+                                                <span class="font-medium">{{ couponData.code }}</span>
+                                                •
+                                                <span v-if="couponData.discount_type === 'percent'">
+                                                    {{ couponData.discount }}% Discount
+                                                </span>
+                                                <span v-else>
+                                                    ৳{{ couponData.discount }} Discount
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Error Banner -->
+                                    <div
+                                        v-if="couponError"
+                                        class="mt-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-950/20 dark:text-red-400"
+                                    >
+                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/40">
+                                            <i class="fa-solid fa-circle-exclamation text-red-600 dark:text-red-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold">
+                                                Unable to Apply Coupon
+                                            </h4>
+                                            <p class="mt-1 text-sm">
+                                                {{ couponError }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                   
                                 </div>
                                 
                                 <div class="h-px bg-gray-100 dark:bg-gray-700 my-6"></div>
@@ -747,6 +838,7 @@ const form = reactive({
     account_number: '',
     transaction_id: '',
     account_holder_name: '',
+    coupon: '',
 
     remarks: '',
 });
@@ -793,6 +885,62 @@ const totalPoint = computed(() =>
 const total = computed(() => {
     return subtotal.value;
 });
+
+
+
+
+
+
+
+
+
+
+// ================
+// Check Coupon
+// ================
+const coupon = ref('');
+const couponLoading = ref(false);
+const couponData = ref(null);
+const couponSuccess = ref('');
+const couponError = ref('');
+
+const checkCoupon = async () => {
+
+    couponSuccess.value = '';
+    couponError.value = '';
+    couponData.value = null;
+    couponLoading.value = true;
+
+    if (!coupon.value.trim()) {
+        couponError.value = 'Please enter a coupon code.';
+        return;
+    }
+
+    try {
+
+        const response = await api.post('/coupon/check', {
+            coupon: coupon.value, subtotal: subtotal.value,
+        })
+        couponData.value = response.data.data;
+        couponSuccess.value= response.data.message;
+    } catch (error) {
+        couponData.value = null
+        couponError.value =
+            error.response?.data?.message ??
+            'Something went wrong. Please try again.';
+    } finally {
+        couponLoading.value = false
+    }
+}
+
+const payableAmount = computed(() => {
+    return subtotal.value - (couponData.value?.discount_amount || 0);
+});
+
+
+
+
+
 
 
 
@@ -866,6 +1014,11 @@ async function confirmPayment() {
         if (form.trans_payment_method === 'bank') {
             payload.account_holder_name = form.account_holder_name;
         }
+    }
+
+    if (form.coupon)
+    {
+        payload.coupon = form.coupon;
     }
 
     try {
