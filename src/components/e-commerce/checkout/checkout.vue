@@ -491,11 +491,15 @@
                             <div class="space-y-4">                                
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Subtotal</span>
-                                    <span class="text-gray-900 dark:text-white">৳ {{ payableAmount.toLocaleString('en-BD') }}</span>
+                                    <span class="text-gray-900 dark:text-white">৳ {{ total.toLocaleString() }}</span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Shipping</span>
-                                    <span class="text-[#16A34A] dark:text-[#F97316] uppercase font-black">FREE</span>
+                                    <span
+                                        class="text-[#16A34A] dark:text-[#F97316] uppercase font-black"
+                                    >
+                                        {{ shippingCharge > 0 ? `৳ ${shippingCharge}` : 'FREE' }}
+                                    </span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Point</span>
@@ -511,7 +515,7 @@
                                     v-if="couponData.discount_type === 'percent'">
                                         - ৳ {{ couponData.discount }}%
                                     </span>
-                                    <span v-else class="text-red-900 dark:text-white">
+                                    <span v-else class="text-red-500">
                                         - ৳ {{ couponData.discount }}
                                     </span>
                                 </div>
@@ -603,7 +607,8 @@
                                     <span class="text-lg font-black text-gray-900 dark:text-white">Total</span>
                                     <div class="text-right">
                                         <p class="text-3xl font-black text-[#16A34A] dark:text-[#F97316] tracking-tighter">
-                                            ৳ {{ total.toLocaleString() }}
+                                            <!-- ৳ {{ payableAmount.toLocaleString('en-BD') }} || -->
+                                            ৳ {{ grandTotal.toLocaleString() }}
                                         </p>
                                         <p class="text-[10px] font-bold text-gray-400 uppercase">VAT Included</p>
                                     </div>
@@ -807,7 +812,17 @@ async function getAddress() {
     }
 }
 
+const selectedAddress = computed(() => {
+    return (
+        userAddress.value.find(
+            item => item.id === selectedAddressId.value
+        ) || null
+    );
+});
 
+const shippingCharge = computed(() => {
+    return Number(selectedAddress.value?.delivery_charge ?? 0);
+});
 
 
 
@@ -869,23 +884,42 @@ async function getCartItems() {
     }
 }
 
+// Subtotal
 const subtotal = computed(() => {
     return (cartItems.value || []).reduce((sum, item) => {
         return sum + (Number(item.price) * Number(item.quantity));
     }, 0);
 });
 
-// total point
-const totalPoint = computed(() =>
-    (cartItems.value || []).reduce((sum, i) => {
-        return sum + (Number(i.point) * Number(i.quantity))
-    }, 0)
-)
-
-const total = computed(() => {
-    return subtotal.value;
+// Total Point
+const totalPoint = computed(() => {
+    return (cartItems.value || []).reduce((sum, item) => {
+        return sum + (Number(item.point) * Number(item.quantity));
+    }, 0);
 });
 
+// Coupon Discount
+const couponDiscount = computed(() => {
+    if (!couponSuccess.value || !couponData.value) {
+        return 0;
+    }
+
+    if (couponData.value.discount_type === 'percent') {
+        return (subtotal.value * Number(couponData.value.discount)) / 100;
+    }
+
+    return Number(couponData.value.discount);
+});
+
+// Total after coupon
+const total = computed(() => {
+    return Math.max(0, subtotal.value - couponDiscount.value);
+});
+
+// Grand Total = Total + Shipping
+const grandTotal = computed(() => {
+    return total.value + shippingCharge.value;
+});
 
 
 
