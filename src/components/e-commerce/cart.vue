@@ -91,7 +91,13 @@
                                     <div class="flex justify-between items-start gap-4">
                                         <div>
                                             <h3 @click="ProductDetails(item)" class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#F97316] transition-colors line-clamp-1 cursor-pointer hover:underline">
+                                                
                                                 {{ item.product?.name }}
+                                                
+                                                <!-- Dynamic Offer Highlight -->
+                                                <span v-if="item.discount > 0" class="text-[9px] font-bold text-green-600 bg-orange-50 dark:bg-orange-500/10 dark:text-orange-400 px-1.5 py-0.5 rounded mt-1 border border-green-100 dark:border-orange-500/10">
+                                                    Saved ৳{{ (Number(item.discount) * item.quantity).toLocaleString() }}
+                                                </span>
                                             </h3>
                                             
                                             <!-- Variants -->
@@ -162,14 +168,18 @@
                                                 </span>
                                             </div>
 
+                                            <!-- Original subtotal (strikethrough, only if there's a discount) -->
+                                            <p v-if="item.discount > 0" class="text-xs font-semibold text-zinc-400 line-through mb-0.5">
+                                                ৳{{ (item.discount).toLocaleString() }}
+                                            </p>
+
+                                            <!-- Final subtotal after discount -->
                                             <p class="text-xl font-black text-zinc-900 dark:text-white tracking-tight">
-                                                <span class="text-sm font-bold mr-0.5 text-[#16A34A] dark:text-[#16A34A]">৳</span>{{ (Number(item.price) * item.quantity).toLocaleString() }}
+                                                <span class="text-sm font-bold mr-0.5 text-[#16A34A] dark:text-[#F97316]">৳</span>{{
+                                                    ((Number(item.price) - Number(item.discount)) * item.quantity).toLocaleString()
+                                                }}
                                             </p>
                                             
-                                            <!-- Dynamic Offer Highlight -->
-                                            <span v-if="item.discount > 0" class="text-[9px] font-bold text-green-600 bg-orange-50 dark:bg-orange-500/10 dark:text-orange-400 px-1.5 py-0.5 rounded mt-1 border border-green-100 dark:border-orange-500/10">
-                                                Saved ৳{{ (item.discount * item.quantity).toLocaleString() }}
-                                            </span>
                                         </div>
 
                                     </div>
@@ -194,10 +204,10 @@
                                     <span class="text-zinc-900 dark:text-white font-bold">৳ {{ subtotal.toLocaleString() }}</span>
                                 </div>
                                 
-                                <div class="flex justify-between font-medium text-sm">
+                                <!-- <div class="flex justify-between font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">Shipping</span>
                                     <span class="text-[#16a34a] dark:text-[#F97316] font-bold uppercase text-xs tracking-wider">Free</span>
-                                </div>
+                                </div> -->
                                 
                                 <div class="flex justify-between font-medium text-sm">
                                     <span class="text-zinc-500 dark:text-zinc-400">Total Points</span>
@@ -311,7 +321,7 @@ async function getCartItems() {
 // subtotal
 const subtotal = computed(() =>
     (cartItems.value || []).reduce((sum, i) => {
-        return sum + (Number(i.price) * Number(i.quantity))
+        return sum + (Number(i.price) * Number(i.quantity) - Number(i.discount))
     }, 0)
 )
 
