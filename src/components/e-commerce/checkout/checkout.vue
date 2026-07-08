@@ -947,6 +947,7 @@ const checkCoupon = async () => {
 
     if (!coupon.value.trim()) {
         couponError.value = 'Please enter a coupon code.';
+        couponLoading.value = false;
         return;
     }
 
@@ -957,11 +958,13 @@ const checkCoupon = async () => {
         })
         couponData.value = response.data.data;
         couponSuccess.value= response.data.message;
+        form.coupon = coupon.value;
     } catch (error) {
         couponData.value = null
         couponError.value =
             error.response?.data?.message ??
             'Something went wrong. Please try again.';
+        form.coupon = '';
     } finally {
         couponLoading.value = false
     }
@@ -1050,9 +1053,9 @@ async function confirmPayment() {
         }
     }
 
-    if (form.coupon)
+    if (coupon.value && couponSuccess.value)
     {
-        payload.coupon = form.coupon;
+        payload.coupon = coupon.value;
     }
 
     try {
@@ -1063,13 +1066,23 @@ async function confirmPayment() {
             router.push("/");
         }, 1500);
     } catch (err) {
-        if(err.response?.status===422){
-            validationErrors.value=err.response.data.errors;
+        if (err.response?.status === 422) {
+
+            validationErrors.value = err.response.data.errors || {};
+
+            const errors = err.response.data.errors;
+
+            if (errors && Object.keys(errors).length) {
+                errorMsg.value = Object.values(errors)[0][0];
+            } else {
+                errorMsg.value = err.response.data.message;
+            }
+
+            return;
         }
 
         errorMsg.value =
-            err.response?.data?.message ||
-            err.response?.data?.error ||
+            err.response?.data?.message ??
             "Something went wrong.";
 
     } finally {
