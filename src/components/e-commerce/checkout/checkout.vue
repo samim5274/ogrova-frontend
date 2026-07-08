@@ -887,7 +887,7 @@ async function getCartItems() {
 // Subtotal
 const subtotal = computed(() => {
     return (cartItems.value || []).reduce((sum, item) => {
-        return sum + (Number(item.price) * Number(item.quantity) - Number(item.discount));
+        return sum + (Number(item.price) * Number(item.quantity) - (Number(item.discount) * Number(item.quantity)));
     }, 0);
 });
 

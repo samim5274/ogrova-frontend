@@ -321,7 +321,7 @@ async function getCartItems() {
 // subtotal
 const subtotal = computed(() =>
     (cartItems.value || []).reduce((sum, i) => {
-        return sum + (Number(i.price) * Number(i.quantity) - Number(i.discount))
+        return sum + (Number(i.price) * Number(i.quantity) - (Number(i.discount) * Number(i.quantity)))
     }, 0)
 )
 
