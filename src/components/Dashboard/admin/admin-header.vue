@@ -31,7 +31,7 @@
             
             <router-link to="/admin/dashboard">
               <span class="text-lg font-black tracking-tighter uppercase italic text-slate-800 dark:text-white group-hover:text-[#2D92A2] transition-colors">
-                DYNAMIC <span class="text-[#2D92A2]">BAZAR</span>
+                Ogro<span class="text-orange-500">v</span><span class="text-emerald-600">a</span>
               </span>
             </router-link>
           </div>
