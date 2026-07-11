@@ -142,9 +142,9 @@ const errorMsg = ref("");
 const errors = reactive({});
 
 const form = reactive({
-  email: "",
-  password: "",
-  remember: false
+  email: "admin1@gmail.com",
+  password: "password",
+  remember: true
 });
 
 // Helper: Get redirect config based on role

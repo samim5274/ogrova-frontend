@@ -313,9 +313,9 @@
                                                     required
                                                 >
                                                     <option value="" disabled selected>Select Payment Method</option>
-                                                    <option value="bkash">bKash</option>
-                                                    <option value="nagad">Nagad</option>
-                                                    <option value="rocket">Rocket</option>
+                                                    <option value="Bkash">BKash</option>
+                                                    <option value="Nagad">Nagad</option>
+                                                    <option value="Rocket">Rocket</option>
                                                 </select>
                                                 
                                                 <span class="absolute right-3 pointer-events-none text-slate-400">

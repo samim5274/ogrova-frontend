@@ -25,263 +25,126 @@
                 <main class="flex-1 min-h-screen min-w-0 bg-gray-50 dark:bg-[#0C1326] px-4 sm:px-6 lg:px-8 py-6 transition-colors duration-300">
 
                     <div v-if="order">
-
-                        <!-- Page header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-200 dark:border-slate-800/60">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                             <div class="flex items-center gap-4">
-                                <button @click="$router.back()" class="p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition shadow-sm shrink-0">
-                                    <i class="fa-solid fa-arrow-left-long text-slate-600 dark:text-slate-400"></i>
-                                </button>
-
-                                <div class="space-y-1.5">
-                                    <div class="flex flex-wrap items-center gap-2.5">
+                            <button @click="$router.back()" class="p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition shadow-sm">
+                                <i class="fa-solid fa-arrow-left-long text-slate-600 dark:text-slate-400"></i>
+                            </button>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 dark:border-slate-800/60 pb-5">
+                                    <!-- Left Side: Order Info -->
+                                    <div class="space-y-1.5">
+                                        <div class="flex flex-wrap items-center gap-2.5">
+                                        <!-- Order Number -->
                                         <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
                                             Order <span class="text-indigo-600 dark:text-indigo-400">#{{ order.reg }}</span>
                                         </h1>
-
-                                        <span
-                                            v-if="order.coupon_id"
+                                        
+                                        <span 
+                                            v-if="order.coupon_id" 
                                             class="inline-flex items-center gap-1 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 font-mono text-xs font-semibold px-2 py-0.5 rounded-full border border-amber-200/60 dark:border-amber-900/50 uppercase tracking-wider"
-                                            title="Coupon Applied" >
+                                            title="Coupon Applied">                                        
                                             <i class="fa-solid fa-tags text-amber-500"></i>
                                             {{ order.coupon_code }}
                                         </span>
-                                    </div>
+                                        </div>
 
-                                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                                        <i class="fa-regular fa-calendar text-slate-400 dark:text-slate-500"></i>
+                                        <!-- Date Section -->
+                                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-calendar text-slate-400 dark:text-slate-500"></i>
                                         Placed on {{ formatDate(order.date) }}
-                                    </p>
+                                        </p>
+                                    </div>
+                                    <!-- Right Side: Order Info -->
                                 </div>
                             </div>
 
                             <div class="flex items-center gap-3">
-                                <button class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition shadow-sm">
-                                    Download Invoice
-                                </button>
-                                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-indigo-500/20 transition">
-                                    Print Details
-                                </button>
+                            <button class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition shadow-sm">
+                                Download Invoice
+                            </button>
+                            <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-indigo-500/20 transition">
+                                Print Details
+                            </button>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div class="lg:col-span-2 space-y-6">
-
-                                <!-- Metric cards -->
                                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-
-                                    <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                                        <div class="flex items-center gap-2 mb-3">
-                                            <i class="fa-regular fa-calendar text-slate-400 text-sm"></i>
-                                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Payment Date</p>
-                                        </div>
+                                    <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Payment Date</p>
                                         <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">
                                             {{ order.paid_at ? formatDate(order.paid_at) : 'Waiting for Payment' }}
                                         </p>
                                     </div>
-
-                                    <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                                        <div class="flex items-center gap-2 mb-3">
-                                            <i class="fa-solid fa-wallet text-slate-400 text-sm"></i>
-                                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Amount</p>
-                                        </div>
-                                        <p class="text-2xl font-bold font-mono text-slate-900 dark:text-white">{{ order.currency }} ৳ {{ Number(order.payable_amount).toLocaleString() }}</p>
+                                    <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Total Amount</p>
+                                        <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ order.currency }} ৳ {{ order.amount.toLocaleString() }}</p>
                                     </div>
-
-                                    <div
-                                        @click="!(order.status === 'cancelled' || order.status === 'delivered') && openStatusModal()"
+                                    <div 
+                                        @click="openStatusModal"
                                         :class="(order.status === 'cancelled' || order.status === 'delivered')
                                             ? 'opacity-50 cursor-not-allowed'
-                                            : 'cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500'"
-                                        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all group flex flex-col justify-between">
-                                        <div class="flex justify-between items-center mb-3">
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-truck-fast text-slate-400 text-sm"></i>
-                                                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Order Status</p>
-                                            </div>
+                                            : ''"
+                                        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">
+                                        <div class="flex justify-between items-start">
+                                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Order Status</p>
                                             <i class="fa-solid fa-pencil h-4 w-4 text-slate-400 opacity-0 group-hover:opacity-100 transition"></i>
                                         </div>
-                                        <span :class="getStatus(order.status).container" class="px-3 py-1 rounded-lg text-[11px] font-bold uppercase inline-flex items-center gap-2 border border-transparent dark:border-current/10 w-fit">
+                                        
+                                        <span :class="getStatus(order.status).container" class="px-3 py-1 rounded-lg text-[11px] font-bold uppercase inline-flex items-center gap-2 border border-transparent dark:border-current/10">
                                             <span class="h-2 w-2 rounded-full" :class="getStatus(order.status).dot"></span>
                                             {{ order.status }}
                                         </span>
                                     </div>
-
-                                    <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                                        <div class="flex items-center gap-2 mb-3">
-                                            <i class="fa-regular fa-star text-slate-400 text-sm"></i>
-                                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Point</p>
-                                        </div>
-                                        <p class="text-2xl font-bold font-mono text-slate-900 dark:text-white">{{ Number(order.point).toLocaleString() }}</p>
+                                    <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Total Point</p>
+                                        <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ order.point.toLocaleString() }}</p>
                                     </div>
-
                                 </div>
 
-                                <!-- Transaction details -->
-                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-
-                                    <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                                        <div>
-                                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Transaction Details</h3>
-                                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Order receipt</p>
-                                        </div>
-                                        <span :class="[
-                                            'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full',
-                                            statusStyle(order.payment_status).badge
-                                        ]">
-                                            <i :class="statusStyle(order.payment_status).icon"></i>
-                                            {{ order.payment_status }}
-                                        </span>
+                                <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                                        <h3 class="font-bold text-slate-900 dark:text-white">Transaction Information</h3>
                                     </div>
-
-                                    <div class="px-6 py-4 space-y-3">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-sm text-slate-500 dark:text-slate-400">Transaction ID</span>
-                                            <span class="text-sm font-mono font-semibold text-slate-900 dark:text-indigo-300 bg-slate-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-md">
+                                    <div class="p-6">
+                                        <div class="space-y-4">
+                                            <div class="flex justify-between items-center py-2">
+                                            <span class="text-sm text-slate-500 italic">Transaction ID:</span>
+                                            <span class="text-sm font-mono font-bold text-slate-900 dark:text-indigo-400 bg-slate-50 dark:bg-indigo-500/5 px-3 py-1 rounded-lg border border-slate-100 dark:border-indigo-500/10">
                                                 {{ order.transaction_id || 'Not Available' }}
                                             </span>
-                                        </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-sm text-slate-500 dark:text-slate-400">Registration Number</span>
-                                            <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ order.reg }}</span>
-                                        </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-sm text-slate-500 dark:text-slate-400">Currency</span>
-                                            <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ order.currency }} — Bangladeshi Taka</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="relative px-6">
-                                        <div class="border-t border-dashed border-slate-200 dark:border-slate-700"></div>
-                                        <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gray-50 dark:bg-[#0C1326]"></div>
-                                        <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gray-50 dark:bg-[#0C1326]"></div>
-                                    </div>
-
-                                    <div class="px-6 pt-5 pb-6">
-                                        <h4 class="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-3">Amount Breakdown</h4>
-
-                                        <div class="space-y-2 text-sm">
-                                            <div class="flex justify-between text-slate-500 dark:text-slate-400">
-                                                <span>Subtotal</span>
-                                                <span class="font-medium text-slate-700 dark:text-slate-300">{{ order.currency }} ৳ {{ Number(order.amount).toLocaleString() }}</span>
                                             </div>
-
-                                            <div v-if="Number(order.discount) > 0" class="flex justify-between text-slate-500 dark:text-slate-400">
-                                                <span>Discount</span>
-                                                <span class="font-medium text-emerald-600 dark:text-emerald-400">− {{ order.currency }} ৳ {{ Number(order.discount).toLocaleString() }}</span>
+                                            <div class="flex justify-between items-center py-2 border-t border-slate-50 dark:border-slate-800/50">
+                                            <span class="text-sm text-slate-500 italic">Registration Number:</span>
+                                            <span class="text-sm font-bold text-slate-900 dark:text-white">{{ order.reg }}</span>
                                             </div>
-
-                                            <div v-if="Number(order.coupon_discount) > 0" class="flex justify-between text-slate-500 dark:text-slate-400">
-                                                <span>Coupon Discount</span>
-                                                <span class="font-medium text-emerald-600 dark:text-emerald-400">− {{ order.currency }} ৳ {{ Number(order.coupon_discount).toLocaleString() }}</span>
+                                            <div class="flex justify-between items-center py-2 border-t border-slate-50 dark:border-slate-800/50">
+                                            <span class="text-sm text-slate-500 italic">Currency Used:</span>
+                                            <span class="text-sm font-bold text-slate-900 dark:text-white">{{ order.currency }} (Bangladeshi Taka)</span>
                                             </div>
-
-                                            <div class="flex justify-between text-slate-500 dark:text-slate-400">
-                                                <span>Shipping Charge</span>
-                                                <span class="font-medium text-slate-700 dark:text-slate-300">+ {{ order.currency }} ৳ {{ Number(order.shipping_charge).toLocaleString() }}</span>
-                                            </div>
-
-                                            <div class="flex justify-between text-slate-500 dark:text-slate-400">
-                                                <span>Tax</span>
-                                                <span class="font-medium text-slate-700 dark:text-slate-300">+ {{ order.currency }} ৳ {{ Number(order.tax).toLocaleString() }}</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="flex justify-between items-baseline border-t border-slate-100 dark:border-slate-800 mt-4 pt-4">
-                                            <span class="text-sm font-bold text-slate-900 dark:text-white">Total Payable</span>
-                                            <span class="text-xl font-mono font-bold text-indigo-600 dark:text-indigo-400">{{ order.currency }} ৳ {{ Number(order.payable_amount).toLocaleString() }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Payment history (separate card, no longer nested inside Transaction Details) -->
-                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
-                                    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">Payment History</h3>
-
-                                    <div v-if="payments && payments.length" class="space-y-3">
-                                        <div v-for="payment in payments" :key="payment.id"
-                                            class="bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 p-4"
-                                            :class="{ 'opacity-70': ['Failed','Cancelled'].includes(payment.status) }">
-
-                                            <div class="flex items-start justify-between">
-                                                <div class="flex gap-3">
-                                                    <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-                                                        :class="getPaymentMethod(payment.payment_method).iconBg">
-                                                        <i :class="[getPaymentMethod(payment.payment_method).icon, getPaymentMethod(payment.payment_method).iconColor]" class="text-base"></i>
-                                                    </div>
-                                                    <div>
-                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                                                            {{ getPaymentMethod(payment.payment_method).label }}
-                                                            <span v-if="payment.gateway" class="font-normal text-slate-400">via {{ payment.gateway }}</span>
-                                                        </p>
-                                                        <p v-if="payment.transaction_id" class="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5">
-                                                            {{ payment.transaction_id }}
-                                                        </p>
-                                                        <p v-else-if="payment.sender_mobile || payment.account_holder_name" class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                                                            {{ payment.account_holder_name || 'Sender' }} — {{ payment.sender_mobile }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <span :class="getPaymentStatus(payment.status).badge" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap">
-                                                    <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(payment.status).dot"></span>
-                                                    {{ payment.status }}
-                                                </span>
-                                            </div>
-
-                                            <div class="flex justify-between items-center mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
-                                                <span class="text-xs text-slate-400 dark:text-slate-500">
-                                                    {{ payment.paid_at ? formatDate(payment.paid_at) : formatDate(payment.created_at) }}
-                                                </span>
-                                                <span class="text-sm font-mono font-semibold text-slate-900 dark:text-white">
-                                                    {{ payment.currency }} ৳ {{ Number(payment.amount).toLocaleString() }}
-                                                </span>
-                                            </div>
-
-                                            <div class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 grid grid-cols-2 gap-y-1">
-                                                <span>Bank</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.bank_name }}</span>
-                                                <span>Account</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_number }}</span>
-                                                <span v-if="payment.account_holder_name">Acc. Holder Name</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_holder_name }}</span>
-                                            </div>
-
-                                            <div v-if="payment.status === 'Pending' && payment.gateway === 'manual'" class="mt-3">
-                                                <button @click="verifyPayment(payment)"
-                                                        class="w-full h-8 text-xs font-semibold rounded-lg border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition">
-                                                    Verify Payment
-                                                </button>
-                                            </div>
-                                            <p v-else-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">
-                                                Verified {{ formatDate(payment.verified_at) }} || Verified By: {{ payment.verifier.name }}
-                                            </p>
-
-                                            <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-2 italic">
-                                                "{{ payment.remarks }}"
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div v-else class="text-center py-8">
-                                        <i class="fa-regular fa-clock text-2xl text-slate-300 dark:text-slate-700"></i>
-                                        <p class="text-sm text-slate-400 dark:text-slate-500 mt-2">No payment attempts yet.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Order items -->
                                 <div class="space-y-4">
                                     <div class="flex items-center justify-between mb-4">
                                         <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                            <i class="fa-solid fa-bag-shopping text-indigo-500"></i>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                            </svg>
                                             Order Items ({{ cartItems.length }})
                                         </h3>
                                     </div>
 
                                     <div v-for="item in cartItems" :key="item.id"
                                         class="group bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
-
+                                    
                                         <div class="flex flex-col sm:flex-row items-center gap-6">
-
+                                            
                                             <div class="relative h-24 w-24 flex-shrink-0 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                                                
+                                                <img v-if="item.product?.image" :src="getProductImage(item)" :alt="item.product?.name || 'Product Image'" class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500">
 
                                                 <img :src="getProductImage(item)" :alt="item.product?.name || 'Product Image'"
                                                     class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -297,20 +160,20 @@
                                                     <h4 @click="ProductDetails(item)" class="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 group-hover:underline group-hover:cursor-pointer transition-colors duration-300">
                                                     {{ item.product?.name }}
                                                     </h4>
-
+                                                    
                                                     <div class="flex flex-wrap gap-2 mt-2">
-                                                    <span v-if="item.variant?.color"
+                                                    <span v-if="item.variant?.color" 
                                                             class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                                                         <span class="w-2 h-2 rounded-full mr-2" :style="{ backgroundColor: item.variant.color.toLowerCase() }"></span>
                                                         {{ item.variant.color }}
                                                     </span>
 
-                                                    <span v-if="item.variant?.size"
+                                                    <span v-if="item.variant?.size" 
                                                             class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20">
                                                         Size: {{ item.variant.size }}
                                                     </span>
 
-                                                    <span v-if="!item.variant"
+                                                    <span v-if="!item.variant" 
                                                             class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-100 dark:border-slate-700">
                                                         Standard
                                                     </span>
@@ -323,7 +186,7 @@
                                                         Points Earned
                                                     </p>
                                                     <div class="flex items-baseline gap-1">
-                                                        <span class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight leading-none">
+                                                        <span class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">
                                                             {{ (Number(item.point) * item.quantity).toLocaleString() }}
                                                         </span>
                                                         <span class="text-[10px] font-bold text-indigo-500/80 dark:text-indigo-400/80 uppercase">pts</span>
@@ -336,10 +199,10 @@
                                                     <span class="text-slate-300 dark:text-slate-700">|</span>
                                                     <span>Qty: {{ item.quantity }}</span>
                                                     </div>
-
+                                                    
                                                     <div class="flex flex-col md:items-end">
                                                     <span class="text-xs font-bold text-indigo-500/80 dark:text-indigo-400 uppercase tracking-tighter">Subtotal</span>
-                                                    <div class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+                                                    <div class="text-xl font-black text-slate-900 dark:text-white tracking-tight">
                                                         <span class="text-sm font-normal mr-0.5">৳</span>{{ (Number(item.price) * item.quantity).toLocaleString() }}
                                                     </div>
                                                     </div>
@@ -367,50 +230,51 @@
                                             <div class="relative inline-block mb-4">
                                                 <img v-if="order.user?.photo" :src="photoUrl" alt="User photo" class="h-16 w-16 rounded-2xl object-cover ring-2 ring-slate-200 dark:ring-white/10"/>
                                                 <div v-else class="h-20 w-20 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-500/30">
-                                                    {{ order.user?.name?.substring(0, 2).toUpperCase() || '—' }}
+                                                    {{ order.user?.name.substring(0, 2).toUpperCase() }}
                                                 </div>
                                                 <div class="absolute -bottom-2 -right-2 bg-green-500 border-4 border-white dark:border-slate-900 h-6 w-6 rounded-full" title="Active User"></div>
                                             </div>
 
                                             <h4 class="text-lg font-bold text-slate-900 dark:text-white">{{ order.user?.name }}</h4>
+                                            <!-- <p class="text-sm text-slate-500 mb-6">Customer ID: {{ order.user_id }}</p> -->
                                             <p class="text-sm text-slate-500 mb-6">UID#{{ order.user?.user_id }}</p>
-
+                                        
                                             <div class="text-left space-y-3 border-t border-slate-100 dark:border-slate-800 py-4">
                                                 <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-regular fa-envelope"></i>
-                                                    <span>{{ order.user?.email }}</span>
-                                                </div>
-                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-solid fa-location-dot mt-0.5"></i>
-                                                    <span class="leading-relaxed">
-                                                        <span v-if="order.user?.present_address">{{ order.user.present_address }}</span>
-                                                        <span v-else-if="order.user?.permanent_address">{{ order.user.permanent_address }}</span>
-                                                        <span v-else class="text-slate-400">No address on file</span>
-                                                    </span>
+                                                    <span>{{ order.user?.email }}</span> </div>
+                                                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                                    <i class="fa-solid fa-location-dot"></i>
+                                                    <span>{{ order.user?.present_address }} || {{ order.user?.permanent_address }}</span>
                                                 </div>
                                             </div>
 
                                             <div class="text-left space-y-3 border-t border-slate-100 dark:border-slate-800 pt-6">
+                                                <!-- Contact Name -->
                                                 <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-regular fa-user w-4 text-center"></i>
                                                     <span class="font-semibold">{{ order.contact_name }}</span>
                                                 </div>
 
+                                                <!-- Contact Number -->
                                                 <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-solid fa-phone w-4 text-center"></i>
                                                     <span>{{ order.contact_number }}</span>
                                                 </div>
 
+                                                <!-- Contact Email -->
                                                 <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-regular fa-envelope w-4 text-center"></i>
                                                     <span>{{ order.contact_email }}</span>
                                                 </div>
 
+                                                <!-- Shipping Address -->
                                                 <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-solid fa-location-dot w-4 text-center mt-0.5"></i>
                                                     <span class="leading-relaxed">{{ order.shipping_address }}</span>
                                                 </div>
 
+                                                <!-- Transaction ID -->
                                                 <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-solid fa-money-bill-transfer w-4 text-center mt-0.5"></i>
                                                     <span class="leading-relaxed">{{ order.transaction_id }}</span>
@@ -432,6 +296,7 @@
                                                     </span>
                                                 </div>
 
+                                                <!-- Remarks -->
                                                 <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                                     <i class="fa-regular fa-comment-dots w-4 text-center mt-0.5"></i>
                                                     <span class="leading-relaxed">
@@ -449,7 +314,7 @@
 
                                     <div class="bg-indigo-600 rounded-2xl p-6 mt-4 text-white shadow-lg shadow-indigo-500/30">
                                         <h4 class="font-bold mb-2 flex items-center gap-2">
-                                            <i class="fa-solid fa-circle-info"></i>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                             Quick Note
                                         </h4>
                                         <p class="text-indigo-100 text-xs leading-relaxed">
@@ -461,16 +326,16 @@
 
                         </div>
                     </div>
-
+                        
                 </main>
             </div>
         </div>
-
+        
     </div>
 
 
     <Teleport to="body">
-        <Transition
+        <Transition 
             enter-active-class="transition duration-300 ease-out"
             enter-from-class="opacity-0"
             enter-to-class="opacity-100"
@@ -478,11 +343,11 @@
             leave-from-class="opacity-100"
             leave-to-class="opacity-0">
             <div v-if="isStatusModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-
-                <div
-                    @click.stop
+            
+                <div 
+                    @click.stop 
                     class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-
+                    
                     <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
                         <h3 class="text-lg font-bold text-slate-900 dark:text-white">Update Order Status</h3>
                         <button @click="isStatusModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
@@ -492,16 +357,16 @@
 
                     <div class="p-6 space-y-3">
                         <p class="text-sm text-slate-500 mb-4">Select the new status for order #{{ order.reg }}</p>
-
-                        <button
-                            v-for="(config, statusName) in statusConfig"
+                    
+                        <button 
+                            v-for="(config, statusName) in statusConfig" 
                             :key="statusName"
                             v-show="statusName !== 'default'"
                             @click="updateStatus(statusName)"
                             class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                             :class="[
-                                order.status.toLowerCase() === statusName.toLowerCase()
-                                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10'
+                                order.status.toLowerCase() === statusName.toLowerCase() 
+                                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10' 
                                     : 'border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
                             ]">
 
@@ -509,7 +374,7 @@
                                 <span class="h-2 w-2 rounded-full" :class="config.dot"></span>
                                 {{ statusName }}
                             </span>
-
+                            
                             <div v-if="order.status.toLowerCase() === statusName.toLowerCase()" class="text-indigo-600">
                                 <i class="fa-solid fa-check h-5 w-5"></i>
                             </div>
@@ -526,12 +391,15 @@
         </Transition>
     </Teleport>
 
+
+
+
 </template>
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import api, {makeImg} from '../../../services/api';
+import api, {makeImg} from '../../src/services/api.js';
 
 import Navbar from '../admin/admin-navbar.vue';
 import Header from '../admin/admin-header.vue';
@@ -554,18 +422,10 @@ const errorMsg = ref('');
 
 
 
-
-
-
-
-
-
-
 // =============================
 // Get orders
 // =============================
 const order = ref(null);
-const payments = ref(null);
 async function fetchOrderDetails(){
     loading.value = true;
     try{
@@ -576,14 +436,15 @@ async function fetchOrderDetails(){
         }
 
         const res = await api.get(`/orders/${route.params.reg}`);
-        order.value = res.data.data.order;
-        const paymentData = res.data.data.payment;
-        payments.value = Array.isArray(paymentData) ? paymentData : (paymentData ? [paymentData] : []);
+        order.value = res.data.data;
+        console.log(order.value);
     } catch (err) {
         errorMsg.value =
             err.response?.data?.message ||
             err.message ||
             "Something went wrong while fetching order.";
+
+        console.log(err);
     } finally {
         loading.value = false;
     }
@@ -653,156 +514,6 @@ const photoUrl = computed(() => {
     return makeImg(p);
 });
 
-function statusStyle(status) {
-    const map = {
-        Pending: {
-            badge: 'bg-slate-100 dark:bg-slate-500/10 text-slate-600 dark:text-slate-400',
-            icon: 'fa-regular fa-clock',
-        },
-        Partial: {
-            badge: 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400',
-            icon: 'fa-solid fa-circle-half-stroke',
-        },
-        Paid: {
-            badge: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-            icon: 'fa-regular fa-circle-check',
-        },
-        Failed: {
-            badge: 'bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400',
-            icon: 'fa-regular fa-circle-xmark',
-        },
-        Refunded: {
-            badge: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400',
-            icon: 'fa-solid fa-rotate-left',
-        },
-    };
-    return map[status] || map.Pending;
-}
-
-// Payment method display config
-function getPaymentMethod(method) {
-    const map = {
-        cod: {
-            label: 'Cash on delivery',
-            icon: 'fa-solid fa-money-bill-wave',
-            iconBg: 'bg-slate-100 dark:bg-slate-500/10',
-            iconColor: 'text-slate-500 dark:text-slate-400',
-        },
-        bank_transfer: {
-            label: 'Bank transfer',
-            icon: 'fa-solid fa-building-columns',
-            iconBg: 'bg-amber-50 dark:bg-amber-500/10',
-            iconColor: 'text-amber-600 dark:text-amber-400',
-        },
-        mobile_banking: {
-            label: 'Mobile banking',
-            icon: 'fa-solid fa-mobile-screen-button',
-            iconBg: 'bg-emerald-50 dark:bg-emerald-500/10',
-            iconColor: 'text-emerald-600 dark:text-emerald-400',
-        },
-        card: {
-            label: 'Card',
-            icon: 'fa-regular fa-credit-card',
-            iconBg: 'bg-indigo-50 dark:bg-indigo-500/10',
-            iconColor: 'text-indigo-600 dark:text-indigo-400',
-        },
-        paypal: {
-            label: 'PayPal',
-            icon: 'fa-brands fa-paypal',
-            iconBg: 'bg-blue-50 dark:bg-blue-500/10',
-            iconColor: 'text-blue-600 dark:text-blue-400',
-        },
-    };
-    return map[method] || map.cod;
-}
-
-function getPaymentStatus(status) {
-    const map = {
-        Pending: {
-            badge: 'bg-slate-100 dark:bg-slate-500/10 text-slate-600 dark:text-slate-400',
-            dot: 'bg-slate-400',
-        },
-        Processing: {
-            badge: 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400',
-            dot: 'bg-blue-500',
-        },
-        Success: {
-            badge: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-            dot: 'bg-emerald-500',
-        },
-        Failed: {
-            badge: 'bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400',
-            dot: 'bg-red-500',
-        },
-        Cancelled: {
-            badge: 'bg-slate-100 dark:bg-slate-500/10 text-slate-500 dark:text-slate-400',
-            dot: 'bg-slate-400',
-        },
-        Refunded: {
-            badge: 'bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400',
-            dot: 'bg-purple-500',
-        },
-    };
-    return map[status] || map.Pending;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FIX: this function was called from the template ("Verify Payment" button)
-async function verifyPayment(paymentRecord) {
-    const confirmed = confirm(
-        "Are you sure you want to verify this payment?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    try {
-        loading.value = true;
-        const res = await api.post(`/orders/payments/${paymentRecord.id}/verify`);
-        if (res.data.success) {
-            paymentRecord.status = 'Success';
-            paymentRecord.verified_at = new Date().toISOString();
-            successMsg.value = res.data.message || 'Payment verified.';
-            fetchOrderDetails();
-        } else {
-            errorMsg.value = res.data.message;
-        }
-    } catch (err) {
-        errorMsg.value =
-            err.response?.data?.message ||
-            err.message ||
-            "Something went wrong while verifying payment.";
-    } finally {
-        loading.value = false;
-    }
-}
-
-
-
-
-
-
-
-
 
 
 
@@ -829,28 +540,6 @@ function openStatusModal() {
     isStatusModalOpen.value = true;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function updateStatus(newStatus){
     try{
         loading.value = true;
@@ -868,6 +557,8 @@ async function updateStatus(newStatus){
             err.response?.data?.message ||
             err.message ||
             "Something went wrong while updating status.";
+
+        console.log(err);
     } finally {
         loading.value = false;
 
@@ -875,20 +566,9 @@ async function updateStatus(newStatus){
             isStatusModalOpen.value = false;
         }, 200);
     }
+
+    console.log(`Status updated to: ${newStatus}`);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -908,6 +588,7 @@ async function getCartItems() {
     try {
         const res = await api.get(`/cart/${route.params.reg}`);
         cartItems.value = res.data.data;
+        // console.log(cartItems.value);
     } catch (err) {
         console.error(err);
         errorMsg.value = err || "Something is wrong";
@@ -919,30 +600,13 @@ async function getCartItems() {
 const defaultProductImage = "/images/product/default-product.png";
 
 const getProductImage = (item) => {
+    // Nested optional chaining 
     const images = item.product?.images;
     if (images && images.length > 0) {
         return images[0].url;
     }
     return defaultProductImage;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function ProductDetails(item) {
@@ -958,34 +622,9 @@ function ProductDetails(item) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 function viewCustomerFullProfile(order){
     router.push(`/admin/customer-details/${order?.user.user_id}`);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1016,31 +655,12 @@ function onSearch(q) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ESC to close drawer */
 onMounted(() => {
 
     fetchOrderDetails();
     getCartItems();
-
+    
     window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") sidebarOpen.value = false;
     });

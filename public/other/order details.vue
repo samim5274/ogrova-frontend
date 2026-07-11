@@ -239,10 +239,10 @@
                                                 </span>
                                             </div>
 
-                                            <div class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 grid grid-cols-2 gap-y-1">
+                                            <div v-if="payment.payment_method === 'bank_transfer' && payment.bank_name"
+                                                class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 grid grid-cols-2 gap-y-1">
                                                 <span>Bank</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.bank_name }}</span>
                                                 <span>Account</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_number }}</span>
-                                                <span v-if="payment.account_holder_name">Acc. Holder Name</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_holder_name }}</span>
                                             </div>
 
                                             <div v-if="payment.status === 'Pending' && payment.gateway === 'manual'" class="mt-3">
@@ -252,7 +252,7 @@
                                                 </button>
                                             </div>
                                             <p v-else-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">
-                                                Verified {{ formatDate(payment.verified_at) }} || Verified By: {{ payment.verifier.name }}
+                                                Verified {{ formatDate(payment.verified_at) }}
                                             </p>
 
                                             <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-2 italic">
@@ -767,14 +767,6 @@ function getPaymentStatus(status) {
 
 // FIX: this function was called from the template ("Verify Payment" button)
 async function verifyPayment(paymentRecord) {
-    const confirmed = confirm(
-        "Are you sure you want to verify this payment?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
     try {
         loading.value = true;
         const res = await api.post(`/orders/payments/${paymentRecord.id}/verify`);
@@ -782,7 +774,6 @@ async function verifyPayment(paymentRecord) {
             paymentRecord.status = 'Success';
             paymentRecord.verified_at = new Date().toISOString();
             successMsg.value = res.data.message || 'Payment verified.';
-            fetchOrderDetails();
         } else {
             errorMsg.value = res.data.message;
         }
