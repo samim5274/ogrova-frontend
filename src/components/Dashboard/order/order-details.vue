@@ -36,7 +36,7 @@
                                 <div class="space-y-1.5">
                                     <div class="flex flex-wrap items-center gap-2.5">
                                         <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                                            Order <span class="text-indigo-600 dark:text-indigo-400">#{{ order.reg }}</span>
+                                            Order <span class="text-green-600 dark:text-orange-400">#{{ order.reg }}</span>
                                         </h1>
 
                                         <span
@@ -261,10 +261,20 @@
                                         </div>
                                     </div>
 
-                                    <div v-else class="text-center py-8">
-                                        <i class="fa-regular fa-clock text-2xl text-slate-300 dark:text-slate-700"></i>
-                                        <p class="text-sm text-slate-400 dark:text-slate-500 mt-2">No payment attempts yet.</p>
+                                    <div v-else class="flex flex-col items-center text-center py-10 px-4">
+                                        <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center mb-4">
+                                            <i class="fa-solid fa-receipt text-2xl text-slate-400 dark:text-slate-500"></i>
+                                        </div>
+                                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">No payment attempts yet</p>
+                                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 max-w-xs leading-relaxed">
+                                            This order is awaiting payment. Once a payment is made, it will appear here.
+                                        </p>
+                                        <button @click="openPaymentModal" class="mt-5 inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-500/20 active:scale-95 transition-all">
+                                            <i class="fa-solid fa-credit-card text-xs"></i>
+                                            Make Payment
+                                        </button>
                                     </div>
+
                                 </div>
 
                                 <!-- Order items -->
@@ -447,14 +457,20 @@
                                         </div>
                                     </div>
 
-                                    <div class="bg-indigo-600 rounded-2xl p-6 mt-4 text-white shadow-lg shadow-indigo-500/30">
-                                        <h4 class="font-bold mb-2 flex items-center gap-2">
-                                            <i class="fa-solid fa-circle-info"></i>
-                                            Quick Note
-                                        </h4>
-                                        <p class="text-indigo-100 text-xs leading-relaxed">
-                                            This order was processed through the automated gateway. Contact support if transaction ID is missing.
-                                        </p>
+                                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 mt-4 shadow-sm">
+                                        <div class="flex items-start gap-3">
+                                            <div class="flex-shrink-0 w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                                                <i class="fa-solid fa-circle-info text-blue-600 dark:text-blue-400 text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-100 mb-1">
+                                                    Quick Note
+                                                </h4>
+                                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+                                                    This order was processed through the automated gateway. Contact support if transaction ID is missing.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -521,6 +537,109 @@
                             Cancel
                         </button>
                     </div>
+                </div>
+            </div>
+        </Transition>
+    </Teleport>
+
+    <Teleport to="body">
+        <Transition
+            enter-active-class="transition duration-300 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition duration-200 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0">
+            <div v-if="isPaymentModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+
+                <div
+                    @click.stop
+                    class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Make Payment</h3>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Order #{{ order?.reg }}</p>
+                        </div>
+                        <button @click="isPaymentModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                            <i class="fa-solid fa-x h-5 w-5"></i>
+                        </button>
+                    </div>
+
+                    <form @submit.prevent="submitPayment" class="p-6 space-y-4">
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Amount</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">৳</span>
+                                <input
+                                    v-model="paymentForm.amount"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    required
+                                    class="w-full h-11 pl-7 pr-3 text-sm font-mono rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Payment Method</label>
+                            <select
+                                v-model="paymentForm.payment_method"
+                                required
+                                class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="mobile_banking">Mobile Banking</option>
+                                <option value="card">Card</option>
+                                <option value="cod">Cash on Delivery</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
+                        </div>
+
+                        <div v-if="['bank_transfer','mobile_banking'].includes(paymentForm.payment_method)" class="grid grid-cols-2 gap-3">
+                            <div v-if="paymentForm.payment_method === 'bank_transfer'">
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Bank Name</label>
+                                <input v-model="paymentForm.bank_name" type="text" placeholder="e.g. Brac Bank"
+                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                            </div>
+                            <div v-if="paymentForm.payment_method === 'bank_transfer'">
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Account Number</label>
+                                <input v-model="paymentForm.account_number" type="text"
+                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Account Holder</label>
+                                <input v-model="paymentForm.account_holder_name" type="text"
+                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                            </div>
+                            <div v-if="paymentForm.payment_method === 'mobile_banking'">
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Sender Mobile</label>
+                                <input v-model="paymentForm.sender_mobile" type="text" placeholder="017XXXXXXXX"
+                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Remarks <span class="font-normal text-slate-400">(optional)</span></label>
+                            <textarea
+                                v-model="paymentForm.remarks"
+                                rows="2"
+                                placeholder="e.g. Advance payment"
+                                class="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 resize-none"></textarea>
+                        </div>
+
+                        <p v-if="paymentFormError" class="text-xs text-red-500">{{ paymentFormError }}</p>
+
+                        <div class="flex justify-end gap-3 pt-1">
+                            <button type="button" @click="isPaymentModalOpen = false" class="px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:underline">
+                                Cancel
+                            </button>
+                            <button type="submit" :disabled="paymentSubmitting"
+                                class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-500/20 transition">
+                                {{ paymentSubmitting ? 'Processing...' : 'Confirm Payment' }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </Transition>
@@ -926,6 +1045,93 @@ const getProductImage = (item) => {
     return defaultProductImage;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const isPaymentModalOpen = ref(false);
+const paymentSubmitting = ref(false);
+const paymentFormError = ref('');
+const paymentForm = ref({
+    amount: '',
+    payment_method: 'bank_transfer',
+    bank_name: '',
+    account_number: '',
+    account_holder_name: '',
+    sender_mobile: '',
+    remarks: '',
+});
+
+function resetPaymentForm() {
+    paymentForm.value = {
+        amount: order.value?.payable_amount ?? '',
+        payment_method: 'bank_transfer',
+        bank_name: '',
+        account_number: '',
+        account_holder_name: '',
+        sender_mobile: '',
+        remarks: '',
+    };
+    paymentFormError.value = '';
+}
+
+function openPaymentModal() {
+    resetPaymentForm();
+    isPaymentModalOpen.value = true;
+}
+
+async function submitPayment() {
+    paymentFormError.value = '';
+
+    if (!paymentForm.value.amount || Number(paymentForm.value.amount) <= 0) {
+        paymentFormError.value = 'Please enter a valid amount.';
+        return;
+    }
+
+    paymentSubmitting.value = true;
+    try {
+        const res = await api.post(`/orders/${route.params.reg}/payments`, {
+            amount: paymentForm.value.amount,
+            payment_method: paymentForm.value.payment_method,
+            gateway: 'manual',
+            bank_name: paymentForm.value.bank_name || null,
+            account_number: paymentForm.value.account_number || null,
+            account_holder_name: paymentForm.value.account_holder_name || null,
+            sender_mobile: paymentForm.value.sender_mobile || null,
+            remarks: paymentForm.value.remarks || null,
+        });
+
+        if (res.data.success) {
+            const newPayment = res.data.data.payment ?? res.data.data;
+            payments.value = payments.value && payments.value.length
+                ? [newPayment, ...payments.value]
+                : [newPayment];
+
+            successMsg.value = res.data.message || 'Payment recorded successfully.';
+            isPaymentModalOpen.value = false;
+        } else {
+            paymentFormError.value = res.data.message || 'Something went wrong.';
+        }
+    } catch (err) {
+        paymentFormError.value =
+            err.response?.data?.message ||
+            err.message ||
+            'Something went wrong while recording the payment.';
+    } finally {
+        paymentSubmitting.value = false;
+    }
+}
 
 
 
