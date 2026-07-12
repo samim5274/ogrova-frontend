@@ -252,7 +252,7 @@
                                                 </button>
                                             </div>
                                             <p v-else-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">
-                                                Verified {{ formatDate(payment.verified_at) }} || Verified By: {{ payment.verifier.name }}
+                                                Verified {{ formatDate(payment.verified_at) }} || Verified By: {{ payment.verifier?.name || '-' }}
                                             </p>
 
                                             <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-2 italic">
@@ -551,96 +551,185 @@
             leave-from-class="opacity-100"
             leave-to-class="opacity-0">
             <div v-if="isPaymentModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div
+                @click.stop
+                class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
 
-                <div
-                    @click.stop
-                    class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-
-                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Make Payment</h3>
-                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Order #{{ order?.reg }}</p>
-                        </div>
-                        <button @click="isPaymentModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                            <i class="fa-solid fa-x h-5 w-5"></i>
-                        </button>
-                    </div>
-
-                    <form @submit.prevent="submitPayment" class="p-6 space-y-4">
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Amount</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">৳</span>
-                                <input
-                                    v-model="paymentForm.amount"
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    required
-                                    class="w-full h-11 pl-7 pr-3 text-sm font-mono rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Payment Method</label>
-                            <select
-                                v-model="paymentForm.payment_method"
-                                required
-                                class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
-                                <option value="bank_transfer">Bank Transfer</option>
-                                <option value="mobile_banking">Mobile Banking</option>
-                                <option value="card">Card</option>
-                                <option value="cod">Cash on Delivery</option>
-                                <option value="paypal">PayPal</option>
-                            </select>
-                        </div>
-
-                        <div v-if="['bank_transfer','mobile_banking'].includes(paymentForm.payment_method)" class="grid grid-cols-2 gap-3">
-                            <div v-if="paymentForm.payment_method === 'bank_transfer'">
-                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Bank Name</label>
-                                <input v-model="paymentForm.bank_name" type="text" placeholder="e.g. Brac Bank"
-                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
-                            </div>
-                            <div v-if="paymentForm.payment_method === 'bank_transfer'">
-                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Account Number</label>
-                                <input v-model="paymentForm.account_number" type="text"
-                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Account Holder</label>
-                                <input v-model="paymentForm.account_holder_name" type="text"
-                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
-                            </div>
-                            <div v-if="paymentForm.payment_method === 'mobile_banking'">
-                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Sender Mobile</label>
-                                <input v-model="paymentForm.sender_mobile" type="text" placeholder="017XXXXXXXX"
-                                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Remarks <span class="font-normal text-slate-400">(optional)</span></label>
-                            <textarea
-                                v-model="paymentForm.remarks"
-                                rows="2"
-                                placeholder="e.g. Advance payment"
-                                class="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 resize-none"></textarea>
-                        </div>
-
-                        <p v-if="paymentFormError" class="text-xs text-red-500">{{ paymentFormError }}</p>
-
-                        <div class="flex justify-end gap-3 pt-1">
-                            <button type="button" @click="isPaymentModalOpen = false" class="px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:underline">
-                                Cancel
-                            </button>
-                            <button type="submit" :disabled="paymentSubmitting"
-                                class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-500/20 transition">
-                                {{ paymentSubmitting ? 'Processing...' : 'Confirm Payment' }}
-                            </button>
-                        </div>
-                    </form>
+                <!-- Header -->
+                <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Make payment</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Order #{{ order?.reg }}</p>
                 </div>
+                <button @click="isPaymentModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-x h-5 w-5"></i>
+                </button>
+                </div>
+
+                <form @submit.prevent="submitPayment" class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+
+                <!-- Amount -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                    Amount <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">৳</span>
+                    <input
+                        v-model="paymentForm.amount"
+                        type="number"
+                        step="0.01"
+                        min="1"
+                        max="99999999.99"
+                        required readonly
+                        class="w-full h-11 pl-7 pr-3 text-sm font-mono rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                </div>
+
+                <!-- Payment method -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                    Payment method <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                    v-model="paymentForm.payment_method"
+                    required
+                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
+                    <option value="cod">Cash on delivery</option>
+                    <option value="cash">Cash</option>
+                    <option value="bank_transfer">Bank transfer</option>
+                    <option value="mobile_banking">Mobile banking</option>
+                    <option value="card">Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="wallet">Wallet</option>
+                    </select>
+                </div>
+
+                <!-- Bank transfer -->
+                <div v-if="paymentForm.payment_method === 'bank_transfer'" class="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Bank name <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.bank_name" required maxlength="150" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Account number <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.account_number" required maxlength="100" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                    <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Account holder name <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.account_holder_name" required maxlength="150" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                    <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Transaction ID <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.transaction_id" required maxlength="100" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                </div>
+
+                <!-- Mobile banking -->
+                <div v-if="paymentForm.payment_method === 'mobile_banking'" class="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Provider <span class="text-red-500">*</span>
+                    </label>
+                    <select v-model="paymentForm.provider" required class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
+                        <option value="">Select provider</option>
+                        <option value="bkash">bKash</option>
+                        <option value="nagad">Nagad</option>
+                        <option value="rocket">Rocket</option>
+                    </select>
+                    </div>
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Sender mobile <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.sender_mobile" required maxlength="20" placeholder="017xxxxxxxx" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Sender name <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.sender_name" required maxlength="150" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Transaction ID <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.transaction_id" required maxlength="100" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                </div>
+
+                <!-- Card -->
+                <div v-if="paymentForm.payment_method === 'card'" class="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Gateway <span class="text-red-500">*</span>
+                    </label>
+                    <select v-model="paymentForm.provider" required class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
+                        <option value="">Select gateway</option>
+                        <option value="sslcommerz">SSLCommerz</option>
+                        <option value="stripe">Stripe</option>
+                    </select>
+                    </div>
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Gateway transaction ID <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.transaction_id" required maxlength="100" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                </div>
+
+                <!-- PayPal -->
+                <div v-if="paymentForm.payment_method === 'paypal'" class="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        Provider <span class="text-red-500">*</span>
+                    </label>
+                    <!-- Fixed to paypal — backend requires `provider` for this method too -->
+                    <input :value="paymentForm.provider = 'paypal'" disabled
+                        class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400" />
+                    </div>
+                    <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                        PayPal transaction ID <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="paymentForm.transaction_id" required maxlength="100" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    </div>
+                </div>
+
+                <!-- Remarks -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                    Remarks <span class="font-normal text-slate-400">(optional)</span>
+                    </label>
+                    <textarea
+                    v-model="paymentForm.remarks"
+                    rows="2"
+                    maxlength="1000"
+                    placeholder="e.g. Advance payment"
+                    class="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 resize-none"></textarea>
+                </div>
+
+                <p v-if="paymentFormError" class="text-xs text-red-500 bg-red-50 dark:bg-red-950/30 rounded-lg px-3 py-2">{{ paymentFormError }}</p>
+
+                <div class="flex justify-end gap-3 pt-1">
+                    <button type="button" @click="isPaymentModalOpen = false" class="px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:underline">
+                    Cancel
+                    </button>
+                    <button type="submit" :disabled="paymentSubmitting"
+                    class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-500/20 transition">
+                    {{ paymentSubmitting ? 'Processing...' : 'Confirm payment' }}
+                    </button>
+                </div>
+                </form>
+            </div>
             </div>
         </Transition>
     </Teleport>
@@ -1063,20 +1152,24 @@ const getProductImage = (item) => {
 const isPaymentModalOpen = ref(false);
 const paymentSubmitting = ref(false);
 const paymentFormError = ref('');
+
 const paymentForm = ref({
     amount: '',
-    payment_method: 'bank_transfer',
+    payment_method: 'cash',
+    provider: '',
+    transaction_id: '',
+    sender_name: '',
+    sender_mobile: '',
     bank_name: '',
     account_number: '',
     account_holder_name: '',
-    sender_mobile: '',
     remarks: '',
 });
 
 function resetPaymentForm() {
     paymentForm.value = {
         amount: order.value?.payable_amount ?? '',
-        payment_method: 'bank_transfer',
+        payment_method: 'cash',
         bank_name: '',
         account_number: '',
         account_holder_name: '',
@@ -1102,14 +1195,7 @@ async function submitPayment() {
     paymentSubmitting.value = true;
     try {
         const res = await api.post(`/orders/${route.params.reg}/payments`, {
-            amount: paymentForm.value.amount,
-            payment_method: paymentForm.value.payment_method,
-            provider: 'manual',
-            bank_name: paymentForm.value.bank_name || null,
-            account_number: paymentForm.value.account_number || null,
-            account_holder_name: paymentForm.value.account_holder_name || null,
-            sender_mobile: paymentForm.value.sender_mobile || null,
-            remarks: paymentForm.value.remarks || null,
+            ...paymentForm.value
         });
 
         if (res.data.success) {
