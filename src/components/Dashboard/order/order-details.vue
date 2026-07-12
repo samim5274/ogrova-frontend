@@ -213,7 +213,7 @@
                                                     <div>
                                                         <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
                                                             {{ getPaymentMethod(payment.payment_method).label }}
-                                                            <span v-if="payment.gateway" class="font-normal text-slate-400">via {{ payment.gateway }}</span>
+                                                            <span v-if="payment.provider" class="font-normal text-slate-400">via {{ payment.provider }}</span>
                                                         </p>
                                                         <p v-if="payment.transaction_id" class="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5">
                                                             {{ payment.transaction_id }}
@@ -245,7 +245,7 @@
                                                 <span v-if="payment.account_holder_name">Acc. Holder Name</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_holder_name }}</span>
                                             </div>
 
-                                            <div v-if="payment.status === 'Pending' && payment.gateway === 'manual'" class="mt-3">
+                                            <div v-if="payment.status === 'Pending' && payment.provider === 'manual'" class="mt-3">
                                                 <button @click="verifyPayment(payment)"
                                                         class="w-full h-8 text-xs font-semibold rounded-lg border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition">
                                                     Verify Payment
@@ -467,7 +467,7 @@
                                                     Quick Note
                                                 </h4>
                                                 <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
-                                                    This order was processed through the automated gateway. Contact support if transaction ID is missing.
+                                                    This order was processed through the automated provider. Contact support if transaction ID is missing.
                                                 </p>
                                             </div>
                                         </div>
@@ -1104,7 +1104,7 @@ async function submitPayment() {
         const res = await api.post(`/orders/${route.params.reg}/payments`, {
             amount: paymentForm.value.amount,
             payment_method: paymentForm.value.payment_method,
-            gateway: 'manual',
+            provider: 'manual',
             bank_name: paymentForm.value.bank_name || null,
             account_number: paymentForm.value.account_number || null,
             account_holder_name: paymentForm.value.account_holder_name || null,
