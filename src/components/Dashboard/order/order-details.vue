@@ -136,12 +136,12 @@
                                     </div>
 
                                     <div class="px-6 py-4 space-y-3">
-                                        <div class="flex justify-between items-center">
+                                        <!-- <div class="flex justify-between items-center">
                                             <span class="text-sm text-slate-500 dark:text-slate-400">Transaction ID</span>
                                             <span class="text-sm font-mono font-semibold text-slate-900 dark:text-indigo-300 bg-slate-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-md">
                                                 {{ order.transaction_id || 'Not Available' }}
                                             </span>
-                                        </div>
+                                        </div> -->
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm text-slate-500 dark:text-slate-400">Registration Number</span>
                                             <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ order.reg }}</span>
@@ -400,55 +400,81 @@
                                                 </div>
                                             </div>
 
-                                            <div class="text-left space-y-3 border-t border-slate-100 dark:border-slate-800 pt-6">
-                                                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-regular fa-user w-4 text-center"></i>
-                                                    <span class="font-semibold">{{ order.contact_name }}</span>
+                                            <div class="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 divide-y divide-slate-100 dark:divide-slate-800 shadow-sm">
+
+                                                <!-- Contact Information -->
+                                                <div class="p-5 space-y-4">
+                                                    <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                                                        Customer Details
+                                                    </h3>
+
+                                                    <div class="flex items-center gap-3.5">
+                                                        <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                            <i class="fa-regular fa-user text-[15px]"></i>
+                                                        </span>
+                                                        <div class="min-w-0">
+                                                            <p class="text-[10.5px] text-slate-400 dark:text-slate-500 uppercase font-semibold tracking-wider">Full Name</p>
+                                                            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{{ order.contact_name }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex items-center gap-3.5">
+                                                        <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                            <i class="fa-solid fa-phone text-[15px]"></i>
+                                                        </span>
+                                                        <div class="min-w-0">
+                                                            <p class="text-[10.5px] text-slate-400 dark:text-slate-500 uppercase font-semibold tracking-wider">Phone Number</p>
+                                                            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{{ order.contact_number }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex items-center gap-3.5">
+                                                        <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                            <i class="fa-regular fa-envelope text-[15px]"></i>
+                                                        </span>
+                                                        <div class="min-w-0">
+                                                            <p class="text-[10.5px] text-slate-400 dark:text-slate-500 uppercase font-semibold tracking-wider">Email Address</p>
+                                                            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{{ order.contact_email || '—' }}</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-solid fa-phone w-4 text-center"></i>
-                                                    <span>{{ order.contact_number }}</span>
+                                                <!-- Shipping Address -->
+                                                <div class="p-5 space-y-3">
+                                                    <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                                                        Shipping Address
+                                                    </h3>
+
+                                                    <div class="flex items-start gap-3.5">
+                                                        <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                            <i class="fa-solid fa-location-dot text-[15px]"></i>
+                                                        </span>
+                                                        <div class="min-w-0 space-y-2 pt-0.5">
+                                                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                                                <template v-for="(part, i) in [order.upazila?.name, order.district?.name, order.division?.name].filter(Boolean)" :key="i">
+                                                                    <span>{{ part }}</span><span v-if="i < [order.upazila?.name, order.district?.name, order.division?.name].filter(Boolean).length - 1" class="text-slate-300 dark:text-slate-600 mx-1.5">/</span>
+                                                                </template>
+                                                            </p>
+                                                            <p v-if="order.policeStation" class="text-xs text-slate-400 dark:text-slate-500">
+                                                                <i class="fa-solid fa-building-shield text-[10px] mr-1"></i>{{ order.policeStation.name }} Police Station
+                                                            </p>
+                                                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ order.shipping_address }}</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-regular fa-envelope w-4 text-center"></i>
-                                                    <span>{{ order.contact_email }}</span>
+                                                <!-- Remarks -->
+                                                <div v-if="order.remarks" class="p-5">
+                                                    <div class="w-full flex items-start gap-3.5 pl-4 border-l-2 border-amber-300 dark:border-amber-600 text-left">
+                                                        <div class="min-w-0 flex-1 text-left">
+                                                            <p class="text-[10.5px] text-amber-600 dark:text-amber-500 uppercase font-bold tracking-wider mb-1 flex items-center gap-1.5 justify-start">
+                                                                <i class="fa-regular fa-comment-dots"></i> Note
+                                                            </p>
+                                                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic text-left">{{ order.remarks }}</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-solid fa-location-dot w-4 text-center mt-0.5"></i>
-                                                    <span class="leading-relaxed">{{ order.shipping_address }}</span>
-                                                </div>
-
-                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-solid fa-money-bill-transfer w-4 text-center mt-0.5"></i>
-                                                    <span class="leading-relaxed">{{ order.transaction_id }}</span>
-                                                </div>
-
-                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-solid fa-phone w-4 text-center mt-0.5 text-slate-400 dark:text-slate-500"></i>
-                                                    <span class="leading-relaxed">
-                                                        <span class="font-medium text-slate-500 dark:text-slate-500 mr-1">Acc. No:</span>
-                                                        {{ order.payment_number }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400 mt-1.5">
-                                                    <i class="fa-solid fa-money-bill-transfer w-4 text-center mt-0.5 text-slate-400 dark:text-slate-500"></i>
-                                                    <span class="leading-relaxed">
-                                                        <span class="font-medium text-slate-500 dark:text-slate-500 mr-1">TrxID:</span>
-                                                        {{ order.payment_transaction_code }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                                    <i class="fa-regular fa-comment-dots w-4 text-center mt-0.5"></i>
-                                                    <span class="leading-relaxed">
-                                                        <span class="text-xs text-slate-400 uppercase font-bold mr-1">Note:</span>
-                                                        {{ order.remarks || 'N/A' }}
-                                                    </span>
-                                                </div>
                                             </div>
 
                                             <button @click="viewCustomerFullProfile(order)" class="w-full mt-8 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold rounded-xl transition-all border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/30 text-sm">
