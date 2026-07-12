@@ -666,7 +666,7 @@
                         Provider <span class="text-red-500">*</span>
                     </label>
                     <select v-model="paymentForm.provider" required class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
-                        <option value="">Select provider</option>
+                        <option value="" selected disabled>-- Select provider --</option>
                         <option value="bkash">bKash</option>
                         <option value="nagad">Nagad</option>
                         <option value="rocket">Rocket</option>
@@ -676,7 +676,7 @@
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
                         Sender mobile <span class="text-red-500">*</span>
                     </label>
-                    <input v-model="paymentForm.sender_mobile" required maxlength="20" placeholder="017xxxxxxxx" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
+                    <input v-model="paymentForm.sender_mobile" required maxlength="20" placeholder="01xxxxxxxxx" class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
                     </div>
                     <div>
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
