@@ -634,32 +634,10 @@
                                     @click="confirmPayment"
                                     :disabled="submitting || orderConfirmed"
                                     class="w-full bg-[#16A34A] dark:bg-[#F97316] hover:bg-[#148a3e] dark:hover:bg-[#e0640d] text-white font-bold py-4 rounded-xl shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
-
-                                    <span>
-                                        {{
-                                            orderConfirmed
-                                                ? 'Order Confirmed'
-                                                : submitting
-                                                    ? 'Processing...'
-                                                    : 'Proceed to Payment'
-                                        }}
-                                    </span>
-
-                                    <i
-                                        v-if="orderConfirmed"
-                                        class="fa-solid fa-circle-check">
-                                    </i>
-
-                                    <i
-                                        v-else-if="submitting"
-                                        class="fa-solid fa-spinner fa-spin">
-                                    </i>
-
-                                    <i
-                                        v-else
-                                        class="fa-solid fa-arrow-right">
-                                    </i>
-
+                                    <span>  {{ orderConfirmed ? 'Order Confirmed' : submitting ? 'Processing...' : 'Proceed to Payment' }} </span>
+                                    <i v-if="orderConfirmed" class="fa-solid fa-circle-check"></i>
+                                    <i v-else-if="submitting" class="fa-solid fa-spinner fa-spin"></i>
+                                    <i v-else class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
