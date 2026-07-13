@@ -24,7 +24,49 @@
             <div class="flex-1 min-w-0">
                 <main class="flex-1 min-h-screen min-w-0 bg-gray-50 dark:bg-[#0C1326] px-4 sm:px-6 lg:px-8 py-6 transition-colors duration-300">
 
-                    <div v-if="order">
+                    <!-- Loading skeleton -->
+                    <div v-if="loading && !order" class="space-y-6 animate-pulse">
+                        <div class="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-slate-800/60">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-800"></div>
+                                <div class="space-y-2">
+                                    <div class="h-5 w-40 bg-slate-200 dark:bg-slate-800 rounded"></div>
+                                    <div class="h-3 w-56 bg-slate-200 dark:bg-slate-800 rounded"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="h-9 w-32 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+                                <div class="h-9 w-32 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div class="lg:col-span-2 space-y-6">
+                                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                                    <div v-for="n in 4" :key="n" class="h-24 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+                                </div>
+                                <div class="h-32 bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
+                                <div class="h-72 bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
+                                <div class="h-48 bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
+                            </div>
+                            <div class="h-96 bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
+                        </div>
+                    </div>
+
+                    <!-- Not found -->
+                    <div v-else-if="!order" class="flex flex-col items-center text-center py-24">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-circle-exclamation text-2xl text-slate-400 dark:text-slate-500"></i>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">Order not found</p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 max-w-xs leading-relaxed">
+                            {{ errorMsg || 'This order may not exist or may have been removed.' }}
+                        </p>
+                        <button @click="$router.back()" class="mt-5 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition shadow-sm">
+                            Go back
+                        </button>
+                    </div>
+
+                    <div v-else>
 
                         <!-- Page header -->
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-200 dark:border-slate-800/60">
@@ -56,11 +98,13 @@
                             </div>
 
                             <div class="flex items-center gap-3">
-                                <button class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition shadow-sm">
-                                    Download Invoice
+                                <button @click="downloadInvoice" :disabled="invoiceDownloading"
+                                    class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-sm">
+                                    <i class="fa-solid fa-download mr-1.5"></i>
+                                    {{ invoiceDownloading ? 'Preparing...' : 'Download Invoice' }}
                                 </button>
-                                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-indigo-500/20 transition">
-                                    Print Details
+                                <button @click="printOrder" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-indigo-500/20 transition">
+                                    <i class="fa-solid fa-print mr-1.5"></i>Print Details
                                 </button>
                             </div>
                         </div>
@@ -118,6 +162,30 @@
 
                                 </div>
 
+                                <!-- Order timeline -->
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                                    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-6">Order Timeline</h3>
+                                    <div class="flex items-start overflow-x-auto pb-1 -mx-1 px-1">
+                                        <template v-for="(step, idx) in timelineSteps" :key="step.key">
+                                            <div class="flex flex-col items-center text-center min-w-[86px] shrink-0">
+                                                <div class="w-9 h-9 rounded-full flex items-center justify-center border-2" :class="stepClass(step)">
+                                                    <i :class="step.icon" class="text-xs"></i>
+                                                </div>
+                                                <p class="text-[11px] font-semibold mt-2 leading-tight"
+                                                    :class="step.reached ? 'text-slate-700 dark:text-slate-300' : 'text-slate-400 dark:text-slate-600'">
+                                                    {{ step.label }}
+                                                </p>
+                                                <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+                                                    {{ step.at ? formatDate(step.at) : (step.reached ? 'Reached' : 'Pending') }}
+                                                </p>
+                                            </div>
+                                            <div v-if="idx < timelineSteps.length - 1"
+                                                class="flex-1 h-0.5 mt-[18px] mx-1 min-w-[20px]"
+                                                :class="step.reached ? 'bg-indigo-400 dark:bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'"></div>
+                                        </template>
+                                    </div>
+                                </div>
+
                                 <!-- Transaction details -->
                                 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
 
@@ -136,12 +204,6 @@
                                     </div>
 
                                     <div class="px-6 py-4 space-y-3">
-                                        <!-- <div class="flex justify-between items-center">
-                                            <span class="text-sm text-slate-500 dark:text-slate-400">Transaction ID</span>
-                                            <span class="text-sm font-mono font-semibold text-slate-900 dark:text-indigo-300 bg-slate-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-md">
-                                                {{ order.transaction_id || 'Not Available' }}
-                                            </span>
-                                        </div> -->
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm text-slate-500 dark:text-slate-400">Registration Number</span>
                                             <span class="text-sm font-semibold text-slate-900 dark:text-white">{{ order.reg }}</span>
@@ -192,72 +254,182 @@
                                             <span class="text-sm font-bold text-slate-900 dark:text-white">Total Payable</span>
                                             <span class="text-xl font-mono font-bold text-indigo-600 dark:text-indigo-400">{{ order.currency }} ৳ {{ Number(order.payable_amount).toLocaleString() }}</span>
                                         </div>
+
+                                        <!-- Paid / Due summary — derived from the payments relation -->
+                                        <div class="mt-4 pt-4 border-t border-dashed border-slate-200 dark:border-slate-700 space-y-2">
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span class="text-slate-500 dark:text-slate-400">
+                                                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i>Paid
+                                                </span>
+                                                <span class="font-mono font-semibold text-emerald-600 dark:text-emerald-400">
+                                                    {{ order.currency }} ৳ {{ totalPaid.toLocaleString() }}
+                                                </span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span class="text-slate-500 dark:text-slate-400">
+                                                    <i class="fa-solid fa-hourglass-half mr-1.5" :class="dueAmount > 0 ? 'text-red-500' : 'text-slate-400'"></i>Due
+                                                </span>
+                                                <span class="font-mono font-semibold" :class="dueAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'">
+                                                    {{ order.currency }} ৳ {{ dueAmount.toLocaleString() }}
+                                                </span>
+                                            </div>
+                                            <span v-if="dueAmount > 0"
+                                                class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2.5 py-1 rounded-full mt-1">
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Partially paid
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Payment history (separate card, no longer nested inside Transaction Details) -->
                                 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
-                                    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">Payment History</h3>
+                                    <div class="flex items-center justify-between mb-5">
+                                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Payment History</h3>
+                                        <span v-if="payments && payments.length" class="text-xs font-medium text-slate-400 dark:text-slate-500">
+                                            {{ payments.length }} {{ payments.length === 1 ? 'attempt' : 'attempts' }}
+                                        </span>
+                                    </div>
 
                                     <div v-if="payments && payments.length" class="space-y-3">
                                         <div v-for="payment in payments" :key="payment.id"
-                                            class="bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 p-4"
-                                            :class="{ 'opacity-70': ['Failed','Cancelled'].includes(payment.status) }">
+                                            class="relative bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-opacity"
+                                            :class="{ 'opacity-60': ['Failed','Cancelled'].includes(payment.status) }">
 
-                                            <div class="flex items-start justify-between">
-                                                <div class="flex gap-3">
-                                                    <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-                                                        :class="getPaymentMethod(payment.payment_method).iconBg">
-                                                        <i :class="[getPaymentMethod(payment.payment_method).icon, getPaymentMethod(payment.payment_method).iconColor]" class="text-base"></i>
+                                            <!-- Status accent bar -->
+                                            <span class="absolute inset-y-0 left-0 w-1" :class="getPaymentStatus(payment.status).accentBar"></span>
+
+                                            <div class="p-4 pl-5">
+                                                <div class="flex items-start justify-between gap-3">
+                                                    <div class="flex gap-3 min-w-0">
+                                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                                                            :class="getPaymentMethod(payment.payment_method).iconBg">
+                                                            <i :class="[getPaymentMethod(payment.payment_method).icon, getPaymentMethod(payment.payment_method).iconColor]" class="text-base"></i>
+                                                        </div>
+                                                        <div class="min-w-0">
+                                                            <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                                                {{ getPaymentMethod(payment.payment_method).label }}
+                                                                <span v-if="payment.provider" class="font-normal text-slate-400">via {{ payment.provider }}</span>
+                                                                <span v-if="payment.payment_type === 'Refund'"
+                                                                    class="ml-1.5 inline-flex items-center text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                                                                    Refund
+                                                                </span>
+                                                                <span v-else-if="payment.payment_type === 'Adjustment'"
+                                                                    class="ml-1.5 inline-flex items-center text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400">
+                                                                    Adjustment
+                                                                </span>
+                                                            </p>
+                                                            <p v-if="payment.transaction_id" class="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5 truncate">
+                                                                {{ payment.transaction_id }}
+                                                            </p>
+                                                            <p v-else-if="payment.sender_mobile || payment.account_holder_name" class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 truncate">
+                                                                {{ payment.account_holder_name || 'Sender' }} — {{ payment.sender_mobile }}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                                                            {{ getPaymentMethod(payment.payment_method).label }}
-                                                            <span v-if="payment.provider" class="font-normal text-slate-400">via {{ payment.provider }}</span>
-                                                        </p>
-                                                        <p v-if="payment.transaction_id" class="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5">
-                                                            {{ payment.transaction_id }}
-                                                        </p>
-                                                        <p v-else-if="payment.sender_mobile || payment.account_holder_name" class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                                                            {{ payment.account_holder_name || 'Sender' }} — {{ payment.sender_mobile }}
+
+                                                    <div class="text-right shrink-0">
+                                                        <span :class="getPaymentStatus(payment.status).badge" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap">
+                                                            <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(payment.status).dot"></span>
+                                                            {{ payment.status }}
+                                                        </span>
+                                                        <p class="text-sm font-mono font-semibold mt-2"
+                                                            :class="payment.payment_type === 'Refund' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-900 dark:text-white'">
+                                                            {{ payment.payment_type === 'Refund' ? '−' : '' }}{{ payment.currency }} ৳ {{ Number(payment.amount).toLocaleString() }}
                                                         </p>
                                                     </div>
                                                 </div>
 
-                                                <span :class="getPaymentStatus(payment.status).badge" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap">
-                                                    <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(payment.status).dot"></span>
-                                                    {{ payment.status }}
-                                                </span>
-                                            </div>
+                                                <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
+                                                    <span class="text-xs text-slate-400 dark:text-slate-500">
+                                                        <i class="fa-regular fa-clock mr-1"></i>{{ payment.paid_at ? formatDate(payment.paid_at) : formatDate(payment.created_at) }}
+                                                    </span>
+                                                    <span v-if="payment.receipt_no" class="text-xs font-mono text-slate-400 dark:text-slate-500">
+                                                        #{{ payment.receipt_no }}
+                                                    </span>
+                                                </div>
 
-                                            <div class="flex justify-between items-center mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
-                                                <span class="text-xs text-slate-400 dark:text-slate-500">
-                                                    {{ payment.paid_at ? formatDate(payment.paid_at) : formatDate(payment.created_at) }}
-                                                </span>
-                                                <span class="text-sm font-mono font-semibold text-slate-900 dark:text-white">
-                                                    {{ payment.currency }} ৳ {{ Number(payment.amount).toLocaleString() }}
-                                                </span>
-                                            </div>
+                                                <div v-if="payment.bank_name || payment.account_number" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs grid grid-cols-2 gap-y-1.5">
+                                                    <template v-if="payment.bank_name">
+                                                        <span class="text-slate-400 dark:text-slate-500">Bank</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.bank_name }}</span>
+                                                    </template>
+                                                    <template v-if="payment.account_number">
+                                                        <span class="text-slate-400 dark:text-slate-500">Account</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_number }}</span>
+                                                    </template>
+                                                    <template v-if="payment.account_holder_name">
+                                                        <span class="text-slate-400 dark:text-slate-500">Acc. holder</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_holder_name }}</span>
+                                                    </template>
+                                                </div>
 
-                                            <div class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 grid grid-cols-2 gap-y-1">
-                                                <span>Bank</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.bank_name }}</span>
-                                                <span>Account</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_number }}</span>
-                                                <span v-if="payment.account_holder_name">Acc. Holder Name</span><span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_holder_name }}</span>
-                                            </div>
+                                                <!-- Gateway / channel / receiver meta — only rendered when present -->
+                                                <div v-if="payment.channel || payment.gateway_fee || payment.net_amount || payment.receiver?.name"
+                                                    class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs grid grid-cols-2 gap-y-1.5">
+                                                    <template v-if="payment.channel">
+                                                        <span class="text-slate-400 dark:text-slate-500">Channel</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.channel }}</span>
+                                                    </template>
+                                                    <template v-if="Number(payment.gateway_fee) > 0">
+                                                        <span class="text-slate-400 dark:text-slate-500">Gateway fee</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.currency }} ৳ {{ Number(payment.gateway_fee).toLocaleString() }}</span>
+                                                    </template>
+                                                    <template v-if="Number(payment.net_amount) > 0">
+                                                        <span class="text-slate-400 dark:text-slate-500">Net amount</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.currency }} ৳ {{ Number(payment.net_amount).toLocaleString() }}</span>
+                                                    </template>
+                                                    <template v-if="payment.receiver?.name">
+                                                        <span class="text-slate-400 dark:text-slate-500">Received by</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.receiver.name }}</span>
+                                                    </template>
+                                                </div>
 
-                                            <div v-if="payment.status === 'Pending' && payment.provider === 'manual'" class="mt-3">
-                                                <button @click="verifyPayment(payment)"
-                                                        class="w-full h-8 text-xs font-semibold rounded-lg border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition">
-                                                    Verify Payment
+                                                <div v-if="payment.paid_at" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs grid grid-cols-2 gap-y-1.5">
+                                                    <span class="text-slate-400 dark:text-slate-500">Paid at</span>
+                                                    <span class="text-right font-medium text-slate-700 dark:text-slate-300">
+                                                        {{ new Date(payment.paid_at).toLocaleString('en-BD', {
+                                                            year: 'numeric', month: 'long', day: 'numeric',
+                                                            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+                                                        }) }}
+                                                    </span>
+                                                </div>
+
+                                                <!-- Failure reason -->
+                                                <div v-if="payment.status === 'Failed' && payment.failure_reason"
+                                                    class="mt-3 pt-3 border-t border-dashed border-red-200 dark:border-red-900/40">
+                                                    <p class="text-xs text-red-600 dark:text-red-400">
+                                                        <i class="fa-solid fa-triangle-exclamation mr-1"></i>{{ payment.failure_reason }}
+                                                    </p>
+                                                </div>
+
+                                                <details v-if="payment.user_agent" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs group">
+                                                    <summary class="text-slate-400 dark:text-slate-500 cursor-pointer select-none list-none flex items-center justify-between">
+                                                        <span><i class="fa-solid fa-circle-info mr-1"></i>Device details</span>
+                                                        <i class="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                                                    </summary>
+                                                    <div class="mt-2 grid grid-cols-2 gap-y-1.5">
+                                                        <span class="text-slate-400 dark:text-slate-500">Browser</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).browser }}</span>
+                                                        <span class="text-slate-400 dark:text-slate-500">OS</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).os }}</span>
+                                                        <span class="text-slate-400 dark:text-slate-500">Device</span>
+                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).device }}</span>
+                                                    </div>
+                                                </details>
+
+                                                <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-2 italic">
+                                                    "{{ payment.remarks }}"
+                                                </p>
+
+                                                <button v-if="payment.status === 'Pending' && payment.provider === 'manual'" @click="verifyPayment(payment)"
+                                                    class="w-full h-9 mt-3 text-xs font-semibold rounded-lg border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition">
+                                                    <i class="fa-solid fa-shield-check mr-1"></i>Verify payment
                                                 </button>
+                                                <p v-else-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 mt-3 flex items-center gap-1">
+                                                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                                                    Verified {{ formatDate(payment.verified_at) }} by {{ payment.verifier?.name || '—' }}
+                                                </p>
                                             </div>
-                                            <p v-else-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">
-                                                Verified {{ formatDate(payment.verified_at) }} || Verified By: {{ payment.verifier?.name || '-' }}
-                                            </p>
-
-                                            <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-2 italic">
-                                                "{{ payment.remarks }}"
-                                            </p>
                                         </div>
                                     </div>
 
@@ -271,10 +443,9 @@
                                         </p>
                                         <button @click="openPaymentModal" class="mt-5 inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-500/20 active:scale-95 transition-all">
                                             <i class="fa-solid fa-credit-card text-xs"></i>
-                                            Make Payment
+                                            Make payment
                                         </button>
                                     </div>
-
                                 </div>
 
                                 <!-- Order items -->
@@ -459,6 +630,9 @@
                                                                 <i class="fa-solid fa-building-shield text-[10px] mr-1"></i>{{ order.policeStation.name }} Police Station
                                                             </p>
                                                             <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ order.shipping_address }}</p>
+                                                            <p v-if="order.postal_code" class="text-xs text-slate-400 dark:text-slate-500">
+                                                                <i class="fa-solid fa-mail-bulk text-[10px] mr-1"></i>Postal code: {{ order.postal_code }}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -718,8 +892,8 @@
                     <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
                         Provider <span class="text-red-500">*</span>
                     </label>
-                    <!-- Fixed to paypal — backend requires `provider` for this method too -->
-                    <input :value="paymentForm.provider = 'paypal'" disabled
+                    <!-- provider is force-set to 'paypal' by a watcher on payment_method, not mutated inline here -->
+                    <input :value="paymentForm.provider" disabled
                         class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400" />
                     </div>
                     <div>
@@ -763,9 +937,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import api, {makeImg} from '../../../services/api';
+import { UAParser } from 'ua-parser-js'
 
 import Navbar from '../admin/admin-navbar.vue';
 import Header from '../admin/admin-header.vue';
@@ -780,20 +955,6 @@ const route = useRoute();
 const loading = ref(false);
 const successMsg = ref('');
 const errorMsg = ref('');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // =============================
 // Get orders
@@ -922,6 +1083,12 @@ function getPaymentMethod(method) {
             iconBg: 'bg-slate-100 dark:bg-slate-500/10',
             iconColor: 'text-slate-500 dark:text-slate-400',
         },
+        cash: {
+            label: 'Cash',
+            icon: 'fa-solid fa-money-bill-1-wave',
+            iconBg: 'bg-slate-100 dark:bg-slate-500/10',
+            iconColor: 'text-slate-500 dark:text-slate-400',
+        },
         bank_transfer: {
             label: 'Bank transfer',
             icon: 'fa-solid fa-building-columns',
@@ -946,6 +1113,12 @@ function getPaymentMethod(method) {
             iconBg: 'bg-blue-50 dark:bg-blue-500/10',
             iconColor: 'text-blue-600 dark:text-blue-400',
         },
+        wallet: {
+            label: 'Wallet',
+            icon: 'fa-solid fa-wallet',
+            iconBg: 'bg-purple-50 dark:bg-purple-500/10',
+            iconColor: 'text-purple-600 dark:text-purple-400',
+        },
     };
     return map[method] || map.cod;
 }
@@ -955,49 +1128,126 @@ function getPaymentStatus(status) {
         Pending: {
             badge: 'bg-slate-100 dark:bg-slate-500/10 text-slate-600 dark:text-slate-400',
             dot: 'bg-slate-400',
+            accentBar: 'bg-slate-300 dark:bg-slate-600',
         },
         Processing: {
             badge: 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400',
             dot: 'bg-blue-500',
+            accentBar: 'bg-blue-400',
         },
         Success: {
             badge: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
             dot: 'bg-emerald-500',
+            accentBar: 'bg-emerald-500',
         },
         Failed: {
             badge: 'bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400',
             dot: 'bg-red-500',
+            accentBar: 'bg-red-400',
         },
         Cancelled: {
             badge: 'bg-slate-100 dark:bg-slate-500/10 text-slate-500 dark:text-slate-400',
             dot: 'bg-slate-400',
+            accentBar: 'bg-slate-300',
         },
         Refunded: {
             badge: 'bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400',
             dot: 'bg-purple-500',
+            accentBar: 'bg-purple-400',
         },
     };
     return map[status] || map.Pending;
 }
 
+const parseUserAgent = (ua) => {
+    const parser = new UAParser(ua)
+    const result = parser.getResult()
 
+    return {
+        browser: `${result.browser.name || 'Unknown'} ${result.browser.version || ''}`,
+        os: `${result.os.name || 'Unknown'} ${result.os.version || ''}`,
+        device: result.device.type || 'Desktop',
+    }
+}
 
+// =============================
+// Paid / Due summary — computed from the payments relation
+// (Order.paid_amount / due_amount are not relied on; the payments
+// array is the source of truth for what has actually settled.)
+// =============================
+const totalPaid = computed(() => {
+    if (!payments.value || !payments.value.length) return 0;
+    return payments.value.reduce((sum, p) => {
+        if (p.status !== 'Success') return sum;
+        const amt = Number(p.amount) || 0;
+        return p.payment_type === 'Refund' ? sum - amt : sum + amt;
+    }, 0);
+});
 
+const dueAmount = computed(() => {
+    const payable = Number(order.value?.payable_amount) || 0;
+    return Math.max(payable - totalPaid.value, 0);
+});
 
+// =============================
+// Order timeline
+// =============================
+// Mirrors the full `status` enum on the orders table. The happy path
+// (Pending → ... → Delivered) has no dedicated `out_for_delivery_at`
+// column, so that step is inferred from status position instead of a
+// timestamp. Cancelled / Failed / Returned are terminal deviations that
+// can happen from any point in the happy path, so they get appended
+// on top of whichever steps were actually reached.
+const STATUS_SEQUENCE = ['Pending', 'Confirmed', 'Processing', 'Picked', 'Shipped', 'Out for Delivery', 'Delivered'];
 
+const TERMINAL_META = {
+    Cancelled: { icon: 'fa-solid fa-circle-xmark', style: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400', atField: 'cancelled_at' },
+    Failed: { icon: 'fa-solid fa-triangle-exclamation', style: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400', atField: null },
+    Returned: { icon: 'fa-solid fa-rotate-left', style: 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400', atField: null },
+};
 
+const timelineSteps = computed(() => {
+    if (!order.value) return [];
+    const o = order.value;
+    const currentIndex = STATUS_SEQUENCE.indexOf(o.status);
+    const terminal = TERMINAL_META[o.status] || null;
 
+    const steps = [
+        { key: 'placed', label: 'Placed', at: o.date, icon: 'fa-solid fa-cart-shopping' },
+        { key: 'confirmed', label: 'Confirmed', at: o.confirmed_at, icon: 'fa-solid fa-circle-check' },
+        { key: 'processing', label: 'Processing', at: o.processing_at, icon: 'fa-solid fa-gears' },
+        { key: 'picked', label: 'Picked', at: o.picked_at, icon: 'fa-solid fa-box' },
+        { key: 'shipped', label: 'Shipped', at: o.shipped_at, icon: 'fa-solid fa-truck' },
+        { key: 'out_for_delivery', label: 'Out for delivery', at: o.out_for_delivery_at ?? null, icon: 'fa-solid fa-truck-fast' },
+        { key: 'delivered', label: 'Delivered', at: o.delivered_at, icon: 'fa-solid fa-house-circle-check' },
+    ].map((s, idx) => ({
+        ...s,
+        // reached if it has its own timestamp, or the order's current
+        // status has already passed this step in the sequence
+        reached: idx === 0 || !!s.at || (currentIndex >= 0 && idx <= currentIndex),
+    }));
 
+    if (terminal) {
+        const reached = steps.filter(s => s.reached);
+        reached.push({
+            key: 'terminal',
+            label: o.status,
+            at: terminal.atField ? o[terminal.atField] : null,
+            reached: true,
+            icon: terminal.icon,
+            style: terminal.style,
+        });
+        return reached;
+    }
 
+    return steps;
+});
 
-
-
-
-
-
-
-
-
+function stepClass(step) {
+    if (step.style) return step.style;
+    if (step.reached) return 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400';
+    return 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-300 dark:text-slate-600';
+}
 
 // FIX: this function was called from the template ("Verify Payment" button)
 async function verifyPayment(paymentRecord) {
@@ -1030,25 +1280,6 @@ async function verifyPayment(paymentRecord) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // open pop-up
 const isStatusModalOpen = ref(false);
 
@@ -1062,28 +1293,6 @@ function openStatusModal() {
 
     isStatusModalOpen.value = true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 async function updateStatus(newStatus){
     try{
@@ -1111,30 +1320,6 @@ async function updateStatus(newStatus){
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Get order cart items
 const cartItems = ref([]);
 async function getCartItems() {
@@ -1160,21 +1345,6 @@ const getProductImage = (item) => {
     return defaultProductImage;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const isPaymentModalOpen = ref(false);
 const paymentSubmitting = ref(false);
 const paymentFormError = ref('');
@@ -1192,10 +1362,24 @@ const paymentForm = ref({
     remarks: '',
 });
 
+// FIX: the previous version mutated paymentForm.provider inside a template
+// expression ( :value="paymentForm.provider = 'paypal'" ), which is an
+// anti-pattern in Vue. A watcher now owns that side effect.
+watch(() => paymentForm.value.payment_method, (method) => {
+    if (method === 'paypal') {
+        paymentForm.value.provider = 'paypal';
+    } else if (paymentForm.value.provider === 'paypal') {
+        paymentForm.value.provider = '';
+    }
+});
+
 function resetPaymentForm() {
     paymentForm.value = {
         amount: order.value?.payable_amount ?? '',
         payment_method: 'cash',
+        provider: '',
+        transaction_id: '',
+        sender_name: '',
         bank_name: '',
         account_number: '',
         account_holder_name: '',
@@ -1245,76 +1429,45 @@ async function submitPayment() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function ProductDetails(item) {
     router.push(`/product-details/${item.product.slug}`)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function viewCustomerFullProfile(order){
     router.push(`/admin/customer-details/${order?.user.user_id}`);
 }
 
+// =============================
+// Print / Download invoice
+// =============================
+function printOrder() {
+    window.print();
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const invoiceDownloading = ref(false);
+async function downloadInvoice() {
+    // NOTE: adjust this endpoint to whatever your backend actually exposes
+    // for generating the invoice PDF.
+    invoiceDownloading.value = true;
+    try {
+        const res = await api.get(`/orders/${route.params.reg}/invoice`, { responseType: 'blob' });
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `invoice-${order.value.reg}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        errorMsg.value =
+            err.response?.data?.message ||
+            err.message ||
+            "Could not download the invoice.";
+    } finally {
+        invoiceDownloading.value = false;
+    }
+}
 
 const isDark = ref(false);
 
@@ -1331,27 +1484,6 @@ function toggleTheme() {
 function onSearch(q) {
     console.log("search:", q);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* ESC to close drawer */
 onMounted(() => {
