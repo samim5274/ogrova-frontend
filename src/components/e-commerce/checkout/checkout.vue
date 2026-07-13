@@ -491,7 +491,7 @@
                             <div class="space-y-4">                                
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Subtotal</span>
-                                    <span class="text-gray-900 dark:text-white">৳ {{ total.toLocaleString() }}</span>
+                                    <span class="text-gray-900 dark:text-white">৳ {{ subtotal.toLocaleString() }}</span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Shipping</span>
@@ -621,13 +621,45 @@
                             </div>
 
                             <div class="mt-8">
-                                <button
+                                <!-- <button
                                     @click="confirmPayment"
                                     :disabled="submitting"
                                     class="w-full bg-[#16A34A] dark:bg-[#F97316] hover:bg-[#148a3e] dark:hover:bg-[#e0640d] text-white font-bold py-4 rounded-xl shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
                                     <span>{{ submitting ? 'Processing...' : 'Proceed to Payment' }}</span>
                                     <i v-if="!submitting" class="fa-solid fa-arrow-right"></i>
                                     <i v-else class="fa-solid fa-spinner fa-spin"></i>
+                                </button> -->
+
+                                <button
+                                    @click="confirmPayment"
+                                    :disabled="submitting || orderConfirmed"
+                                    class="w-full bg-[#16A34A] dark:bg-[#F97316] hover:bg-[#148a3e] dark:hover:bg-[#e0640d] text-white font-bold py-4 rounded-xl shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
+
+                                    <span>
+                                        {{
+                                            orderConfirmed
+                                                ? 'Order Confirmed'
+                                                : submitting
+                                                    ? 'Processing...'
+                                                    : 'Proceed to Payment'
+                                        }}
+                                    </span>
+
+                                    <i
+                                        v-if="orderConfirmed"
+                                        class="fa-solid fa-circle-check">
+                                    </i>
+
+                                    <i
+                                        v-else-if="submitting"
+                                        class="fa-solid fa-spinner fa-spin">
+                                    </i>
+
+                                    <i
+                                        v-else
+                                        class="fa-solid fa-arrow-right">
+                                    </i>
+
                                 </button>
                             </div>
                         </div>
@@ -987,6 +1019,7 @@ const payableAmount = computed(() => {
 
 const validationErrors = ref({});
 const submitting = ref(false);
+const orderConfirmed = ref(false);
 async function confirmPayment() {
 
     if (submitting.value) return;
@@ -1062,6 +1095,7 @@ async function confirmPayment() {
         const res = await api.post(`/orders/confirm/${routeReg}`, payload);
         successMsg.value =
             res.data.message || "Your order has been confirmed.";
+        orderConfirmed.value = true;
         setTimeout(() => {
             router.push("/");
         }, 1500);
@@ -1086,7 +1120,9 @@ async function confirmPayment() {
             "Something went wrong.";
 
     } finally {
-        submitting.value = false;
+        if (!orderConfirmed.value) {
+            submitting.value = false;
+        }
     }
 }
 
