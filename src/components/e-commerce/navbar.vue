@@ -65,11 +65,8 @@
 
             <div class="w-full flex-1 max-w-2xl mx-auto lg:mx-0">
                 <div class="relative group w-full">
-                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 transition-colors duration-200">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" />
-                        </svg>
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 dark:group-focus-within:text-[#F97316] transition-colors duration-200">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
 
                     <input
@@ -81,8 +78,8 @@
                                 bg-slate-50 text-slate-900 border-slate-200 placeholder:text-slate-400
                                 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 shadow-sm
                                 dark:bg-slate-800/50 dark:text-slate-100 dark:border-slate-700/80 dark:placeholder:text-slate-500
-                                dark:focus:bg-slate-900 dark:focus:border-emerald-500 dark:focus:ring-emerald-500/20"
-                        @keydown.enter="$emit('search', q)" />
+                                dark:focus:bg-slate-900 dark:focus:border-[#F97316] dark:focus:ring-orange-500/20"
+                        @keydown.enter.prevent="goSearch" />
 
                     <!-- Ctrl + K Badge -->
                     <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none hidden lg:flex items-center gap-0.5">
@@ -92,6 +89,103 @@
                         <kbd class="inline-flex items-center justify-center h-5 w-5 text-[10px] font-sans font-medium text-slate-400 bg-white border border-slate-200 rounded shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-slate-500">
                             K
                         </kbd>
+                    </div>
+                </div>
+
+                <div class="w-full flex-1 max-w-2xl mx-auto lg:mx-0 relative">
+                    
+                    <!-- Suggestion Dropdown Panel -->
+                    <div
+                        v-if="q.length >= 2"
+                        class="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 dark:border-slate-800 z-50 overflow-hidden max-h-[480px] overflow-y-auto backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
+
+                        <!-- Products Section -->
+                        <template v-if="suggestions.products.length">
+                            <div class="px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-slate-800/30 border-b border-slate-100 dark:border-slate-800/50">
+                                Products
+                            </div>
+                            
+                            <div class="divide-y divide-slate-50 dark:divide-slate-800/40">
+                                <router-link
+                                    v-for="product in suggestions.products"
+                                    :key="product.id"
+                                    :to="'/product-details/'+product.slug"
+                                    class="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-150 group">
+
+                                    <!-- Product Image Container -->
+                                    <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden border border-slate-100 dark:border-slate-700 flex-shrink-0">
+                                        <img :src="getProductImage(product)" :alt="product.name" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                    </div>
+
+                                    <div class="flex-1 min-w-0">
+                                        <div class="font-medium text-sm text-slate-800 dark:text-slate-200 truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-150">
+                                            {{ product.name }}
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-1 text-xs">
+                                            <span class="font-semibold text-emerald-600 dark:text-emerald-400">
+                                                ৳ {{ product.discount_price ?? product.price }}
+                                            </span>
+                                            <span v-if="product.discount_price" class="text-slate-400 line-through text-[11px]">
+                                                ৳ {{ product.price }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Arrow Action Icon -->
+                                    <div class="text-slate-300 dark:text-slate-600 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-200">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                                    </div>
+                                </router-link>
+                            </div>
+                        </template>
+
+                        <!-- Categories Section -->
+                        <template v-if="suggestions.categories.length">
+                            <div class="px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-slate-800/30 border-t border-b border-slate-100 dark:border-slate-800/50">
+                                Categories
+                            </div>
+
+                            <div class="p-1.5 grid grid-cols-1 sm:grid-cols-2 gap-1 bg-white dark:bg-slate-900">
+                                <router-link
+                                    v-for="category in suggestions.categories"
+                                    :key="category.id"
+                                    :to="'/category/'+category.slug+'/'+category.id"
+                                    class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-all duration-150 group">
+                                    
+                                    <span class="truncate">{{ category.name }}</span>
+                                    
+                                    <span class="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150 uppercase tracking-wider">Explore</span>
+                                </router-link>
+                            </div>
+                        </template>
+
+                        <!-- Brands Section (Optional/Ready-to-use) -->
+                        <template v-if="suggestions.brands && suggestions.brands.length">
+                            <div class="px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-slate-800/30 border-t border-b border-slate-100 dark:border-slate-800/50">
+                                Brands
+                            </div>
+                            <div class="p-1.5 flex flex-wrap gap-1.5">
+                                <router-link
+                                    v-for="brand in suggestions.brands"
+                                    :key="brand.id"
+                                    :to="'/brand/'+brand.slug"
+                                    class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-100 dark:border-slate-700/60 transition-all duration-150">
+                                    {{ brand.name }}
+                                </router-link>
+                            </div>
+                        </template>
+
+                        <!-- Empty State -->
+                        <div
+                            v-if="!suggestions.products.length && !suggestions.categories.length && (!suggestions.brands || !suggestions.brands.length)"
+                            class="px-4 py-12 text-center">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 mb-3">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.603 10.603z"></path></svg>
+                            </div>
+                            <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">No results found</p>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">We couldn't find anything matching "{{ q }}"</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -228,7 +322,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeUnmount, onMounted } from "vue";
+import { ref, computed, onBeforeUnmount, onMounted, watch } from "vue";
 import { useRouter } from 'vue-router';
 import api, { makeImg } from '../../services/api';
 import ThemeToggle from "../ThemeToggle.vue";
@@ -366,6 +460,15 @@ const cartStore = useCartStore();
 
 
 
+
+
+
+
+
+
+
+
+
 // search section
 const searchInput = ref(null);
 const isMac = ref(false);
@@ -378,6 +481,87 @@ function handleKeyDown(e) {
         searchInput.value?.focus();
     }
 }
+
+
+
+
+
+const suggestions = ref({
+    products: [],
+    categories: [],
+    brands: [],
+});
+
+let timeout = null;
+
+watch(q, (value) => {
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(async () => {
+
+        if (value.length < 2) {
+            suggestions.value = {
+                products: [],
+                categories: [],
+                brands: [],
+            };
+            return;
+        }
+
+        try {
+            const { data } = await api.get('/search/suggestions', {
+                params: {
+                    q: value
+                }
+            });
+            suggestions.value = data;
+        } catch (e) {
+            console.error(e);
+            suggestions.value = {
+                products: [],
+                categories: [],
+                brands: [],
+            };
+        }
+
+    }, 300);
+
+});
+
+const defaultProductImage = "/images/product/default-product.png"
+const getProductImage = (product) => {
+    if (!product || !product.images || product.images.length === 0) {
+        return defaultProductImage;
+    }
+    const primaryImg = product.images.find(i => i.is_primary == 1);
+    const selectedImg = primaryImg || product.images[0];
+    return selectedImg.url ? selectedImg.url : defaultProductImage;
+}
+
+// Go to search
+function goSearch() {
+    if (!q.value.trim()) return;
+
+    router.push({
+        path: "/",
+        query: {
+            q: q.value
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
