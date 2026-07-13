@@ -278,6 +278,21 @@
                                                 <i class="fa-solid fa-triangle-exclamation"></i> Partially paid
                                             </span>
                                         </div>
+
+                                        <details v-if="order.user_agent" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs group">
+                                            <summary class="text-slate-400 dark:text-slate-500 cursor-pointer select-none list-none flex items-center justify-between">
+                                                <span><i class="fa-solid fa-circle-info mr-1"></i>Device details</span>
+                                                <i class="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                                            </summary>
+                                            <div class="mt-2 grid grid-cols-2 gap-y-1.5">
+                                                <span class="text-slate-400 dark:text-slate-500">Browser</span>
+                                                <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(order.user_agent).browser }}</span>
+                                                <span class="text-slate-400 dark:text-slate-500">OS</span>
+                                                <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(order.user_agent).os }}</span>
+                                                <span class="text-slate-400 dark:text-slate-500">Device</span>
+                                                <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(order.user_agent).device }}</span>
+                                            </div>
+                                        </details>
                                     </div>
                                 </div>
 
@@ -1416,6 +1431,7 @@ async function submitPayment() {
 
             successMsg.value = res.data.message || 'Payment recorded successfully.';
             isPaymentModalOpen.value = false;
+            fetchOrderDetails();
         } else {
             paymentFormError.value = res.data.message || 'Something went wrong.';
         }
