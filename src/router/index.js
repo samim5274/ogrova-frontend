@@ -43,6 +43,7 @@ const productDetails = () => import('../components/e-commerce/product-details.vu
 const CartDetails = () => import('../components/e-commerce/cart.vue');
 const Checkout = () => import('../components/e-commerce/checkout/checkout.vue');
 const CategoryProducts = () => import('../components/e-commerce/category-products.vue');
+const SearchProducts = () => import('../components/e-commerce/searchProducts.vue');
 
 
 
@@ -133,6 +134,7 @@ const routes = [
   { path: '/', component: Home, meta: {title: 'OGROVA - Bangladesh\'s Smart Online Marketplace'} },
   { path: '/product-details/:slug', component: productDetails, meta: { title: "Product Details - OGROVA | Bangladesh's Smart Online Marketplace" } },
   { path: '/category/:slug/:id', component: CategoryProducts, meta: { title: "Category Products - OGROVA | Bangladesh's Smart Online Marketplace" } },
+  { path: '/search', component: SearchProducts, meta: { title: "Search Results Products - OGROVA | Bangladesh's Smart Online Marketplace" } },
 
   { path: '/cart', component: CartDetails, meta: { title: "Shopping Cart - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },
   { path: '/checkout/:reg', component: Checkout, meta: { title: "Secure Checkout - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },

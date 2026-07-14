@@ -13,7 +13,19 @@
 
             <main class="container mx-auto px-4 sm:px-6 py-6 md:py-10 max-w-7xl transition-colors duration-300">
 
-                <featureProduct :products="categoryProducts"/>
+                <featureProduct :products="searchProducts"/>
+
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="h-8 w-1.5 bg-emerald-600 dark:bg-orange-500 rounded-full"></div>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                            Search <span class="text-emerald-600 dark:text-orange-500">Results</span>
+                        </h2>
+                        <p class="text-[11px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                            Handpicked collections for you
+                        </p>
+                    </div>
+                </div>
 
                 <div class="w-full mb-8">
                     <div class="flex items-center gap-3 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x">
@@ -58,7 +70,7 @@
 
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                         
-                        <div v-for="product in categoryProducts" :key="product.id"
+                        <div v-for="product in searchProducts" :key="product.id"
                             class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5
                             hover:border-emerald-500 dark:hover:border-orange-500/60 
                             hover:shadow-[0_24px_48px_-15px_rgba(16,185,129,0.12)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)]">
@@ -216,7 +228,7 @@ import featureProduct from "./feature-product.vue";
 const router = useRouter();
 const route = useRoute();
 const loading = ref(false);
-const categoryProducts = ref([]);
+const searchProducts = ref([]);
 const categories = ref([]);
 const defaultProductImage = "/images/product/default-product.png"
 
@@ -246,7 +258,7 @@ const getProductImage = (product) => {
 const orderPage = ref(1);
 const orderLastPage = ref(1);
 const orderTotal = ref(0);
-const orderPerPage = ref(20);
+const orderPerPage = ref(50);
 const orderFromItem = ref(0);
 const orderToItem = ref(0);
 
@@ -307,41 +319,48 @@ const pagination = ref({
     page: 1,
     lastPage: 1,
     total: 0,
-    perPage: 20,
+    perPage: 50,
     from: 0,
     to: 0,
 });
 
-async function getCategoryProducts(page = 1) {
-    const categoryId = route.params.id;
+async function getSearchProducts(page = 1) {
+    loading.value = true;
+
+    const searchKeywords = route.query.q;
+
     try {
-        loading.value = true;
-        const res = await api.get(`/public/category-products/${categoryId}`, {
-            params: { page }
+
+        const { data } = await api.get('/search', {
+            params: {
+                q: route.query.q,
+                page
+            }
         });
-        const response = res.data;
 
         // REAL DATA ARRAY (IMPORTANT FIX)
-        categoryProducts.value = response?.data?.data ?? [];
+        searchProducts.value = data.data;
 
         // PAGINATION META
         pagination.value = {
-            page: response?.data?.current_page ?? 1,
-            lastPage: response?.data?.last_page ?? 1,
-            total: response?.data?.total ?? 0,
-            perPage: response?.data?.per_page ?? 20,
-            from: response?.data?.from ?? 0,
-            to: response?.data?.to ?? 0,
+            page: data.current_page,
+            lastPage: data.last_page,
+            total: data.total,
+            perPage: data.per_page,
+            from: data.from,
+            to: data.to,
         };
 
     } catch (err) {
         console.error('Category error:', err);
 
+        searchProducts.value = [];
+
         pagination.value = {
             page: 1,
             lastPage: 1,
             total: 0,
-            perPage: 20,
+            perPage: 50,
             from: 0,
             to: 0,
         };
@@ -353,15 +372,42 @@ async function getCategoryProducts(page = 1) {
 
 
 function changePage(page) {
+
     if (
         page < 1 ||
         page > pagination.value.lastPage ||
         loading.value
     ) return;
 
-    getCategoryProducts(page);
+    router.push({
+        path: '/search',
+        query: {
+            q: route.query.q,
+            page
+        }
+    });
+
 }
 
+
+
+
+
+
+
+watch(
+    () => [route.query.q, route.query.page],
+    () => {
+
+        getSearchProducts(
+            Number(route.query.page || 1)
+        );
+
+    },
+    {
+        immediate: true
+    }
+);
 
 
 
@@ -376,7 +422,7 @@ function getCategory(cat) {
 watch(
     () => route.params.id,
     () => {
-        getCategoryProducts();
+        getSearchProducts();
     },
     { immediate: true }
 );
@@ -420,7 +466,7 @@ function handleSearch(query) {
 
 onMounted(() => {
     fetchCategories();
-    getCategoryProducts();
+    // getSearchProducts();
 
     const theme = localStorage.getItem("theme");
     if (theme === "dark") {

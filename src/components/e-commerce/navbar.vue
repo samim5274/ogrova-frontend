@@ -110,6 +110,7 @@
                                     v-for="product in suggestions.products"
                                     :key="product.id"
                                     :to="'/product-details/'+product.slug"
+                                    @click="clearSuggestions"
                                     class="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-150 group">
 
                                     <!-- Product Image Container -->
@@ -529,6 +530,16 @@ watch(q, (value) => {
 
 });
 
+const clearSuggestions = () => {
+    suggestions.value = {
+        products: [],
+        categories: [],
+        brands: [],
+    };
+
+    q.value = '';
+}
+
 const defaultProductImage = "/images/product/default-product.png"
 const getProductImage = (product) => {
     if (!product || !product.images || product.images.length === 0) {
@@ -541,14 +552,21 @@ const getProductImage = (product) => {
 
 // Go to search
 function goSearch() {
-    if (!q.value.trim()) return;
+
+    const keyword = q.value.trim();
+
+    if (!keyword) return;
 
     router.push({
-        path: "/",
+        path: '/search',
         query: {
-            q: q.value
+            q: keyword,
+            page: 1
         }
     });
+
+    clearSuggestions();
+
 }
 
 

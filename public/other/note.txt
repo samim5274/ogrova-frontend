@@ -1,0 +1,1 @@
+1. Public view -> product details page variant select items price show in main price. <!-- ===================== Pending =====================-->
