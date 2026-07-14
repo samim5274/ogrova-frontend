@@ -267,7 +267,7 @@
                 </div>
 
                 <!-- FULL DESCRIPTION TAB & META KEYWORDS SECTION (Moved cleanly below the columns layout) -->
-                <div class="mt-24 border-t border-gray-100 dark:border-white/5 pt-12">
+                <div class="mt-24 border-t border-gray-200 dark:border-white/5 pt-12">
                     <div>
                         <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Product Information</h3>
                         
@@ -276,7 +276,7 @@
                             v-html="product.description">
                         </div>
 
-                        <div v-if="product.meta_keywords" class="mt-8 flex flex-wrap gap-2 pt-6 border-t border-gray-100 dark:border-white/5">
+                        <div v-if="product.meta_keywords" class="mt-8 flex flex-wrap gap-2 pt-6 border-t border-gray-200 dark:border-white/5">
                             <span v-for="tag in product.meta_keywords.split(',')" :key="tag" 
                                 class="text-[10px] font-bold text-emerald-600/80 dark:text-orange-400/80 uppercase tracking-wider bg-emerald-50 dark:bg-orange-500/[0.05] px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-orange-500/10">
                                 #{{ tag.trim() }}
@@ -286,7 +286,7 @@
                 </div>
 
                 <!-- RELATED PRODUCTS SECTION -->
-                <div class="mt-24 border-t border-gray-100 dark:border-white/5 pt-16">
+                <div class="mt-24 border-t border-gray-200 dark:border-white/5 pt-16">
                     <h3 class="text-xl font-black tracking-tight text-gray-900 dark:text-white mb-8">You May Also Like</h3>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
