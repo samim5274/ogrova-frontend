@@ -272,6 +272,37 @@ function editProduct(slug){
 
 
 
+async function deleteProduct($id) {
+    const confirmed = window.confirm(
+        'Are you sure you want to delete this product? This action cannot be undone.'
+    );
+
+    if (!confirmed) return;
+
+    loading.value = true;
+    errorMsg.value = '';
+
+    try {
+        const { data } = await api.delete(`/products/delete/${$id}`);
+
+        successMsg.value = data.message || 'Product deleted successfully.';
+
+        fetchProducts();
+    } catch(err) {
+        console.error(err);
+        errorMsg.value = error.response?.data?.message || 'Failed to load product details.';
+    } finally {
+        loading.value = false;
+    }
+}
+
+
+
+
+
+
+
+
 // dark and light mode
 const isDark = ref(false);
 const sidebarOpen = ref(false);
