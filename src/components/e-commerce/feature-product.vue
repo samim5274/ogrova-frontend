@@ -34,28 +34,60 @@
             class="pb-10">
 
             <swiper-slide v-for="product in products" :key="product.id">
-                <div class="group relative bg-white dark:bg-slate-900 rounded-2xl p-4 dark:border-slate-800 transition-all duration-500  hover:shadow-2xl hover:shadow-emerald-500/10 dark:hover:shadow-orange-500/10 border border-slate-200 hover:border-emerald-500 dark:hover:border-orange-500 h-full">
-                    
+                <div class="group relative bg-white dark:bg-slate-900 rounded-2xl p-4 dark:border-slate-800 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10 dark:hover:shadow-orange-500/10 border border-slate-200 hover:border-emerald-500 dark:hover:border-orange-500 h-full">
+
                     <!-- Featured Badge -->
                     <div class="absolute top-6 left-6 z-10">
-                        <span class="px-3 py-1 bg-emerald-600 dark:bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">Featured</span>
+                        <span class="px-3 py-1 bg-emerald-600 dark:bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">
+                            Featured
+                        </span>
+                    </div>
+
+                    <!-- Wishlist icon -->
+                    <div class="absolute top-6 right-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="w-8 h-8 flex items-center justify-center bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-full shadow-md text-slate-400 hover:text-rose-500 transition-colors">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
                     </div>
 
                     <!-- Image -->
                     <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-50 dark:bg-slate-800/50">
-                        <img :src="getProductImage(product)" :alt="product.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <button @click="ProductDetails(product)" class="px-6 py-2 bg-white text-slate-900 font-bold text-xs uppercase rounded-xl shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all">View Details</button>
+                        <img :src="getProductImage(product)" :alt="product.name"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                        <div class="absolute inset-x-0 bottom-4 flex justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                            <button @click="ProductDetails(product)"
+                                    class="px-6 py-2 bg-white text-slate-900 font-bold text-xs uppercase rounded-xl shadow-xl hover:bg-slate-900 hover:text-white transition-colors">
+                                View Details
+                            </button>
                         </div>
                     </div>
 
                     <!-- Details -->
                     <div class="mt-5 px-1">
-                        <h3 @click="ProductDetails(product)" class="text-base font-bold text-slate-900 dark:text-white truncate hover:underline hover:cursor-pointer">{{ product.name }}</h3>
-                        <p class="text-xs text-slate-400 mt-1 mb-4 line-clamp-2">{{ product.description }}</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm font-black text-emerald-600 dark:text-orange-400">৳{{ product.discount_price ? (product.price - product.discount_price) : product.price }}</span>
-                            <button @click="ProductDetails(product)" class="flex items-center gap-2 px-4 py-2 bg-emerald-50 dark:bg-orange-500/10 text-emerald-600 dark:text-orange-400 rounded-xl font-bold text-xs uppercase hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white">
+                        <h3 @click="ProductDetails(product)"
+                            class="text-base font-bold text-slate-900 dark:text-white truncate hover:underline hover:cursor-pointer">
+                            {{ product.name }}
+                        </h3>
+
+                        <p class="text-xs text-slate-400 mt-1 mb-4 line-clamp-2 leading-relaxed">
+                            {{ product.description }}
+                        </p>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black text-emerald-600 dark:text-orange-400">
+                                    ৳{{ product.discount_price ? (product.price - product.discount_price) : product.price }}
+                                </span>
+                                <span v-if="product.discount_price" class="text-[10px] text-slate-400 line-through">
+                                    ৳{{ product.price }}
+                                </span>
+                            </div>
+
+                            <button @click="ProductDetails(product)"
+                                    class="flex items-center gap-2 px-4 py-2 bg-emerald-50 dark:bg-orange-500/10 text-emerald-600 dark:text-orange-400 rounded-xl font-bold text-xs uppercase hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white transition-colors">
                                 <i class="fa-solid fa-basket-shopping"></i> View
                             </button>
                         </div>

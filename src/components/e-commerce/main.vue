@@ -144,8 +144,7 @@
                             
                             <!-- Individual Premium Product Card Item -->
                             <div v-for="product in items" :key="product.id"
-                                class="flex-none w-[75%] sm:w-[46%] md:w-[31%] lg:w-[calc(25%-15px)] snap-start group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-100 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 
-                                hover:border-emerald-500 dark:hover:border-orange-500/60 border border-slate-200
+                                class="flex-none w-[75%] sm:w-[46%] md:w-[31%] lg:w-[calc(25%-15px)] snap-start group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 hover:border-emerald-500 dark:hover:border-orange-500/60
                                 hover:shadow-[0_24px_48px_-15px_rgba(16,185,129,0.12)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)]">
                                 
                                 <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
@@ -206,13 +205,13 @@
                                             </span>
                                         </div>
 
-                                        <button class="flex items-center justify-center gap-1.5 px-3 py-2 md:px-3.5 md:py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 group/btn font-bold border
+                                        <button @click="ProductDetails(product)" class="flex items-center justify-center gap-1.5 px-3 py-2 md:px-3.5 md:py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 group/btn font-bold border
                                             bg-emerald-500/5 text-emerald-600 border-emerald-500/10 
                                             hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/10
                                             dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/10 
                                             dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
                                             <i class="fa-solid fa-basket-shopping text-[10px] md:text-xs transition-transform group-hover/btn:-translate-y-0.5 duration-300"></i>
-                                            <span class="text-[9px] md:text-[10px] uppercase tracking-wider">Add</span>
+                                            <span class="text-[9px] md:text-[10px] uppercase tracking-wider">view</span>
                                         </button>
                                     </div>
                                 </div>

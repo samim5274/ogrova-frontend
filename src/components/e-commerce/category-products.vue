@@ -118,13 +118,13 @@
                                         </span>
                                     </div>
 
-                                    <button class="flex items-center justify-center gap-1.5 px-3 py-2 md:px-3.5 md:py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 group/btn font-bold border
+                                    <button @click="ProductDetails(product)" class="flex items-center justify-center gap-1.5 px-3 py-2 md:px-3.5 md:py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 group/btn font-bold border
                                         bg-emerald-500/5 text-emerald-600 border-emerald-500/10 
                                         hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/10
                                         dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/10 
                                         dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
                                         <i class="fa-solid fa-basket-shopping text-[10px] md:text-xs transition-transform group-hover/btn:-translate-y-0.5 duration-300"></i>
-                                        <span class="text-[9px] md:text-[10px] uppercase tracking-wider">Add</span>
+                                        <span class="text-[9px] md:text-[10px] uppercase tracking-wider">view</span>
                                     </button>
                                 </div>
                             </div>
