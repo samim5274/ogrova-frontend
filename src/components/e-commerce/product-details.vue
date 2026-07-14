@@ -355,6 +355,8 @@
                     </div>
                 </div>
 
+                <RatingSection />
+
             </div>
         </section>        
 
@@ -378,6 +380,7 @@ import { useRoute, useRouter } from 'vue-router';
 import api from '../../services/api';
 import Message from '../Message/message.vue';
 import Navbar from './navbar.vue';
+import RatingSection from './rating/rating.vue';
 import FooterSection from './footer.vue';
 import { useAuth } from '../../stores/auth';
 import { useCartStore } from './stores/cart';
