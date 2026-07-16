@@ -355,7 +355,7 @@
                     </div>
                 </div>
 
-                <RatingSection />
+                <RatingSection :productId="product.id" />
 
             </div>
         </section>        
