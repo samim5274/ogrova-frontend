@@ -286,41 +286,7 @@ const ratingsLoading = ref(false);
 const successMsg = ref('');
 const errorMsg = ref('');
 
-const ratings = ref([]);
-const ratingPage = ref(1);
-const ratingLastPage = ref(1);
-const ratingTotal = ref(0);
-const ratingPerPage = ref(20);
-const ratingFromItem = ref(0);
-const ratingToItem = ref(0);
 
-const RatingVisiblePages = computed(() => {
-    const pages = [];
-    const last = pagination.value.lastPage;
-    const cur = pagination.value.page;
-
-    if (last <= 5) {
-        for (let i = 1; i <= last; i++) pages.push(i);
-        return pages;
-    }
-
-    pages.push(1);
-
-    if (cur > 3) pages.push("...");
-
-    const start = Math.max(2, cur - 1);
-    const end = Math.min(last - 1, cur + 1);
-
-    for (let i = start; i <= end; i++) {
-        pages.push(i);
-    }
-
-    if (cur < last - 2) pages.push("...");
-
-    pages.push(last);
-
-    return pages;
-});
 
 const review = ref({
     rating: 0,
@@ -371,7 +337,41 @@ const formatDate = (dateStr) => {
 
 
 
+const ratings = ref([]);
+const ratingPage = ref(1);
+const ratingLastPage = ref(1);
+const ratingTotal = ref(0);
+const ratingPerPage = ref(20);
+const ratingFromItem = ref(0);
+const ratingToItem = ref(0);
 
+const RatingVisiblePages = computed(() => {
+    const pages = [];
+    const last = pagination.value.lastPage;
+    const cur = pagination.value.page;
+
+    if (last <= 5) {
+        for (let i = 1; i <= last; i++) pages.push(i);
+        return pages;
+    }
+
+    pages.push(1);
+
+    if (cur > 3) pages.push("...");
+
+    const start = Math.max(2, cur - 1);
+    const end = Math.min(last - 1, cur + 1);
+
+    for (let i = start; i <= end; i++) {
+        pages.push(i);
+    }
+
+    if (cur < last - 2) pages.push("...");
+
+    pages.push(last);
+
+    return pages;
+});
 
 const pagination = ref({
     page: 1,
@@ -388,7 +388,7 @@ const fetchRatings = async (page = 1) => {
     errorMsg.value = "";
 
     try {
-        const res = await api.get("/ratings", {
+        const res = await api.get(`/product/ratings/${props.productId}`, {
             params: {
                 product_id: props.productId,
                 page,

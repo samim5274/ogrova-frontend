@@ -177,42 +177,40 @@
 
                                 <div class="p-3.5 pt-1.5">
                                     <!-- Category & Points Row -->
-                                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                                        <span class="text-[8px] md:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest truncate max-w-[65%]">
-                                            {{ categoryName }}
+                                    <div class="flex items-center justify-between gap-2 mb-2.5">
+                                        <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider truncate max-w-[65%]">
+                                            {{ categoryName?.length > 15 ? categoryName.slice(0, 15) + '...' : categoryName }}
                                         </span>
                                         
-                                        <!-- Dual-Theme Points Badge (Light: Emerald, Dark: Orange) -->
-                                        <div v-if="product.point" class="flex items-center gap-0.5 px-2 py-0.5 rounded-md shrink-0 border transition-all duration-300
-                                            bg-emerald-500/10 text-emerald-600 border-emerald-500/5
-                                            dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/10">
-                                            <span class="text-[8px] md:text-[9px] font-extrabold tracking-wide">{{ product.point }} Pts</span>
+                                        <!-- Dual-Theme Points Badge -->
+                                        <div v-if="product.point" class="flex items-center justify-center px-2 py-0.5 rounded-full border transition-all duration-300
+                                            bg-emerald-50 text-emerald-600 border-emerald-200/60
+                                            dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20">
+                                            <i class="fa-solid fa-award text-[9px] mr-1"></i>
+                                            <span class="text-[9px] md:text-[10px] font-extrabold tracking-wide">{{ product.point }} Pts</span>
                                         </div>
                                     </div>
 
                                     <!-- Dual-Theme Product Title (Hover Light: Emerald, Dark: Orange) -->
                                     <h4 @click="ProductDetails(product)" 
-                                        class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate cursor-pointer transition-colors duration-300 mb-3
-                                        hover:text-emerald-600 dark:hover:text-orange-400">
+                                        class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate cursor-pointer transition-colors duration-300 hover:text-emerald-600 hover:underline dark:hover:text-orange-400">
                                         {{ product.name }}
                                     </h4>
 
-                                    <div class="flex items-center justify-between gap-1.5">
+                                    <span class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 truncate mb-0.5">
+                                        <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="n <= Math.round(Number(product?.ratings_avg_rating || 0)) ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'" ></i> 
+                                        <span v-if="product.ratings_count" class="text-[9px] md:text-[10px] font-medium text-slate-500 dark:text-slate-400 pt-0.5">
+                                            ({{ product.ratings_count }})
+                                        </span>
+                                    </span>
+
+                                    <div class="flex justify-between gap-1.5">
                                         <div class="flex flex-col min-w-0">
                                             <span v-if="product.discount_price" class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 line-through truncate mb-0.5">৳{{ product.price }}</span>
-                                            <span class="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight truncate">
-                                                ৳{{ product.price - product.discount_price || product.price }}
-                                            </span>
                                         </div>
-
-                                        <button @click="ProductDetails(product)" class="flex items-center justify-center gap-1.5 px-3 py-2 md:px-3.5 md:py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 group/btn font-bold border
-                                            bg-emerald-500/5 text-emerald-600 border-emerald-500/10 
-                                            hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/10
-                                            dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/10 
-                                            dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
-                                            <i class="fa-solid fa-basket-shopping text-[10px] md:text-xs transition-transform group-hover/btn:-translate-y-0.5 duration-300"></i>
-                                            <span class="text-[9px] md:text-[10px] uppercase tracking-wider">view</span>
-                                        </button>
+                                        <span class="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight truncate">
+                                            ৳{{ product.price - product.discount_price || product.price }}
+                                        </span>
                                     </div>
                                 </div>
 

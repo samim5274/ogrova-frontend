@@ -126,10 +126,10 @@
                                 <!-- Ratings, Point & SV Badges -->
                                 <div class="flex flex-wrap items-center gap-4 pt-1">
                                     <div class="flex text-amber-400 text-xs gap-0.5">
-                                        <i v-for="i in 5" :key="i" class="fa-solid fa-star"></i>
+                                        <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="n <= Math.round(Number(product?.ratings_avg_rating || 0)) ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'" ></i>
                                     </div>
                                     <span class="text-xs font-black text-gray-400 uppercase tracking-widest underline decoration-emerald-500/30 dark:decoration-orange-500/30 underline-offset-4 cursor-pointer hover:text-emerald-600 dark:hover:text-orange-500 transition">
-                                        48 Verified Reviews
+                                        {{ product.ratings_count }} Verified Reviews
                                     </span>
                                     
                                     <div class="flex items-center gap-2 text-xs font-bold">
