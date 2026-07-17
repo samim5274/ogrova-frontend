@@ -202,6 +202,66 @@
                 </div>
             </div>
         </div>
+
+        <!-- Pagination -->
+        <div class="flex flex-col gap-2 border-slate-200 bg-white dark:bg-slate-900 shadow-sm px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <!-- Showing info -->
+            <p class="text-xs text-slate-500">
+                Showing
+                <span class="font-semibold text-slate-700">{{ pagination.from }}</span>
+                –
+                <span class="font-semibold text-slate-700">{{ pagination.to }}</span>
+                of
+                <span class="font-semibold text-slate-700">{{ pagination.total }}</span>
+            </p>
+
+            <div class="flex flex-wrap items-center justify-end gap-2">
+                <!-- First -->
+                <button
+                    @click="changePage(1)" :disabled="pagination.page === 1 || loading"
+                    class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+
+                <!-- Prev -->
+                <button
+                    @click="changePage(pagination.page - 1)" :disabled="pagination.page === 1 || loading"
+                    class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <!-- Pages -->
+                <button
+                    v-for="page in RatingVisiblePages"
+                    :key="String(page)"
+                    @click="page !== '...' && changePage(page)"
+                    class="rounded-lg border px-3 py-1.5 text-xs font-semibold"
+                    :disabled="page === '...' || loading"
+                    :class="[
+                        page === pagination.page
+                            ? 'border-slate-900 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
+                            : 'border-slate-200 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-100 hover:bg-slate-50'
+                    ]">
+                    {{ page }}
+                </button>
+
+                <!-- Next -->
+                <button
+                    @click="changePage(pagination.page + 1)"
+                    :disabled="pagination.page === pagination.lastPage || loading"
+                    class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+
+                <!-- Last -->
+                <button
+                    @click="changePage(pagination.lastPage)"
+                    :disabled="pagination.page === pagination.lastPage || loading"
+                    class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -227,6 +287,40 @@ const successMsg = ref('');
 const errorMsg = ref('');
 
 const ratings = ref([]);
+const ratingPage = ref(1);
+const ratingLastPage = ref(1);
+const ratingTotal = ref(0);
+const ratingPerPage = ref(20);
+const ratingFromItem = ref(0);
+const ratingToItem = ref(0);
+
+const RatingVisiblePages = computed(() => {
+    const pages = [];
+    const last = pagination.value.lastPage;
+    const cur = pagination.value.page;
+
+    if (last <= 5) {
+        for (let i = 1; i <= last; i++) pages.push(i);
+        return pages;
+    }
+
+    pages.push(1);
+
+    if (cur > 3) pages.push("...");
+
+    const start = Math.max(2, cur - 1);
+    const end = Math.min(last - 1, cur + 1);
+
+    for (let i = start; i <= end; i++) {
+        pages.push(i);
+    }
+
+    if (cur < last - 2) pages.push("...");
+
+    pages.push(last);
+
+    return pages;
+});
 
 const review = ref({
     rating: 0,
@@ -259,27 +353,107 @@ const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const fetchRatings = async () => {
-    ratingsLoading.value = true;
-    try {
-        const res = await api.get('/ratings', {
-            params: { product_id: props.productId },
-        });
-        ratings.value = res.data.data || [];
-    } catch (err) {
-        if (err.response) {
-            console.log(err.response.data);
 
-            if (err.response.data.errors) {
-                console.table(err.response.data.errors);
-            }
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const pagination = ref({
+    page: 1,
+    lastPage: 1,
+    total: 0,
+    perPage: 20,
+    from: 0,
+    to: 0,
+});
+
+
+const fetchRatings = async (page = 1) => {
+    ratingsLoading.value = true;
+    errorMsg.value = "";
+
+    try {
+        const res = await api.get("/ratings", {
+            params: {
+                product_id: props.productId,
+                page,
+            },
+        });
+        
+        const response = res.data;
+
+        ratings.value = response?.data?.data ?? [];
+
+        // PAGINATION META
+        pagination.value = {
+            page: response?.data?.current_page ?? 1,
+            lastPage: response?.data?.last_page ?? 1,
+            total: response?.data?.total ?? 0,
+            perPage: response?.data?.per_page ?? 20,
+            from: response?.data?.from ?? 0,
+            to: response?.data?.to ?? 0,
+        };
+
+    } catch (err) {
+        console.error(err.response?.data || err);
+
+        errorMsg.value =
+            err.response?.data?.message ??
+            "Failed to load ratings.";
+
+        pagination.value = {
+            page: 1,
+            lastPage: 1,
+            total: 0,
+            perPage: 20,
+            from: 0,
+            to: 0,
+        };
     } finally {
         ratingsLoading.value = false;
     }
 };
 
-onMounted(fetchRatings);
+
+async function changePage(page) {
+    await fetchRatings(page);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const handleImages = (e) => {
     const files = Array.from(e.target.files);
@@ -335,7 +509,7 @@ const submitReview = async () => {
     loading.value = true;
 
     try {
-        await api.post('/ratings/create', formData, {
+        await api.post('/ratings', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -359,6 +533,21 @@ const submitReview = async () => {
         loading.value = false;
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+onMounted(() => {
+    fetchRatings();
+});
 </script>
 
 <style>
