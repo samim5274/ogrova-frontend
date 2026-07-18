@@ -479,7 +479,7 @@
 
                 <router-link
                     to="/"
-                    class="mt-6 inline-block px-6 py-3 rounded-full bg-emerald-600 text-white"
+                    class="mt-6 inline-block px-6 py-3 rounded-full bg-emerald-600 dark:bg-orange-500 text-white"
                 >
                     Continue Shopping
                 </router-link>
