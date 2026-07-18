@@ -34,8 +34,67 @@
 
 
         
-        
-        <section v-if="product" class="py-16 bg-white dark:bg-[#111827] text-gray-900 dark:text-gray-100 min-h-screen selection:bg-indigo-500 selection:text-white">
+        <section v-if="loading" class="py-16 bg-white dark:bg-gray-900 min-h-screen">
+            <div class="container mx-auto px-4 max-w-7xl">
+
+                <div class="animate-pulse">
+
+                    <div class="h-5 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-8"></div>
+
+                    <div class="grid lg:grid-cols-2 gap-14">
+
+                        <!-- Image -->
+                        <div>
+
+                            <div class="aspect-square rounded-3xl bg-slate-200 dark:bg-slate-800"></div>
+
+                            <div class="flex gap-4 mt-6">
+                                <div
+                                    v-for="i in 4"
+                                    :key="i"
+                                    class="w-16 h-16 rounded-2xl bg-slate-200 dark:bg-slate-800"
+                                ></div>
+                            </div>
+
+                        </div>
+
+                        <!-- Details -->
+                        <div class="space-y-5">
+
+                            <div class="h-4 w-28 rounded bg-slate-200 dark:bg-slate-700"></div>
+
+                            <div class="h-10 w-3/4 rounded bg-slate-200 dark:bg-slate-700"></div>
+
+                            <div class="h-5 w-40 rounded bg-slate-200 dark:bg-slate-700"></div>
+
+                            <div class="h-20 rounded-xl bg-slate-200 dark:bg-slate-800"></div>
+
+                            <div class="h-16 rounded-xl bg-slate-200 dark:bg-slate-800"></div>
+
+                            <div class="flex gap-3">
+                                <div
+                                    v-for="i in 3"
+                                    :key="i"
+                                    class="h-14 w-32 rounded-xl bg-slate-200 dark:bg-slate-800"
+                                ></div>
+                            </div>
+
+                            <div class="flex gap-4 mt-6">
+                                <div class="h-14 w-36 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+
+                                <div class="flex-1 h-14 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section v-else-if="product" class="py-16 bg-white dark:bg-[#111827] text-gray-900 dark:text-gray-100 min-h-screen selection:bg-indigo-500 selection:text-white">
             <div class="container mx-auto px-4 max-w-7xl">
                 
                 <!-- TOP BREADCRUMB & AVAILABILITY HEADER -->
@@ -66,12 +125,12 @@
                         <div class="lg:sticky lg:top-24 space-y-8">
                             <div class="relative group aspect-square lg:aspect-[16/14] rounded-[2rem] overflow-hidden bg-gray-50 dark:bg-[#141c2e] border border-gray-100 dark:border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] dark:shadow-none">
                                 
-                                <img :src="activeImage || defaultProductImage" class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110">
+                                <img loading="lazy" decoding="async" :src="activeImage || defaultProductImage" class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 
-                                <div v-if="product.discount_price" class="absolute top-6 left-6 z-10">
+                                <div v-if="hasDiscount" class="absolute top-6 left-6 z-10">
                                     <span class="bg-white/80 dark:bg-black/50 backdrop-blur-xl border border-white/20 dark:border-white/10 px-4 py-2 rounded-2xl text-xs font-black text-red-600 dark:text-red-400 shadow-2xl tracking-wider uppercase inline-block">
-                                        -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
+                                        -{{ discountPercent }}% OFF X
                                     </span>
                                 </div>
                                 
@@ -85,7 +144,7 @@
                                     :class="activeImage === img.url 
                                         ? 'border-indigo-600 dark:border-indigo-400 scale-110 shadow-indigo-500/20' 
                                         : 'border-transparent opacity-40 grayscale hover:grayscale-0 hover:opacity-100'">
-                                    <img :src="img.url" class="w-full h-full object-cover">
+                                    <img loading="lazy" decoding="async" :src="img.url" class="w-full h-full object-cover">
                                 </button>
                             </div>
                         </div>
@@ -106,8 +165,8 @@
 
                                     <!-- Modern Status Badges -->
                                     <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span v-if="product.discount_price" class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-emerald-700 uppercase dark:bg-orange-500/20 dark:text-orange-400">
-                                            -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
+                                        <span v-if="hasDiscount" class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-emerald-700 uppercase dark:bg-orange-500/20 dark:text-orange-400">
+                                            -{{ discountPercent }}% OFF
                                         </span>
                                         <span v-if="product.is_featured" class="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-wider text-amber-700 uppercase dark:bg-amber-400/10 dark:text-amber-400">
                                             <i class="fa-solid fa-star text-[9px]"></i> Featured
@@ -154,11 +213,14 @@
                                     <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Market Price</span>
                                     <div class="flex items-baseline gap-3">
                                         <span class="text-5xl font-black text-emerald-600 dark:text-orange-500 tracking-tighter transition-all group-hover:text-emerald-800 dark:group-hover:text-orange-400">
-                                            ৳{{ selectedVariant?.price - selectedVariant?.discount || product.price - product.discount_price || product.price }}
+                                            ৳{{ currentPrice }}
                                         </span>
-                                        <span v-if="product.discount_price" class="text-lg text-gray-400 line-through font-bold opacity-50">
-                                            ৳{{ product.price }}
+                                        <span v-if="hasDiscount" class="text-lg text-gray-400 line-through font-bold opacity-50">
+                                            ৳{{ originalPrice }}
                                         </span>
+                                    </div>
+                                    <div v-if="hasDiscount" class="mt-2 text-xs font-bold text-red-500">
+                                        Save ৳{{ discountAmount }}
                                     </div>
                                 </div>
                                 
@@ -198,9 +260,15 @@
                                                     </span>
                                                 </div>
                                                 <div class="mt-1 flex items-center gap-1">
+                                                    <!-- variant price -->
                                                     <span class="text-[10px] font-black text-emerald-600 dark:text-orange-400">
+                                                        ৳{{ Number(variant.price) - Number(variant.discount_price || 0) }}
+                                                    </span>
+
+                                                    <span v-if="variant.discount_price" class="line-through text-gray-400 text-[10px]">
                                                         ৳{{ variant.price }}
                                                     </span>
+
                                                     <span class="w-px h-2 bg-gray-200 dark:bg-gray-700"></span>
                                                     <span class="text-[10px] font-black text-emerald-600 dark:text-orange-400">
                                                         {{ variant.stock_quantity }} Left
@@ -221,10 +289,10 @@
                                             <i class="fa-solid fa-minus text-xs text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-orange-500"></i>
                                         </button>
                                         <div class="flex-1 sm:w-14 flex flex-col items-center">
-                                            <span class="text-[7px] font-black text-gray-400 uppercase tracking-widest mb-[-2px]">Amount</span>
+                                            <span class="text-[7px] font-black text-gray-400 uppercase tracking-widest mb-[-2px]">QTY</span>
                                             <input type="number" v-model="qty" class="w-full bg-transparent text-center font-black text-xl sm:text-lg outline-none cursor-default text-gray-900 dark:text-white" readonly>
                                         </div>
-                                        <button @click="qty++" class="w-12 h-12 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white dark:bg-white/10 shadow-sm hover:shadow-md transition-all active:scale-90 group">
+                                        <button @click="qty < maxQty ? qty++ : null" class="w-12 h-12 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white dark:bg-white/10 shadow-sm hover:shadow-md transition-all active:scale-90 group">
                                             <i class="fa-solid fa-plus text-xs text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-orange-500"></i>
                                         </button>
                                     </div>
@@ -236,7 +304,7 @@
                                                 <i class="fa-solid fa-bag-shopping text-white text-lg group-hover:scale-110 transition-transform duration-500"></i>
                                                 <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-gray-950 dark:border-orange-500 scale-0 group-hover:scale-100 transition-transform duration-300"></span>
                                             </div>
-                                            <div class="flex flex-col items-start leading-tight">
+                                            <div :disabled="isAddingToCart" class="flex flex-col items-start leading-tight">
                                                 <span class="text-white text-[11px] font-black uppercase tracking-[0.3em] group-hover:tracking-[0.4em] transition-all duration-500">Add to Cart</span>
                                                 <span class="text-white/40 text-[9px] font-bold uppercase tracking-widest mt-0.5">Secure Checkout</span>
                                             </div>
@@ -271,9 +339,11 @@
                     <div>
                         <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Product Information</h3>
                         
-                        <div v-if="product.description" 
-                            class="prose prose-sm dark:prose-invert prose-emerald dark:prose-orange max-w-none leading-relaxed space-y-4" 
-                            v-html="product.description">
+                        <div class="mt-20">
+                            <div
+                                class="product-content rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 lg:p-10 shadow-sm"
+                                v-html="product.description">
+                            </div>
                         </div>
 
                         <div v-if="product.meta_keywords" class="mt-8 flex flex-wrap gap-2 pt-6 border-t border-gray-200 dark:border-white/5">
@@ -285,18 +355,52 @@
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
                 <!-- RELATED PRODUCTS SECTION -->
                 <div class="mt-24 border-t border-gray-200 dark:border-white/5 pt-16">
                     <h3 class="text-xl font-black tracking-tight text-gray-900 dark:text-white mb-8">You May Also Like</h3>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                        <div v-for="product in categoryProducts" :key="product.id"
+                        <div v-for="cat_product in categoryProducts" :key="cat_product.id"
                             class="group relative bg-white dark:bg-[#111827] rounded-[1rem] p-4 border border-gray-200/80 dark:border-white/[0.06] shadow-[0_20px_50px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] transition-all duration-700 hover:-translate-y-2 flex flex-col justify-between">
                             
                             <div class="relative aspect-[10/12] overflow-hidden rounded-[1rem] bg-gray-50/70 dark:bg-gray-800/50 border border-gray-100/50 dark:border-white/[0.03]">
                                 <div class="absolute top-3.5 left-3.5 z-10 flex flex-col gap-1.5">
-                                    <span v-if="product.discount_price > 0" class="bg-emerald-600 dark:bg-orange-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20">
-                                        -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
+                                    <span v-if="cat_product.discount_price > 0" class="bg-emerald-600 dark:bg-orange-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20">
+                                        -{{ Math.round((cat_product.discount_price / cat_product.price) * 100) }}% OFF
                                     </span>
                                 </div>
 
@@ -304,11 +408,11 @@
                                     <i class="fa-regular fa-heart text-sm"></i>
                                 </button>
 
-                                <img @click="ProductDetails(product)" :src="getProductImage(product)" :alt="product.name"
+                                <img @click="ProductDetails(cat_product)" loading="lazy" decoding="async" :src="getProductImage(cat_product)" :alt="cat_product.name"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s] ease-out cursor-pointer">
                                 
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
-                                    <button @click="ProductDetails(product)" class="w-full bg-white/95 dark:bg-orange-500/95 backdrop-blur-md text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 rounded-xl shadow-xl hover:bg-emerald-600 dark:hover:bg-orange-600 hover:text-white transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                                    <button @click="ProductDetails(cat_product)" class="w-full bg-white/95 dark:bg-orange-500/95 backdrop-blur-md text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 rounded-xl shadow-xl hover:bg-emerald-600 dark:hover:bg-orange-600 hover:text-white transition-all duration-300 translate-y-4 group-hover:translate-y-0">
                                         Quick View
                                     </button>
                                 </div>
@@ -318,7 +422,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-[9px] font-black uppercase tracking-[0.18em] text-emerald-600 dark:text-orange-400">
-                                            {{ product.category?.name || categoryName }}
+                                            {{ cat_product.category?.name || categoryName }}
                                         </span>
                                         <div class="flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-md">
                                             <i class="fa-solid fa-star text-[9px] text-amber-500"></i>
@@ -326,21 +430,21 @@
                                         </div>
                                     </div>
 
-                                    <h3 @click="ProductDetails(product)" class="text-base font-black text-gray-800 dark:text-gray-100 truncate cursor-pointer group-hover:text-emerald-600 dark:group-hover:text-orange-400 transition-colors tracking-tight">
-                                        {{ product.name }} 
-                                        <span v-if="product.point" class="text-xs font-medium text-gray-400 ml-1">({{ product.point }} Pts)</span>
+                                    <h3 @click="ProductDetails(cat_product)" class="text-base font-black text-gray-800 dark:text-gray-100 truncate cursor-pointer group-hover:text-emerald-600 dark:group-hover:text-orange-400 transition-colors tracking-tight">
+                                        {{ cat_product.name }} 
+                                        <span v-if="cat_product.point" class="text-xs font-medium text-gray-400 ml-1">({{ cat_product.point }} Pts)</span>
                                     </h3>
                                 </div>
 
                                 <div class="mt-4 pt-3 border-t border-gray-100 dark:border-white/[0.04] flex items-center justify-between">
                                     <div class="flex flex-col">
-                                        <span v-if="product.discount_price > 0" class="text-[11px] font-bold text-gray-400 line-through decoration-red-500/20 mb-0.5">৳{{ product.price }}</span>
+                                        <span v-if="cat_product.discount_price > 0" class="text-[11px] font-bold text-gray-400 line-through decoration-red-500/20 mb-0.5">৳{{ cat_product.price }}</span>
                                         <span class="text-2xl font-black text-gray-900 dark:text-white tracking-tight leading-none flex items-start gap-0.5">
-                                            <span class="text-sm font-bold mt-0.5">৳</span>{{ product.price - product.discount_price || product.price }}
+                                            <span class="text-sm font-bold mt-0.5">৳</span>{{ cat_product.price - cat_product.discount_price || cat_product.price }}
                                         </span>
                                     </div>
 
-                                    <button @click="ProductDetails(product)" class="relative h-11 w-11 group/btn overflow-hidden rounded-full bg-gray-900 dark:bg-orange-500 text-white shadow-md transition-all duration-500 hover:w-28 hover:bg-emerald-600 dark:hover:bg-orange-600 active:scale-95 flex items-center justify-center">
+                                    <button @click="ProductDetails(cat_product)" class="relative h-11 w-11 group/btn overflow-hidden rounded-full bg-gray-900 dark:bg-orange-500 text-white shadow-md transition-all duration-500 hover:w-28 hover:bg-emerald-600 dark:hover:bg-orange-600 active:scale-95 flex items-center justify-center">
                                         <div class="absolute flex items-center justify-center transition-all duration-500 group-hover/btn:translate-x-10 group-hover/btn:opacity-0">
                                             <i class="fa-solid fa-plus text-base"></i>
                                         </div>
@@ -358,7 +462,30 @@
                 <RatingSection :productId="product.id" />
 
             </div>
-        </section>        
+        </section>
+
+        <section v-else class="min-h-screen flex items-center justify-center">
+            <div class="text-center">
+
+                <i class="fa-solid fa-box-open text-6xl text-slate-300 mb-5"></i>
+
+                <h2 class="text-2xl font-bold mb-2">
+                    Product Not Found
+                </h2>
+
+                <p class="text-slate-500">
+                    This product may have been removed.
+                </p>
+
+                <router-link
+                    to="/"
+                    class="mt-6 inline-block px-6 py-3 rounded-full bg-emerald-600 text-white"
+                >
+                    Continue Shopping
+                </router-link>
+
+            </div>
+        </section>
 
 
 
@@ -375,9 +502,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
+import { useHead } from "@vueuse/head";
 import { useRoute, useRouter } from 'vue-router';
 import api from '../../services/api';
+
 import Message from '../Message/message.vue';
 import Navbar from './navbar.vue';
 import RatingSection from './rating/rating.vue';
@@ -391,6 +520,14 @@ const router = useRouter();
 const product = ref(null);
 const categoryProducts = ref([]);
 const activeImage = ref('');
+
+const qty = ref(1);
+const selectedVariant = ref(null);
+
+const isAddingToCart = ref(false);
+const CartItem = ref(null);
+const cartStore = useCartStore();
+
 const loading = ref(false);
 const successMsg = ref('');
 const errorMsg = ref('');
@@ -405,27 +542,165 @@ const errorMsg = ref('');
 
 
 
+// ===================================== computed =====================================
+// price section
+const priceSource = computed(() => {
+    return selectedVariant.value || product.value;
+});
+
+const currentPrice = computed(() => {
+    const source = priceSource.value;
+
+    if (!source) return "0.00";
+
+    return (
+        Number(source.price || 0) -
+        Number(source.discount_price || 0)
+    ).toFixed(2);
+});
+
+const originalPrice = computed(() => {
+    const source = priceSource.value;
+
+    return source
+        ? Number(source.price || 0).toFixed(2)
+        : "0.00";
+});
+
+const discountAmount = computed(() => {
+    const source = priceSource.value;
+
+    return source
+        ? Number(source.discount_price || 0).toFixed(2)
+        : "0.00";
+});
+
+const hasDiscount = computed(() => {
+    return Number(priceSource.value?.discount_price || 0) > 0;
+});
+
+const discountPercent = computed(() => {
+    const source = priceSource.value;
+
+    if (!source) return 0;
+
+    const price = Number(source.price || 0);
+    const discount = Number(source.discount_price || 0);
+
+    if (!price || !discount) return 0;
+
+    return Math.round((discount / price) * 100);
+});
+
+// ===================================== computed =====================================
+
+
+
+// ===================================== watch =====================================
+watch(
+    () => route.params.slug,
+    async () => {
+        qty.value = 1;
+        await getProduct();
+    },
+    { immediate: true }
+);
+
+watch(product, (p) => {
+    if (!p) return;
+
+    selectedVariant.value = p.variants?.length
+        ? p.variants[0]
+        : null;
+
+    qty.value = 1;
+}, {
+    immediate: true
+});
+
+// ===================================== watch =====================================
 
 
 
 
-const qty = ref(1)
-const selectedVariant = ref(null)
-const isAddingToCart = ref(false);
-const CartItem = ref(null);
-const cartStore = useCartStore();
 
+
+
+
+
+
+
+
+
+// ===================================== computed =====================================
+const maxQty = computed(() => {
+    return selectedVariant.value?.stock_quantity
+        ?? product.value?.stock_quantity
+        ?? 1;
+});
+// ===================================== computed =====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ================================= functions =================================
+async function getProduct() {
+    loading.value = true
+    try {
+        const { data } = await api.get(`/public/product/${route.params.slug}`);
+
+        product.value = data.data;
+        categoryProducts.value = data.category_products;
+
+        activeImage.value = product.value?.images?.[0]?.url ?? "";
+
+    } catch (err) {
+        errorMsg.value="Failed to load product.";
+    } finally {
+        loading.value = false
+    }
+}
 
 async function addToCart(product) {
-    if (!selectedVariant.value) {
-        errorMsg.value = "Please select a variant first!";
+    if (product.variants?.length && !selectedVariant.value) {
+        errorMsg.value = "Please select a variant.";
         return;
     }
 
+    const quantity = qty.value;
+
     const cartData = {
         product_id: product.id,
-        variant_id: selectedVariant.value.id, 
-        quantity: qty.value, 
+        variant_id: selectedVariant.value?.id ?? null,
+        quantity,
     };
 
     try {
@@ -437,16 +712,16 @@ async function addToCart(product) {
             successMsg.value = res.data.message || "Added to cart!";
             errorMsg.value = null;
 
-            qty.value = 1;
             CartItem.value = res.data.data;
 
             cartStore.addToCartLocal({
                 product_id: product.id,
-                variant_id: selectedVariant.value.id,
-                quantity: qty.value,
-                price: selectedVariant.value.price || product.price
+                variant_id: selectedVariant.value?.id ?? null,
+                quantity,
+                price: selectedVariant.value?.price ?? product.price,
             })
-
+            
+            qty.value = 1;
             // console.log(CartItem.value);
         } else {
             errorMsg.value = res.data?.message || "Something went wrong";
@@ -466,6 +741,7 @@ async function addToCart(product) {
         isAddingToCart.value = false;
     }
 }
+// ================================= functions =================================
 
 
 
@@ -476,6 +752,24 @@ async function addToCart(product) {
 
 
 
+// ================================= Other =================================
+// Product recall current page
+function ProductDetails(product) {
+    router.push(`/product-details/${product.slug}`)
+}
+
+// default image
+const defaultProductImage = "/images/product/default-product.png"
+
+
+const getProductImage = (product) => {
+    const image =
+        product?.images?.find(i => i.is_primary == 1)
+        ?? product?.images?.[0];
+
+    return image?.url || defaultProductImage;
+}
+// ================================= Other =================================
 
 
 
@@ -510,112 +804,43 @@ function toggleMenu() {
 }
 
 function handleSearch(query) {
-    console.log("Searching for:", query);
-    // Add your redirect or search API routing logic here
+    router.push({
+        path: "/search",
+        query: { q: query }
+    });
 }
-
-
-
-
-
 
 const { loadUser } = useAuth()
 
 
 
+// SEO Section
+useHead({
+    title: computed(() => product.value?.meta_title || product.value?.name || "OGROVA"),
 
-
-
-
-async function getProduct() {
-    loading.value = true
-    try {
-        const res = await api.get(`/public/product/${route.params.slug}`)
-        product.value = res.data.data;
-        categoryProducts.value = res.data.category_products;
-
-        if (product.value?.images?.length) {
-            activeImage.value = product.value.images[0].url;
-        } else {
-            activeImage.value = ''   // reset
+    meta: [
+        {
+            name: "description",
+            content: computed(() => product.value?.meta_description || product.value?.summary || "")
+        },
+        {
+            name: "keywords",
+            content: computed(() => product.value?.meta_keywords || "")
         }
-    } catch (err) {
-        console.error(err)
-    } finally {
-        loading.value = false
-    }
-}
-
-
-
-
-// Product recall current page
-function ProductDetails(product) {
-    router.push(`/product-details/${product.slug}`)
-}
-
-function initializeProduct() {
-    if (product.value?.variants?.length > 0) {
-        selectedVariant.value = product.value.variants[0];
-    } else {
-        selectedVariant.value = null;
-    }
-    qty.value = 1;
-}
-
-watch(
-    () => route.params.slug,
-    async (newSlug) => {
-        if (newSlug) {
-            await getProduct();
-            initializeProduct();
-        }
-    }
-);
-
-
-
-
-
-// default image
-const defaultProductImage = "/images/product/default-product.png"
-
-
-const getProductImage = (product) => {
-    if (!product || !product.images || product.images.length === 0) {
-        return defaultProductImage;
-    }
-
-    const primaryImg = product.images.find(i => i.is_primary == 1);
-    
-    const selectedImg = primaryImg || product.images[0];
-
-    return selectedImg.url ? selectedImg.url : defaultProductImage;
-}
-
-
-
-
-
-
-
-
-
-
-
-
+    ]
+});
 
 
 
 
 onMounted(async () => {
     await loadUser();
-    await getProduct();
+    // await getProduct();
 
     // page load first variant select
-    if (product.value?.variants?.length > 0) {
-        selectedVariant.value = product.value.variants[0];
-    }
+    // if (product.value?.variants?.length > 0) {
+    //     selectedVariant.value = product.value.variants[0];
+    // }
 
     const theme = localStorage.getItem("theme");
     if (theme === "dark") {
@@ -623,7 +848,7 @@ onMounted(async () => {
         document.documentElement.classList.add("dark");
     }
 
-    initializeProduct();
+    // initializeProduct();
 })
 </script>
 

@@ -3,16 +3,19 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
+import { createHead } from '@vueuse/head'
 
-import './style.css'
-import '@fortawesome/fontawesome-free/css/all.min.css'
+import './style.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import "leaflet/dist/leaflet.css"
+import "leaflet/dist/leaflet.css";
 
 // theme
 const saved = localStorage.getItem("theme");
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const dark = saved ? saved === "dark" : systemDark;
+
+const head = createHead();
 
 document.documentElement.classList.toggle("dark", dark);
 
@@ -22,5 +25,6 @@ const pinia = createPinia()
 
 app.use(router)
 app.use(pinia)
+app.use(head)
 
 app.mount('#app')

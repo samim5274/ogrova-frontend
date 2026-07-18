@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",
+    "@unhead/vue": "^3.1.8",
     "@vueform/multiselect": "^2.6.11",
+    "@vueuse/head": "^0.9.8",
     "axios": "^1.13.5",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
@@ -22,6 +24,7 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
     "@vitejs/plugin-vue": "^6.0.2",
     "autoprefixer": "^10.4.24",
     "postcss": "^8.5.6",
