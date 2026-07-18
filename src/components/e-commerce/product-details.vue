@@ -262,10 +262,10 @@
                                                 <div class="mt-1 flex items-center gap-1">
                                                     <!-- variant price -->
                                                     <span class="text-[10px] font-black text-emerald-600 dark:text-orange-400">
-                                                        ৳{{ Number(variant.price) - Number(variant.discount_price || 0) }}
+                                                        ৳{{ Number(variant.price) - Number(variant.discount || 0) }}
                                                     </span>
 
-                                                    <span v-if="variant.discount_price" class="line-through text-gray-400 text-[10px]">
+                                                    <span v-if="variant.discount" class="line-through text-gray-400 text-[10px]">
                                                         ৳{{ variant.price }}
                                                     </span>
 
@@ -399,8 +399,8 @@
                             
                             <div class="relative aspect-[10/12] overflow-hidden rounded-[1rem] bg-gray-50/70 dark:bg-gray-800/50 border border-gray-100/50 dark:border-white/[0.03]">
                                 <div class="absolute top-3.5 left-3.5 z-10 flex flex-col gap-1.5">
-                                    <span v-if="cat_product.discount_price > 0" class="bg-emerald-600 dark:bg-orange-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20">
-                                        -{{ Math.round((cat_product.discount_price / cat_product.price) * 100) }}% OFF
+                                    <span v-if="cat_product.discount > 0" class="bg-emerald-600 dark:bg-orange-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20">
+                                        -{{ Math.round((cat_product.discount / cat_product.price) * 100) }}% OFF
                                     </span>
                                 </div>
 
@@ -438,9 +438,9 @@
 
                                 <div class="mt-4 pt-3 border-t border-gray-100 dark:border-white/[0.04] flex items-center justify-between">
                                     <div class="flex flex-col">
-                                        <span v-if="cat_product.discount_price > 0" class="text-[11px] font-bold text-gray-400 line-through decoration-red-500/20 mb-0.5">৳{{ cat_product.price }}</span>
+                                        <span v-if="cat_product.discount > 0" class="text-[11px] font-bold text-gray-400 line-through decoration-red-500/20 mb-0.5">৳{{ cat_product.price }}</span>
                                         <span class="text-2xl font-black text-gray-900 dark:text-white tracking-tight leading-none flex items-start gap-0.5">
-                                            <span class="text-sm font-bold mt-0.5">৳</span>{{ cat_product.price - cat_product.discount_price || cat_product.price }}
+                                            <span class="text-sm font-bold mt-0.5">৳</span>{{ cat_product.price - cat_product.discount || cat_product.price }}
                                         </span>
                                     </div>
 
@@ -555,7 +555,7 @@ const currentPrice = computed(() => {
 
     return (
         Number(source.price || 0) -
-        Number(source.discount_price || 0)
+        Number(source.discount || 0)
     ).toFixed(2);
 });
 
@@ -571,12 +571,12 @@ const discountAmount = computed(() => {
     const source = priceSource.value;
 
     return source
-        ? Number(source.discount_price || 0).toFixed(2)
+        ? Number(source.discount || 0).toFixed(2)
         : "0.00";
 });
 
 const hasDiscount = computed(() => {
-    return Number(priceSource.value?.discount_price || 0) > 0;
+    return Number(priceSource.value?.discount || 0) > 0;
 });
 
 const discountPercent = computed(() => {
@@ -585,7 +585,7 @@ const discountPercent = computed(() => {
     if (!source) return 0;
 
     const price = Number(source.price || 0);
-    const discount = Number(source.discount_price || 0);
+    const discount = Number(source.discount || 0);
 
     if (!price || !discount) return 0;
 

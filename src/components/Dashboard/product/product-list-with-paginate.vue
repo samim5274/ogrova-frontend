@@ -111,17 +111,17 @@
                                             <div class="flex flex-col group">
                                                 <div class="flex items-center gap-2">
                                                     <span class="text-base font-extrabold text-slate-900 dark:text-white leading-none">
-                                                        ৳{{ Number(product.discount_price > 0 ? product.discount_price : product.price).toLocaleString() }}
+                                                        ৳{{ Number(product.discount > 0 ? product.discount : product.price).toLocaleString() }}
                                                     </span>
                                                     
-                                                    <span v-if="product.discount_price > 0 && product.price > 0" 
+                                                    <span v-if="product.discount > 0 && product.price > 0" 
                                                         class="inline-flex items-center px-1.5 py-0.5 rounded-md bg-rose-600 text-[10px] font-bold text-white shadow-sm animate-pulse">
                                                         <i class="fa-solid fa-arrow-down mr-0.5 scale-75"></i>
-                                                        {{ Math.round(((product.price - product.discount_price) / product.price) * 100) }}% OFF
+                                                        {{ Math.round(((product.price - product.discount) / product.price) * 100) }}% OFF
                                                     </span>
                                                 </div>
 
-                                                <div v-if="product.discount_price > 0" class="flex items-center gap-1.5 mt-0.5">
+                                                <div v-if="product.discount > 0" class="flex items-center gap-1.5 mt-0.5">
                                                     <span class="text-[11px] font-medium text-slate-400 line-through decoration-slate-300">
                                                         ৳{{ Number(product.price).toLocaleString() }}
                                                     </span>

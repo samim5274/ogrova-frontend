@@ -76,13 +76,13 @@
                         <!-- Price + Stock -->
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="label">Price</label>
-                                <input type="number" v-model="form.price" class="input" placeholder="e.g BDT ৳ 450.00"/>
+                                <label class="label">Purchase Price</label>
+                                <input type="number" v-model="form.purchase_price" class="input" placeholder="e.g BDT ৳ 450.00"/>
                             </div>
 
                             <div>
-                                <label class="label">Stock Quantity</label>
-                                <input type="number" v-model="form.stock_quantity" class="input" placeholder="e.g 15 pcs"/>
+                                <label class="label">Price</label>
+                                <input type="number" v-model="form.price" class="input" placeholder="e.g BDT ৳ 450.00"/>
                             </div>
                         </div>
 
@@ -90,8 +90,8 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="label">Discount (Optional)</label>
-                                <input type="number" v-model="form.discount_price" class="input" placeholder="e.g BDT ৳ 400.00"/>
-                                <p class="error" v-if="errors.discount_price">{{ errors.discount_price[0] }}</p>
+                                <input type="number" v-model="form.discount" class="input" placeholder="e.g BDT ৳ 400.00"/>
+                                <p class="error" v-if="errors.discount">{{ errors.discount[0] }}</p>
                             </div>
                             <div>
                                 <label class="label">Point</label>
@@ -101,10 +101,17 @@
                         </div>
 
                         <!-- Minimum Stock -->
-                        <div>
-                            <label class="label">Minimum Stock Alert</label>
-                            <input type="number" v-model="form.min_stock" class="input" placeholder="e.g 5 pcs"/>
-                            <p class="error" v-if="errors.min_stock">{{ errors.min_stock[0] }}</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="label">Stock Quantity</label>
+                                <input type="number" v-model="form.stock_quantity" class="input" placeholder="e.g 15 pcs"/>
+                            </div>
+
+                            <div>
+                                <label class="label">Minimum Stock Alert</label>
+                                <input type="number" v-model="form.min_stock" class="input" placeholder="e.g 5 pcs"/>
+                                <p class="error" v-if="errors.min_stock">{{ errors.min_stock[0] }}</p>
+                            </div>
                         </div>
 
                         <!-- Summary -->
@@ -209,7 +216,7 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Discount</label>
-                                        <input v-model="variant.discount_price" type="number" class="input mt-1" placeholder="Variant Discount Price"/>
+                                        <input v-model="variant.discount" type="number" class="input mt-1" placeholder="Variant Discount Price"/>
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Stock</label>
@@ -413,8 +420,9 @@ const initialForm = {
     category: '',
     subcategory: '',
     brand: '',
+    purchase_price:'',
     price: '',
-    discount_price: '',
+    discount: '',
     stock_quantity: '',
     min_stock: '',
     images: [],       // for uploaded files
@@ -477,8 +485,9 @@ async function submit(){
         fd.append('category', form.category);
         fd.append('subcategory', form.subcategory);
         fd.append('brand', form.brand);
+        fd.append('purchase_price', form.purchase_price);
         fd.append('price', form.price);
-        fd.append('discount_price', form.discount_price || 0);
+        fd.append('discount', form.discount || 0);
         fd.append('stock_quantity', form.stock_quantity);
         fd.append('min_stock', form.min_stock || 0);
         fd.append('point', form.point || 0);
@@ -500,7 +509,7 @@ async function submit(){
             fd.append(`variants[${i}][color]`, variant.color || '');
             fd.append(`variants[${i}][size]`, variant.size || '');
             fd.append(`variants[${i}][price]`, variant.price || 0);
-            fd.append(`variants[${i}][discount_price]`, variant.discount_price || 0);
+            fd.append(`variants[${i}][discount]`, variant.discount || 0);
             fd.append(`variants[${i}][stock]`, variant.stock || 0);
         })
 

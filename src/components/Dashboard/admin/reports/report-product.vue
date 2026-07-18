@@ -91,9 +91,9 @@
 
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex flex-col">
-                                                    <template v-if="product.discount_price">
+                                                    <template v-if="product.discount">
                                                         <span class="text-sm font-bold text-slate-900 dark:text-slate-100">
-                                                            ৳ {{ product.discount_price }}
+                                                            ৳ {{ product.discount }}
                                                         </span>
                                                         <span class="text-xs text-slate-400 dark:text-slate-500 line-through mt-0.5">
                                                             ৳ {{ product.price }}

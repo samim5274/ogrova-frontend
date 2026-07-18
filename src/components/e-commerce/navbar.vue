@@ -124,9 +124,9 @@
                                         </div>
                                         <div class="flex items-center gap-2 mt-1 text-xs">
                                             <span class="font-semibold text-emerald-600 dark:text-emerald-400">
-                                                ৳ {{ product.discount_price ?? product.price }}
+                                                ৳ {{ product.discount ?? product.price }}
                                             </span>
-                                            <span v-if="product.discount_price" class="text-slate-400 line-through text-[11px]">
+                                            <span v-if="product.discount" class="text-slate-400 line-through text-[11px]">
                                                 ৳ {{ product.price }}
                                             </span>
                                         </div>

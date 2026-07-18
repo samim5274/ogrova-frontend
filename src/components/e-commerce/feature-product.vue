@@ -79,9 +79,9 @@
                         <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
                             <div class="flex flex-col">
                                 <span class="text-sm font-black text-emerald-600 dark:text-orange-400">
-                                    ৳{{ product.discount_price ? (product.price - product.discount_price) : product.price }}
+                                    ৳{{ product.discount ? (product.price - product.discount) : product.price }}
                                 </span>
-                                <span v-if="product.discount_price" class="text-[10px] text-slate-400 line-through">
+                                <span v-if="product.discount" class="text-[10px] text-slate-400 line-through">
                                     ৳{{ product.price }}
                                 </span>
                             </div>

@@ -65,13 +65,13 @@
                             
                             <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
                                 
-                                <span v-if="product.discount_price" 
+                                <span v-if="product.discount" 
                                     class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300 text-white
                                     /* Light Mode: Emerald Green Gradient */
                                     bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20
                                     /* Dark Mode: Orange/Amber Gradient */
                                     dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
-                                    -{{ Math.round((product.discount_price / product.price) * 100) }}% OFF
+                                    -{{ Math.round((product.discount / product.price) * 100) }}% OFF
                                 </span>
 
                                 <button class="absolute top-2.5 right-2.5 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-2 rounded-full text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm border border-slate-100 dark:border-slate-800/40">
@@ -112,9 +112,9 @@
 
                                 <div class="flex items-center justify-between gap-1.5">
                                     <div class="flex flex-col min-w-0">
-                                        <span v-if="product.discount_price" class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 line-through truncate mb-0.5">৳{{ product.price }}</span>
+                                        <span v-if="product.discount" class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 line-through truncate mb-0.5">৳{{ product.price }}</span>
                                         <span class="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight truncate">
-                                            ৳{{ product.discount_price ? (product.price - product.discount_price) : product.price }}
+                                            ৳{{ product.discount ? (product.price - product.discount) : product.price }}
                                         </span>
                                     </div>
 

@@ -90,8 +90,8 @@
                             <!-- Discount Price -->
                             <div>
                                 <label class="label">Discount (Optional)</label>
-                                <input type="number" v-model="form.discount_price" class="input" placeholder="e.g BDT ৳ 400.00"/>
-                                <p class="error" v-if="errors.discount_price">{{ errors.discount_price[0] }}</p>
+                                <input type="number" v-model="form.discount" class="input" placeholder="e.g BDT ৳ 400.00"/>
+                                <p class="error" v-if="errors.discount">{{ errors.discount[0] }}</p>
                             </div>
                             <div>
                                 <label class="label">Point</label>
@@ -209,7 +209,7 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Discount</label>
-                                        <input v-model="variant.discount_price" type="number" class="input mt-1" placeholder="Variant Price"/>
+                                        <input v-model="variant.discount" type="number" class="input mt-1" placeholder="Variant Price"/>
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Stock</label>
@@ -361,7 +361,7 @@ const initialForm = {
     subcategory: '',
     brand: '',
     price: 0,
-    discount_price: 0,
+    discount: 0,
     stock_quantity: 0,
     min_stock: 0,
     summary: '',
@@ -421,7 +421,7 @@ async function fetchProduct() {
             subcategory: product.subcategory_id,
             brand: product.brand_id,
             price: product.price,
-            discount_price: product.discount_price,
+            discount: product.discount,
             stock_quantity: product.stock_quantity,
             min_stock: product.min_stock,
             summary: product.summary,
@@ -510,7 +510,7 @@ const filteredSubCategories = computed(() => {
 
 // --- VARIANTS ---
 function addVariant() {
-    form.variants.push({ color: '', size: '', price: form.price || 0, discount_price: 0, stock: 0 })
+    form.variants.push({ color: '', size: '', price: form.price || 0, discount: 0, stock: 0 })
 }
 function removeVariant(i) { form.variants.splice(i, 1) }
 
@@ -578,7 +578,7 @@ async function submitEdit() {
             category: form.category,
             subcategory: form.subcategory,
             price: form.price || 0,
-            discount_price: form.discount_price || 0,
+            discount: form.discount || 0,
             stock_quantity: form.stock_quantity || 0,
             min_stock: form.min_stock || 0,
             summary: form.summary,
@@ -605,8 +605,8 @@ async function submitEdit() {
                 fd.append(`variants[${i}][color]`, v.color || '');
                 fd.append(`variants[${i}][size]`, v.size || '');
                 fd.append(`variants[${i}][price]`, v.price || 0);
-                fd.append(`variants[${i}][discount_price]`, v.discount_price || 0);
-                fd.append(`variants[${i}][stock]`, v.stock || 0);
+                fd.append(`variants[${i}][discount]`, v.discount || 0);
+                fd.append(`variants[${i}][stock_quantity]`, v.stock_quantity || 0);
             });
         }
 
@@ -620,7 +620,8 @@ async function submitEdit() {
         const res = await api.post(`/products/update/${form.id}`, fd);
 
         successMsg.value = res.data.message || 'Product updated successfully!';
-        setTimeout(() => router.back(), 1000);
+        await fetchProduct();
+        // setTimeout(() => router.back(), 1000);
 
     } catch (err) {
         if (err.response?.status === 422) {
