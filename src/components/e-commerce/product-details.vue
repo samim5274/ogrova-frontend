@@ -338,13 +338,6 @@
                 <div class="mt-24 border-t border-gray-200 dark:border-white/5 pt-12">
                     <div>
                         <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Product Information</h3>
-                        
-                        <div class="mt-20">
-                            <div
-                                class="product-content rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 lg:p-10 shadow-sm"
-                                v-html="product.description">
-                            </div>
-                        </div>
 
                         <div v-if="product.meta_keywords" class="mt-8 flex flex-wrap gap-2 pt-6 border-t border-gray-200 dark:border-white/5">
                             <span v-for="tag in product.meta_keywords.split(',')" :key="tag" 
@@ -352,6 +345,14 @@
                                 #{{ tag.trim() }}
                             </span>
                         </div>
+                        
+                        <div class="mt-10">
+                            <div
+                                class="product-content rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 lg:p-10 shadow-sm"
+                                v-html="product.description">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

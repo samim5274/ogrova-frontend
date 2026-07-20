@@ -122,22 +122,20 @@
                                     {{ product.name }}
                                 </h4>
 
-                                <div class="flex items-center justify-between gap-1.5">
-                                    <div class="flex flex-col min-w-0">
-                                        <span v-if="product.discount" class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 line-through truncate mb-0.5">৳{{ product.price }}</span>
-                                        <span class="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight truncate">
-                                            ৳{{ product.discount ? (product.price - product.discount) : product.price }}
-                                        </span>
-                                    </div>
+                                <span class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 truncate mb-0.5 block">
+                                    <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="n <= Math.round(Number(product?.ratings_avg_rating || 0)) ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'"></i>
+                                    <span v-if="product.ratings_count" class="text-[9px] md:text-[10px] font-medium text-slate-500 dark:text-slate-400 pt-0.5">
+                                        ({{ product.ratings_count }})
+                                    </span>
+                                </span>
 
-                                    <button @click="ProductDetails(product)" class="flex items-center justify-center gap-1.5 px-3 py-2 md:px-3.5 md:py-2 rounded-xl transition-all duration-300 active:scale-95 shrink-0 group/btn font-bold border
-                                        bg-emerald-500/5 text-emerald-600 border-emerald-500/10 
-                                        hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/10
-                                        dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/10 
-                                        dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
-                                        <i class="fa-solid fa-basket-shopping text-[10px] md:text-xs transition-transform group-hover/btn:-translate-y-0.5 duration-300"></i>
-                                        <span class="text-[9px] md:text-[10px] uppercase tracking-wider">View</span>
-                                    </button>
+                                <div class="flex items-center justify-between gap-1.5 mt-1">
+                                    <span v-if="product.discount" class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 line-through truncate">
+                                        ৳{{ formatPrice(product.price) }}
+                                    </span>
+                                    <span class="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight truncate ml-auto">
+                                        ৳{{ formatPrice(finalPrice(product)) }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +244,17 @@ const getProductImage = (product) => {
     return selectedImg.url ? selectedImg.url : defaultProductImage;
 }
 
+// Helper
+const formatPrice = (value) => {
+    const n = Number(value || 0)
+    return n.toLocaleString('en-BD')
+}
 
+const finalPrice = (product) => {
+    const price = Number(product.price || 0)
+    const discount = Number(product.discount || 0)
+    return discount > 0 ? price - discount : price
+}
 
 
 
