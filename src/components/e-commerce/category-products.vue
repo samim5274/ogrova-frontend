@@ -220,6 +220,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router';
+import { useHead } from '@unhead/vue';
 import api, { makeImg } from '../../services/api'
 
 import Navbar from './navbar.vue';
@@ -234,6 +235,7 @@ const route = useRoute();
 const loading = ref(false);
 const categoryProducts = ref([]);
 const categories = ref([]);
+const currentCategory = ref(null);
 const defaultProductImage = "/images/product/default-product.png"
 
 
@@ -400,6 +402,17 @@ function getCategory(cat) {
 }
 
 watch(
+    [categories, () => route.params.id],
+    () => {
+        currentCategory.value =
+            categories.value.find(
+                c => Number(c.id) === Number(route.params.id)
+            ) || null;
+    },
+    { immediate: true }
+);
+
+watch(
     () => route.params.id,
     () => {
         getCategoryProducts();
@@ -440,9 +453,83 @@ function toggleMenu() {
 }
 
 function handleSearch(query) {
-    console.log("Searching for:", query);
-    // Add your redirect or search API routing logic here
+    router.push({
+        path: "/search",
+        query: { q: query }
+    });
 }
+
+
+
+
+
+
+
+useHead(() => ({
+    title:
+        currentCategory.value?.meta_title ||
+        `${currentCategory.value?.name || "Category"} | Ogrova`,
+
+    meta: [
+        {
+            name: "description",
+            content:
+                currentCategory.value?.meta_description ||
+                `Buy ${currentCategory.value?.name || "products"} online in Bangladesh at Ogrova.`,
+        },
+        {
+            name: "keywords",
+            content:
+                currentCategory.value?.meta_keywords ||
+                `${currentCategory.value?.name || ""}, Ogrova, Online Shopping Bangladesh`,
+        },
+
+        // Open Graph
+        {
+            property: "og:title",
+            content:
+                currentCategory.value?.meta_title ||
+                `${currentCategory.value?.name || "Category"} | Ogrova`,
+        },
+        {
+            property: "og:description",
+            content:
+                currentCategory.value?.meta_description ||
+                `Shop ${currentCategory.value?.name || "products"} at Ogrova.`,
+        },
+        {
+            property: "og:type",
+            content: "website",
+        },
+
+        // Twitter
+        {
+            name: "twitter:card",
+            content: "summary_large_image",
+        },
+        {
+            name: "twitter:title",
+            content:
+                currentCategory.value?.meta_title ||
+                `${currentCategory.value?.name || "Category"} | Ogrova`,
+        },
+        {
+            name: "twitter:description",
+            content:
+                currentCategory.value?.meta_description ||
+                `Shop ${currentCategory.value?.name || "products"} online.`,
+        },
+    ],
+}));
+
+
+
+
+
+
+
+
+
 
 onMounted(() => {
     fetchCategories();

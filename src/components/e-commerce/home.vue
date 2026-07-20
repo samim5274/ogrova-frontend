@@ -19,11 +19,16 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useHead } from '@unhead/vue';
+import { useRouter } from 'vue-router';
+
 import Navbar from './navbar.vue';
 import slider from './slider.vue';
 import Main from './main.vue';
 import NewsLatter from './news-latter.vue';
 import footerSection from "./footer.vue";
+
+const router = useRouter()
 
 const isDark = ref(false);
 const mobileMenu = ref(false);
@@ -43,9 +48,54 @@ function toggleMenu() {
 }
 
 function handleSearch(query) {
-    console.log("Searching for:", query);
-    // Add your redirect or search API routing logic here
+    router.push({
+        path: "/search",
+        query: { q: query }
+    });
 }
+
+useHead({
+    title: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh',
+
+    meta: [
+        {
+            name: 'description',
+            content: 'Shop original electronics, fashion, grocery, cosmetics, mobiles, laptops and more at the best price in Bangladesh. Enjoy fast delivery, Cash on Delivery and secure online payment with Ogrova.'
+        },
+        {
+            name: 'keywords',
+            content: 'Ogrova, Online Shopping Bangladesh, Electronics, Fashion, Grocery, Mobile, Laptop, Cosmetics, Best Price Bangladesh'
+        },
+
+        // Open Graph
+        {
+            property: 'og:title',
+            content: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh'
+        },
+        {
+            property: 'og:description',
+            content: 'Shop original products online with fast delivery and Cash on Delivery across Bangladesh.'
+        },
+        {
+            property: 'og:type',
+            content: 'website'
+        },
+
+        // Twitter
+        {
+            name: 'twitter:card',
+            content: 'summary_large_image'
+        },
+        {
+            name: 'twitter:title',
+            content: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh'
+        },
+        {
+            name: 'twitter:description',
+            content: 'Shop original products online with fast delivery and Cash on Delivery across Bangladesh.'
+        }
+    ]
+})
 
 onMounted(() => {
     const theme = localStorage.getItem("theme");
