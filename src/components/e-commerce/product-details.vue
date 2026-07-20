@@ -426,7 +426,9 @@
                                         </span>
                                         <div class="flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-md">
                                             <i class="fa-solid fa-star text-[9px] text-amber-500"></i>
-                                            <span class="text-[10px] font-black text-amber-700 dark:text-amber-400">4.9</span>
+                                            <span class="text-[10px] font-black text-amber-700 dark:text-amber-400">
+                                                {{ Math.round(Number(cat_product?.ratings_avg_rating || 0)) }}
+                                            </span>
                                         </div>
                                     </div>
 
@@ -435,6 +437,13 @@
                                         <span v-if="cat_product.point" class="text-xs font-medium text-gray-400 ml-1">({{ cat_product.point }} Pts)</span>
                                     </h3>
                                 </div>
+
+                                <span class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 truncate mb-0.5">
+                                    <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="n <= Math.round(Number(cat_product?.ratings_avg_rating || 0)) ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'" ></i> 
+                                    <span v-if="cat_product.ratings_count" class="text-[9px] md:text-[10px] font-medium text-slate-500 dark:text-slate-400 pt-0.5">
+                                        ({{ cat_product.ratings_count }})
+                                    </span>
+                                </span>
 
                                 <div class="mt-4 pt-3 border-t border-gray-100 dark:border-white/[0.04] flex items-center justify-between">
                                     <div class="flex flex-col">
