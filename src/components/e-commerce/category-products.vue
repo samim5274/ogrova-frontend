@@ -220,7 +220,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router';
-import { useHead } from '@unhead/vue';
+import { useHead } from '@vueuse/head';
 import api, { makeImg } from '../../services/api'
 
 import Navbar from './navbar.vue';
@@ -235,7 +235,7 @@ const route = useRoute();
 const loading = ref(false);
 const categoryProducts = ref([]);
 const categories = ref([]);
-const currentCategory = ref(null);
+const seoCategory = ref(null);
 const defaultProductImage = "/images/product/default-product.png"
 
 
@@ -347,19 +347,18 @@ async function getCategoryProducts(page = 1) {
         const res = await api.get(`/public/category-products/${categoryId}`, {
             params: { page }
         });
-        const response = res.data;
 
-        // REAL DATA ARRAY (IMPORTANT FIX)
-        categoryProducts.value = response?.data?.data ?? [];
+        seoCategory.value = res.data.category;
 
-        // PAGINATION META
+        categoryProducts.value = res.data.products.data;
+
         pagination.value = {
-            page: response?.data?.current_page ?? 1,
-            lastPage: response?.data?.last_page ?? 1,
-            total: response?.data?.total ?? 0,
-            perPage: response?.data?.per_page ?? 20,
-            from: response?.data?.from ?? 0,
-            to: response?.data?.to ?? 0,
+            page: res.data.products.current_page,
+            lastPage: res.data.products.last_page,
+            total: res.data.products.total,
+            perPage: res.data.products.per_page,
+            from: res.data.products.from,
+            to: res.data.products.to,
         };
 
     } catch (err) {
@@ -401,16 +400,6 @@ function getCategory(cat) {
     router.push(`/category/${cat.slug}/${cat.id}`);
 }
 
-watch(
-    [categories, () => route.params.id],
-    () => {
-        currentCategory.value =
-            categories.value.find(
-                c => Number(c.id) === Number(route.params.id)
-            ) || null;
-    },
-    { immediate: true }
-);
 
 watch(
     () => route.params.id,
@@ -465,62 +454,166 @@ function handleSearch(query) {
 
 
 
-useHead(() => ({
-    title:
-        currentCategory.value?.meta_title ||
-        `${currentCategory.value?.name || "Category"} | Ogrova`,
+useHead(() => {
 
-    meta: [
-        {
-            name: "description",
-            content:
-                currentCategory.value?.meta_description ||
-                `Buy ${currentCategory.value?.name || "products"} online in Bangladesh at Ogrova.`,
-        },
-        {
-            name: "keywords",
-            content:
-                currentCategory.value?.meta_keywords ||
-                `${currentCategory.value?.name || ""}, Ogrova, Online Shopping Bangladesh`,
-        },
+    const c = seoCategory.value;
 
-        // Open Graph
-        {
-            property: "og:title",
-            content:
-                currentCategory.value?.meta_title ||
-                `${currentCategory.value?.name || "Category"} | Ogrova`,
-        },
-        {
-            property: "og:description",
-            content:
-                currentCategory.value?.meta_description ||
-                `Shop ${currentCategory.value?.name || "products"} at Ogrova.`,
-        },
-        {
-            property: "og:type",
-            content: "website",
-        },
+    const title =
+        c?.meta_title ||
+        `${c?.name || "Category"} | Ogrova`
 
-        // Twitter
-        {
-            name: "twitter:card",
-            content: "summary_large_image",
-        },
-        {
-            name: "twitter:title",
-            content:
-                currentCategory.value?.meta_title ||
-                `${currentCategory.value?.name || "Category"} | Ogrova`,
-        },
-        {
-            name: "twitter:description",
-            content:
-                currentCategory.value?.meta_description ||
-                `Shop ${currentCategory.value?.name || "products"} online.`,
-        },
-    ],
-}));
+    const description =
+        c?.meta_description ||
+        `Buy ${c?.name || "products"} online in Bangladesh.`
+
+    const keywords =
+        c?.meta_keywords ||
+        `${c?.name}, Ogrova`
+
+    const image =
+        c?.og_image
+            ? makeImg(c.og_image)
+            : c?.image
+                ? makeImg(c.image)
+                : "/images/logo.png"
+
+    const url =
+        c?.canonical_url ||
+        window.location.href
+
+    return {
+
+        title,
+
+        meta: [
+
+            {
+                name: "description",
+                content: description,
+            },
+
+            {
+                name: "keywords",
+                content: keywords,
+            },
+
+            {
+                name: "robots",
+                content:
+                    c?.indexable === false
+                        ? "noindex,nofollow"
+                        : (c?.robots || "index,follow"),
+            },
+
+            /*
+            |--------------------------------------------------------------------------
+            | Open Graph
+            |--------------------------------------------------------------------------
+            */
+
+            {
+                property: "og:title",
+                content: c?.og_title || title,
+            },
+
+            {
+                property: "og:description",
+                content:
+                    c?.og_description || description,
+            },
+
+            {
+                property: "og:image",
+                content: image,
+            },
+
+            {
+                property: "og:url",
+                content: url,
+            },
+
+            {
+                property: "og:type",
+                content: "website",
+            },
+
+            {
+                property: "og:site_name",
+                content: "Ogrova",
+            },
+
+            /*
+            |--------------------------------------------------------------------------
+            | Twitter
+            |--------------------------------------------------------------------------
+            */
+
+            {
+                name: "twitter:card",
+                content: "summary_large_image",
+            },
+
+            {
+                name: "twitter:title",
+                content: c?.og_title || title,
+            },
+
+            {
+                name: "twitter:description",
+                content:
+                    c?.og_description || description,
+            },
+
+            {
+                name: "twitter:image",
+                content: image,
+            },
+
+            /*
+            |--------------------------------------------------------------------------
+            | Theme
+            |--------------------------------------------------------------------------
+            */
+
+            {
+                name: "theme-color",
+                content: "#16A34A",
+            },
+
+        ],
+
+        link: [
+
+            {
+                rel: "canonical",
+                href: url,
+            },
+
+        ],
+
+        script: [
+
+            {
+                type: "application/ld+json",
+                children: JSON.stringify({
+
+                    "@context": "https://schema.org",
+
+                    "@type": "CollectionPage",
+
+                    name: c?.name,
+
+                    description,
+
+                    url,
+
+                }),
+            },
+
+        ],
+    }
+
+})
 
 
 

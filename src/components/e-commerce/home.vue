@@ -10,7 +10,7 @@
             />
 
             <slider />
-            <Main />
+            <MainSection />
             <NewsLatter />
             <footerSection />
         </div>
@@ -19,12 +19,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useHead } from '@unhead/vue';
+import { useHead } from '@vueuse/head';
 import { useRouter } from 'vue-router';
 
 import Navbar from './navbar.vue';
 import slider from './slider.vue';
-import Main from './main.vue';
+import MainSection from './main.vue';
 import NewsLatter from './news-latter.vue';
 import footerSection from "./footer.vue";
 
