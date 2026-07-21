@@ -153,12 +153,14 @@
                         </div>
                         <div>
                             <div class="flex items-center gap-2">
-                                <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">{{ item.user?.name || 'Anonymous' }}</h4>
-                                <span
-                                    v-if="item.verified_purchase"
-                                    class="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-1.5 py-0.5 rounded"
-                                >
-                                    <i class="fa-solid fa-circle-check"></i> Verified
+                                <h4 class="text-md font-semibold text-slate-800 dark:text-slate-200">{{ item.user?.name || 'Anonymous' }}</h4>
+                                
+                                <span v-if="item.verified_purchase" class="inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm transition-colors duration-200 bg-emerald-50 text-[#16A34A] border border-emerald-200  dark:bg-[#F97316]/10 dark:text-[#F97316] dark:border-[#F97316]/20">
+                        
+                                    <svg class="h-3.5 w-3.5 text-[#16A34A] dark:text-[#F97316]" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Verified
                                 </span>
                             </div>
                             <p class="text-[11px] text-slate-400">Reviewed {{ formatDate(item.created_at) }}</p>
@@ -193,10 +195,10 @@
                     <span>Was this review helpful?</span>
                     <div class="flex items-center gap-3">
                         <button class="flex items-center gap-1 hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
-                            <i class="fa-regular fa-thumbs-up"></i> ({{ item.helpful_count }})
+                            <i class="fa-regular fa-thumbs-up"></i> ({{ item.helpful_count ?? '0' }})
                         </button>
                         <button class="flex items-center gap-1 hover:text-rose-500 transition-colors">
-                            <i class="fa-regular fa-thumbs-down"></i> ({{ item.unhelpful_count }})
+                            <i class="fa-regular fa-thumbs-down"></i> ({{ item.unhelpful_count ?? '0' }})
                         </button>
                     </div>
                 </div>

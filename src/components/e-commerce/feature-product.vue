@@ -45,9 +45,9 @@
                             {{ product.discount ? `-${discountPercent(product)}% OFF` : 'Featured' }}
                         </span>
 
-                        <button class="absolute top-2.5 right-2.5 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-2 rounded-full text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm border border-slate-100 dark:border-slate-800/40">
+                        <!-- <button class="absolute top-2.5 right-2.5 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-2 rounded-full text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm border border-slate-100 dark:border-slate-800/40">
                             <i class="fa-regular fa-heart text-[10px] md:text-[11px]"></i>
-                        </button>
+                        </button> -->
 
                         <img @click="ProductDetails(product)" :src="getProductImage(product)" :alt="product.name"
                             @error="onImageError"

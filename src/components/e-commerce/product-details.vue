@@ -396,75 +396,76 @@
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         <div v-for="cat_product in categoryProducts" :key="cat_product.id"
-                            class="group relative bg-white dark:bg-[#111827] rounded-[1rem] p-4 border border-gray-200/80 dark:border-white/[0.06] shadow-[0_20px_50px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] transition-all duration-700 hover:-translate-y-2 flex flex-col justify-between">
-                            
-                            <div class="relative aspect-[10/12] overflow-hidden rounded-[1rem] bg-gray-50/70 dark:bg-gray-800/50 border border-gray-100/50 dark:border-white/[0.03]">
-                                <div class="absolute top-3.5 left-3.5 z-10 flex flex-col gap-1.5">
-                                    <span v-if="cat_product.discount > 0" class="bg-emerald-600 dark:bg-orange-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-md shadow-emerald-500/20 dark:shadow-orange-500/20">
-                                        -{{ Math.round((cat_product.discount / cat_product.price) * 100) }}% OFF
-                                    </span>
-                                </div>
+                            class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 hover:border-emerald-500 dark:hover:border-orange-500/60 hover:shadow-[0_24px_48px_-15px_rgba(16,185,129,0.12)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)] flex flex-col justify-between cursor-pointer"
+                            @click="ProductDetails(cat_product)">
 
-                                <button class="absolute top-3.5 right-3.5 z-10 bg-white/70 dark:bg-[#1f2937]/60 backdrop-blur-md p-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-orange-400 transition-all duration-300 active:scale-90 shadow-sm border border-white/40 dark:border-white/5">
+                            <!-- Image Container -->
+                            <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
+
+                                <!-- Discount Badge -->
+                                <span v-if="cat_product.discount > 0"
+                                    class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300 text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20 dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
+                                    -{{ Math.round((cat_product.discount / cat_product.price) * 100) }}% OFF
+                                </span>
+
+                                <!-- Wishlist Button -->
+                                <!-- <button @click.stop class="absolute top-3.5 right-3.5 z-10 bg-white/70 dark:bg-[#1f2937]/60 backdrop-blur-md p-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-orange-400 transition-all duration-300 active:scale-90 shadow-sm border border-white/40 dark:border-white/5">
                                     <i class="fa-regular fa-heart text-sm"></i>
-                                </button>
+                                </button> -->
 
-                                <img @click="ProductDetails(cat_product)" loading="lazy" decoding="async" :src="getProductImage(cat_product)" :alt="cat_product.name"
-                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s] ease-out cursor-pointer">
-                                
-                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
-                                    <button @click="ProductDetails(cat_product)" class="w-full bg-white/95 dark:bg-orange-500/95 backdrop-blur-md text-gray-900 dark:text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 rounded-xl shadow-xl hover:bg-emerald-600 dark:hover:bg-orange-600 hover:text-white transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                                <!-- Product Image -->
+                                <img loading="lazy" decoding="async" :src="getProductImage(cat_product)" :alt="cat_product.name"
+                                    class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700 ease-out">
+
+                                <!-- Quick View Overlay (Desktop) -->
+                                <div class="hidden lg:flex absolute inset-0 bg-slate-950/10 dark:bg-slate-950/30 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-all duration-300 items-end p-3">
+                                    <button @click.stop="ProductDetails(cat_product)"
+                                        class="w-full bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50 transform translate-y-3 group-hover:translate-y-0 active:scale-[0.97] shadow-md transition-all duration-300 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/20 dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
                                         Quick View
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="mt-5 flex-1 flex flex-col justify-between px-1">
+                            <!-- Details Container -->
+                            <div class="p-3.5 pt-1.5 flex-1 flex flex-col justify-between">
                                 <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-[9px] font-black uppercase tracking-[0.18em] text-emerald-600 dark:text-orange-400">
+                                    <!-- Category & Points -->
+                                    <div class="flex items-center justify-between gap-2 mb-2">
+                                        <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider truncate max-w-[65%]">
                                             {{ cat_product.category?.name || categoryName }}
                                         </span>
-                                        <div class="flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-md">
-                                            <i class="fa-solid fa-star text-[9px] text-amber-500"></i>
-                                            <span class="text-[10px] font-black text-amber-700 dark:text-amber-400">
-                                                {{ Math.round(Number(cat_product?.ratings_avg_rating || 0)) }}
-                                            </span>
+
+                                        <div v-if="cat_product.point" class="flex items-center justify-center px-2 py-0.5 rounded-full border transition-all duration-300 bg-emerald-50 text-emerald-600 border-emerald-200/60 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20">
+                                            <i class="fa-solid fa-award text-[9px] mr-1"></i>
+                                            <span class="text-[9px] md:text-[10px] font-extrabold tracking-wide">{{ cat_product.point }} Pts</span>
                                         </div>
                                     </div>
 
-                                    <h3 @click="ProductDetails(cat_product)" class="text-base font-black text-gray-800 dark:text-gray-100 truncate cursor-pointer group-hover:text-emerald-600 dark:group-hover:text-orange-400 transition-colors tracking-tight">
-                                        {{ cat_product.name }} 
-                                        <span v-if="cat_product.point" class="text-xs font-medium text-gray-400 ml-1">({{ cat_product.point }} Pts)</span>
-                                    </h3>
+                                    <!-- Product Name -->
+                                    <h4 class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate transition-colors duration-300 group-hover:text-emerald-600 group-hover:underline dark:group-hover:text-orange-400">
+                                        {{ cat_product.name }}
+                                    </h4>
+
+                                    <!-- Ratings Star -->
+                                    <span class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 truncate mb-0.5 block mt-1">
+                                        <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="n <= Math.round(Number(cat_product?.ratings_avg_rating || 0)) ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'"></i>
+                                        <span v-if="cat_product.ratings_count" class="text-[9px] md:text-[10px] font-medium text-slate-500 dark:text-slate-400 pt-0.5 ml-1">
+                                            ({{ cat_product.ratings_count }})
+                                        </span>
+                                    </span>
                                 </div>
 
-                                <span class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 truncate mb-0.5">
-                                    <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="n <= Math.round(Number(cat_product?.ratings_avg_rating || 0)) ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'" ></i> 
-                                    <span v-if="cat_product.ratings_count" class="text-[9px] md:text-[10px] font-medium text-slate-500 dark:text-slate-400 pt-0.5">
-                                        ({{ cat_product.ratings_count }})
+                                <!-- Price Container (Without Action Button) -->
+                                <div class="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/40 flex items-center justify-between gap-1.5">
+                                    <span v-if="cat_product.discount > 0" class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 line-through truncate">
+                                        ৳{{ cat_product.price }}
                                     </span>
-                                </span>
-
-                                <div class="mt-4 pt-3 border-t border-gray-100 dark:border-white/[0.04] flex items-center justify-between">
-                                    <div class="flex flex-col">
-                                        <span v-if="cat_product.discount > 0" class="text-[11px] font-bold text-gray-400 line-through decoration-red-500/20 mb-0.5">৳{{ cat_product.price }}</span>
-                                        <span class="text-2xl font-black text-gray-900 dark:text-white tracking-tight leading-none flex items-start gap-0.5">
-                                            <span class="text-sm font-bold mt-0.5">৳</span>{{ cat_product.price - cat_product.discount || cat_product.price }}
-                                        </span>
-                                    </div>
-
-                                    <button @click="ProductDetails(cat_product)" class="relative h-11 w-11 group/btn overflow-hidden rounded-full bg-gray-900 dark:bg-orange-500 text-white shadow-md transition-all duration-500 hover:w-28 hover:bg-emerald-600 dark:hover:bg-orange-600 active:scale-95 flex items-center justify-center">
-                                        <div class="absolute flex items-center justify-center transition-all duration-500 group-hover/btn:translate-x-10 group-hover/btn:opacity-0">
-                                            <i class="fa-solid fa-plus text-base"></i>
-                                        </div>
-                                        <div class="absolute flex items-center justify-center gap-1.5 -translate-x-10 opacity-0 transition-all duration-500 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 px-3 whitespace-nowrap">
-                                            <i class="fa-solid fa-cart-shopping text-xs"></i>
-                                            <span class="text-[10px] font-black uppercase tracking-wider">View</span>
-                                        </div>
-                                    </button>
+                                    <span class="text-sm md:text-base font-black text-slate-900 dark:text-white tracking-tight truncate ml-auto">
+                                        ৳{{ cat_product.price - cat_product.discount || cat_product.price }}
+                                    </span>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
