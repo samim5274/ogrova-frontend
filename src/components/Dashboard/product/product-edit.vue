@@ -77,7 +77,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="label">Price</label>
-                                <input type="number" v-model="form.price" class="input" placeholder="e.g BDT ৳ 450.00"/>
+                                <input type="number" v-model="form.price" min="1" class="input" placeholder="e.g BDT ৳ 450.00"/>
                             </div>
 
                             <div>
@@ -90,7 +90,7 @@
                             <!-- Discount Price -->
                             <div>
                                 <label class="label">Discount (Optional)</label>
-                                <input type="number" v-model="form.discount" class="input" placeholder="e.g BDT ৳ 400.00"/>
+                                <input type="number" v-model="form.discount" min="0" :max="form.price || 0"  @input="validateVariantDiscount(form)" class="input" placeholder="e.g BDT ৳ 400.00"/>
                                 <p class="error" v-if="errors.discount">{{ errors.discount[0] }}</p>
                             </div>
                             <div>
@@ -205,11 +205,12 @@
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Price</label>
-                                        <input v-model="variant.price" type="number" class="input mt-1" placeholder="Variant Price"/>
+                                        <input v-model="variant.price" type="number" min="1" class="input mt-1" placeholder="Variant Price"/>
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Discount</label>
-                                        <input v-model="variant.discount" type="number" class="input mt-1" placeholder="Variant Price"/>
+                                        <input v-model="variant.discount" type="number" min="0" :max="variant.price || 0"  @input="validateVariantDiscount(variant)" class="input mt-1" placeholder="Variant Price"/>
+                                        <p v-if="variant.discount > variant.price" class="text-red-500 text-xs mt-1">Discount cannot be greater than price.</p>
                                     </div>
                                     <div>
                                         <label class="text-xs font-bold text-slate-500 uppercase">Stock</label>
@@ -497,7 +498,18 @@ const filteredSubCategories = computed(() => {
     return subcategories.value.filter(sub => sub.category_id === form.category)
 })
 
+function validateVariantDiscount(variant) {
+    const price = Number(variant.price) || 0;
+    const discount = Number(variant.discount) || 0;
 
+    if (discount > price) {
+        variant.discount = price;
+    }
+
+    if (discount < 0) {
+        variant.discount = 0;
+    }
+}
 
 
 
@@ -615,7 +627,7 @@ async function submitEdit() {
             form.images.forEach(f => fd.append('images[]', f));
         }
 
-        fd.append('_method', 'POST');
+        fd.append('_method', 'PUT');
 
         const res = await api.post(`/products/update/${form.id}`, fd);
 
