@@ -279,6 +279,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="mt-6 pt-5 border-t border-slate-200/80 dark:border-slate-800">
                             <div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800/60">
                                 <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
@@ -364,6 +366,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="w-full p-4 bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-all duration-200 backdrop-blur-md">
 
                             <!-- Header Label -->
@@ -447,7 +451,37 @@
                             </div>
 
                         </div>
+
+
                         <div class="sm:col-span-2 mt-2 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 space-y-5">
+                            
+                            <div class="sm:col-span-2">
+                                <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1 block mb-2">
+                                    Payment Method <span class="text-red-500">*</span>
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <!-- Cash on delivery -->
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
+                                        :class="form.payment_method === 'cod' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
+                                        <input type="radio" v-model="form.payment_method" value="cod" class="accent-[#16A34A] h-4 w-4" />
+                                        <div class="flex flex-col">
+                                            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Cash on Delivery</span>
+                                            <span class="text-[10px] text-slate-400 dark:text-slate-500">Pay the price after receiving the product.</span>
+                                        </div>
+                                    </label>
+                                    
+                                    <!-- advance payment -->
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
+                                        :class="form.payment_method === 'advance' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
+                                        <input type="radio" v-model="form.payment_method" value="advance" class="accent-[#16A34A] h-4 w-4" />
+                                        <div class="flex flex-col">
+                                            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Advance Payment</span>
+                                            <span class="text-[10px] text-slate-400 dark:text-slate-500">Pay delivery charges and product price in advance.</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
                             <!-- Payment Type Selection Switch -->
                             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm">
                                 <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider mb-3">
@@ -695,6 +729,22 @@ const successMsg = ref('');
 const errorMsg = ref('');
 const search = ref('');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ==============================
 // Main Order Form State
 // This object holds EVERY field that gets sent to the backend on checkout.
@@ -703,26 +753,31 @@ const form = reactive({
     product_id: null,
 
     // Shipping address fields
-    recipient_name: '',
-    phone: '',
+    recipient_name: 'Shamim Hossain',
+    phone: '01762164746',
     division_id: null,
     district_id: null,
     upazila_id: null,
     police_station_id: null,
-    postal_code: '',
+    postal_code: '1200',
     label: 'Home',
-    address: '',
+    address: 'Gazipur, Dhaka',
 
     // Payment fields
     trans_payment_method: 'mobile', // 'mobile' | 'bank'
-    account_number: '',
-    transaction_id: '',
-    bank_name: '',
-    account_holder_name: '',
+    account_number: '01762164746',
+    transaction_id: 'TDX-987-654-321',
+    bank_name: 'BRAC Bank',
+    account_holder_name: 'Shamim Hossain',
 
     // Coupon field (set after a successful coupon check)
     coupon: '',
 });
+
+
+
+
+
 
 // Form-level validation error message (shown above the checkout button)
 const formError = ref('');
@@ -731,6 +786,15 @@ const formError = ref('');
 const searchQuery = ref('');
 const sortBy = ref('all');
 const products = ref([]);
+
+
+
+
+
+
+
+
+
 
 // fetch all products
 async function fetchProducts() {
@@ -774,6 +838,25 @@ const filteredProducts = computed(() => {
     }
     return list
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ==============================
 // Location Cascade (Division -> District -> Upazila -> Police Station)
@@ -847,6 +930,24 @@ const handleUpazilaChange = async () => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ================
 // Check Coupon
 // ================
@@ -884,11 +985,38 @@ const checkCoupon = async () => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 // Final payable amount after applying coupon discount (used in Order Summary & payload)
 const payableAmount = computed(() => {
     const discount = Number(couponData.value?.discount_amount || 0);
     return Math.max(subtotal.value - discount, 0);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ==============================
 // Cart / Product Selection
@@ -932,11 +1060,21 @@ const selectProduct = (product) => {
     addToCart(product);
 };
 
+
+
+
+
+
+
+
+
+
+
 const cartItems = ref([]);
 async function getCartItems() {
     loading.value = true
     try {
-        const res = await api.get(`/cart`);
+        const res = await api.get(`/admin/cart`);
         cartItems.value = res.data.data;
     } catch (err) {
         console.error(err);
@@ -983,9 +1121,19 @@ function queueQtyUpdate(item) {
         updateQty(item);
     }, 500);
 }
+
+
+
+
+
+
+
+
+
+
 async function updateQty(item) {
     try {
-        const res = await api.post(`/cart/qty-update/${item.reg}/${item.product_id}/${item.variant_id}`, {
+        const res = await api.post(`/admin/cart/qty-update/${item.reg}/${item.product_id}/${item.variant_id}`, {
             quantity: Number(item.quantity),
         });
         if (res?.data?.status === 'success') {
@@ -1007,7 +1155,7 @@ async function updateQty(item) {
 
 async function remove(item) {
     try {
-        const res = await api.post(`/cart/remove-to-cart/${item.id}/${item.reg}/${item.product_id}/${item.variant_id}`, {
+        const res = await api.post(`/admin/cart/remove-to-cart/${item.id}/${item.reg}/${item.product_id}/${item.variant_id}`, {
             quantity: Number(item.quantity),
         });
         if (res?.data?.status === 'success') {
@@ -1027,6 +1175,18 @@ async function remove(item) {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 const defaultProductImage = "/images/product/default-product.png";
 const getProductImage = (item) => {
     const images = item.product?.images;
@@ -1036,12 +1196,47 @@ const getProductImage = (item) => {
     return defaultProductImage;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function ProductDetails(item) {
     const route = router.resolve({
         path: `/product-details/${item.product.slug}`
     });
     window.open(route.href, '_blank');
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ==============================
 // Validate the form before submitting the payload
@@ -1084,6 +1279,22 @@ function validateOrderForm() {
     }
     return '';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ==============================
 // Checkout: build the complete payload and send it to the backend
@@ -1147,7 +1358,7 @@ async function checkOut() {
     isCheckingOut.value = true;
     errorMsg.value = '';
     try {
-        const res = await api.post('/admin/orders/custom-order', payload);
+        const res = await api.post('/admin/cart/confirm/order', payload);
         if (res.data?.success) {
             successMsg.value = res.data.message || 'Order created successfully!';
             errorMsg.value = null;
@@ -1191,6 +1402,23 @@ async function checkOut() {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const isDark = ref(false);
 function applyTheme(dark) {
     isDark.value = dark;
@@ -1203,6 +1431,21 @@ function toggleTheme() {
 const onSearch = () => {
     console.log(search.value)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ESC to close drawer */
 onMounted(() => {
