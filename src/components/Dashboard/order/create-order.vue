@@ -455,6 +455,7 @@
 
                         <div class="sm:col-span-2 mt-2 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 space-y-5">
                             
+                            <!-- ==================== Payment method section start ==================== -->
                             <div class="sm:col-span-2">
                                 <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1 block mb-2">
                                     Payment Method <span class="text-red-500">*</span>
@@ -482,162 +483,278 @@
                                 </div>
                             </div>
 
-                            <!-- Payment Type Selection Switch -->
-                            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm">
-                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider mb-3">
-                                    Choose payment method <span class="text-red-500">*</span>
-                                </label>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <!-- Mobile Banking Radio Box -->
-                                    <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
-                                        :class="form.trans_payment_method === 'mobile' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
-                                        <input type="radio" v-model="form.trans_payment_method" value="mobile" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
-                                        <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
+                            <div v-if="form.payment_method === 'advance'" class="sm:col-span-2 mt-2 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 space-y-5">
+                               
+                                <!-- Payment Type Selection Switch -->
+                                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm">
+                                    <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider mb-3">
+                                        Choose payment method <span class="text-red-500">*</span>
                                     </label>
-
-                                    <!-- Bank Radio Box -->
-                                    <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
-                                        :class="form.trans_payment_method === 'bank' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
-                                        <input type="radio" v-model="form.trans_payment_method" value="bank" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
-                                        <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Bank Transfer</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <hr class="border-slate-100 dark:border-slate-800/60 my-2" />
-                            <!-- Template for Mobile Banking Input -->
-                            <template v-if="form.trans_payment_method === 'mobile'">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Account No. <span class="text-red-500">*</span>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <!-- Mobile Banking Radio Box -->
+                                        <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
+                                            :class="form.trans_payment_method === 'mobile' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
+                                            <input type="radio" v-model="form.trans_payment_method" value="mobile" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
                                         </label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                                <i class="fa-solid fa-phone text-xs"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                v-model="form.account_number"
-                                                placeholder="01XXXXXXXXX"
-                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
-                                                required
-                                            />
+                                        
+                                        <!-- Bank Radio Box -->
+                                        <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
+                                            :class="form.trans_payment_method === 'bank' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
+                                            <input type="radio" v-model="form.trans_payment_method" value="bank" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Bank Transfer</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <hr class="border-slate-100 dark:border-slate-800/60 my-2" />
+
+                                <!-- Template for Mobile Banking Input -->
+                                <template v-if="form.trans_payment_method === 'mobile'">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                Account No. <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                    <i class="fa-solid fa-phone text-xs"></i>
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    v-model="form.account_number"
+                                                    placeholder="01XXXXXXXXX"
+                                                    class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                Transaction ID <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                    <i class="fa-solid fa-key text-xs"></i>
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    v-model="form.transaction_id"
+                                                    placeholder="e.g: BK24X7890"
+                                                    class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                    required
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-1.5">
                                         <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Transaction ID <span class="text-red-500">*</span>
+                                            Select Bank Name <span class="text-red-500">*</span>
                                         </label>
                                         <div class="relative flex items-center">
                                             <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                                <i class="fa-solid fa-key text-xs"></i>
+                                                <i class="fa-solid fa-wallet text-xs"></i>
                                             </span>
-                                            <input
-                                                type="text"
-                                                v-model="form.transaction_id"
-                                                placeholder="e.g: BK24X7890"
-                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-1.5">
-                                    <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                        Select Bank Name <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="relative flex items-center">
-                                        <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                            <i class="fa-solid fa-wallet text-xs"></i>
-                                        </span>
-
-                                        <select
-                                            v-model="form.bank_name"
-                                            class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500 appearance-none"
-                                            required
-                                        >
-                                            <option value="" disabled selected>Select Payment Method</option>
-                                            <option value="Bkash">BKash</option>
-                                            <option value="Nagad">Nagad</option>
-                                            <option value="Rocket">Rocket</option>
-                                        </select>
-
-                                        <span class="absolute right-3 pointer-events-none text-slate-400">
-                                            <i class="fa-solid fa-chevron-down text-xs"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </template>
-                            <!-- Template for Bank Transfer Input -->
-                            <template v-if="form.trans_payment_method === 'bank'">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Your Bank Name <span class="text-red-500">*</span>
-                                        </label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                                <i class="fa-solid fa-building-columns text-xs"></i>
-                                            </span>
-                                            <input
-                                                type="text"
+                                            
+                                            <select 
                                                 v-model="form.bank_name"
-                                                placeholder="Bank Name"
-                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500 appearance-none"
+                                                required
+                                            >
+                                                <option value="" disabled selected>Select Payment Method</option>
+                                                <option value="Bkash">BKash</option>
+                                                <option value="Nagad">Nagad</option>
+                                                <option value="Rocket">Rocket</option>
+                                            </select>
+                                            
+                                            <span class="absolute right-3 pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Template for Bank Transfer Input -->
+                                <template v-if="form.trans_payment_method === 'bank'">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                আপনার ব্যাংকের নাম (Your Bank Name) <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                    <i class="fa-solid fa-building-columns text-xs"></i>
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    v-model="form.bank_name"
+                                                    placeholder="যেমন: Islami Bank, BRAC Bank"
+                                                    class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                অ্যাকাউন্টের নাম (Account Title / Name) <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                    <i class="fa-solid fa-user text-xs"></i>
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    v-model="form.account_holder_name" 
+                                                    placeholder="যে নাম থেকে টাকা পাঠিয়েছেন"
+                                                    class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                ব্যাংক অ্যাকাউন্ট নম্বর (Account Number) <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                    <i class="fa-solid fa-hashtag text-xs"></i>
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    v-model="form.account_number"
+                                                    placeholder="আপনার ব্যাংক অ্যাকাউন্ট নম্বর"
+                                                    class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                ট্রানজেকশন আইডি / স্লিপ নম্বর (Optional)
+                                            </label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 text-slate-400 dark:text-slate-500">
+                                                    <i class="fa-solid fa-receipt text-xs"></i>
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    v-model="form.transaction_id"
+                                                    placeholder="ব্যাংক ডিপোজিট বা স্লিপ নম্বর (ঐচ্ছিক)"
+                                                    class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                            </div>
+                        </div>
+
+                        <!-- ================= Delivery Charge Payment Toggle ================= -->
+                        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm mt-4">
+                            <label class="flex items-center gap-3 cursor-pointer select-none">
+                                <input
+                                    type="checkbox"
+                                    v-model="form.is_delivery_charge_payment"
+                                    class="w-4 h-4 rounded accent-emerald-600 dark:accent-orange-500"
+                                />
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                    <i class="fa-solid fa-truck-fast text-emerald-600 dark:text-orange-500 mr-1.5"></i>
+                                    Is Delivery Charge Payment?
+                                </span>
+                            </label>
+
+                            <!-- Delivery Charge Details (shows only when checked) -->
+                            <template v-if="form.is_delivery_charge_payment">
+                                <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 space-y-4 animate-fadeIn">
+
+                                    <!-- Amount -->
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                            Delivery Charge Amount <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3 text-slate-400 dark:text-slate-500 text-xs">৳</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                v-model="form.delivery_charge_amount"
+                                                placeholder="e.g. 60"
+                                                class="w-full pl-8 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
                                                 required
                                             />
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Account Title / Name <span class="text-red-500">*</span>
+
+                                    <!-- Mobile / Bank Switch -->
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
+                                            :class="form.delivery_trans_payment_method === 'mobile' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
+                                            <input type="radio" v-model="form.delivery_trans_payment_method" value="mobile" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Mobile Banking</span>
                                         </label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                                <i class="fa-solid fa-user text-xs"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                v-model="form.account_holder_name"
-                                                placeholder="Account Holder Name"
-                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Account Number <span class="text-red-500">*</span>
+                                        <label class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200"
+                                            :class="form.delivery_trans_payment_method === 'bank' ? 'border-emerald-500 dark:border-orange-500 bg-emerald-50/[0.15] dark:bg-orange-500/[0.03] ring-1 ring-emerald-500 dark:ring-orange-500' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'">
+                                            <input type="radio" v-model="form.delivery_trans_payment_method" value="bank" class="accent-emerald-600 dark:accent-orange-500 h-4 w-4" />
+                                            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Bank Transfer</span>
                                         </label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                                <i class="fa-solid fa-hashtag text-xs"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                v-model="form.account_number"
-                                                placeholder="Account Number"
-                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
-                                                required
-                                            />
-                                        </div>
                                     </div>
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            Transaction ID / Slip No. (Optional)
-                                        </label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 text-slate-400 dark:text-slate-500">
-                                                <i class="fa-solid fa-receipt text-xs"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                v-model="form.transaction_id"
-                                                placeholder="Transaction (Optional)"
-                                                class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
-                                            />
+
+                                    <!-- Mobile Banking Fields -->
+                                    <template v-if="form.delivery_trans_payment_method === 'mobile'">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Account No. <span class="text-red-500">*</span></label>
+                                                <input type="text" v-model="form.delivery_account_number" placeholder="01XXXXXXXXX"
+                                                    class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" required />
+                                            </div>
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Transaction ID <span class="text-red-500">*</span></label>
+                                                <input type="text" v-model="form.delivery_transaction_id" placeholder="e.g: BK24X7890"
+                                                    class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" required />
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="flex flex-col gap-1.5">
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Select Bank Name <span class="text-red-500">*</span></label>
+                                            <select v-model="form.delivery_bank_name"
+                                                class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" required>
+                                                <option value="" disabled selected>Select Payment Method</option>
+                                                <option value="Bkash">BKash</option>
+                                                <option value="Nagad">Nagad</option>
+                                                <option value="Rocket">Rocket</option>
+                                            </select>
+                                        </div>
+                                    </template>
+
+                                    <!-- Bank Transfer Fields -->
+                                    <template v-if="form.delivery_trans_payment_method === 'bank'">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Bank Name <span class="text-red-500">*</span></label>
+                                                <input type="text" v-model="form.delivery_bank_name" placeholder="Bank Name"
+                                                    class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" required />
+                                            </div>
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Account Holder Name <span class="text-red-500">*</span></label>
+                                                <input type="text" v-model="form.delivery_account_holder_name" placeholder="Account Holder Name"
+                                                    class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" required />
+                                            </div>
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Account Number <span class="text-red-500">*</span></label>
+                                                <input type="text" v-model="form.delivery_account_number" placeholder="Account Number"
+                                                    class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" required />
+                                            </div>
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Transaction ID / Slip No. (Optional)</label>
+                                                <input type="text" v-model="form.delivery_transaction_id" placeholder="Transaction (Optional)"
+                                                    class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500" />
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </template>
                         </div>
@@ -763,16 +880,27 @@ const form = reactive({
     label: 'Home',
     address: 'Gazipur, Dhaka',
 
-    // Payment fields
+    // Payment fields (product / advance payment)
+    payment_method: 'cod',
     trans_payment_method: 'mobile', // 'mobile' | 'bank'
-    account_number: '01762164746',
-    transaction_id: 'TDX-987-654-321',
-    bank_name: 'BRAC Bank',
-    account_holder_name: 'Shamim Hossain',
+    account_number: '',             
+    transaction_id: '',             
+    bank_name: '',                  
+    account_holder_name: '',        
+
+    // Delivery Charge Payment fields
+    is_delivery_charge_payment: false,
+    delivery_charge_amount: '',
+    delivery_trans_payment_method: 'mobile', // 'mobile' | 'bank'
+    delivery_account_number: '',
+    delivery_transaction_id: '',
+    delivery_bank_name: '',
+    delivery_account_holder_name: '',
 
     // Coupon field (set after a successful coupon check)
     coupon: '',
 });
+
 
 
 
@@ -1084,6 +1212,12 @@ async function getCartItems() {
     }
 }
 
+const cartReg = computed(() => {
+    return cartItems.value && cartItems.value.length > 0
+        ? cartItems.value[0].reg
+        : null;
+});
+
 // subtotal (before coupon discount)
 const subtotal = computed(() =>
     (cartItems.value || []).reduce((sum, i) => {
@@ -1263,23 +1397,48 @@ function validateOrderForm() {
     if (!form.address.trim()) {
         return 'Street address is required.';
     }
-    if (!form.trans_payment_method) {
-        return 'Please choose a payment method.';
+    if (!form.payment_method) {
+        return 'Please select a payment method.';
     }
-    if (!form.account_number.trim()) {
-        return 'Account number is required.';
+
+    // ✅ শুধু advance payment হলেই product payment fields validate করো
+    if (form.payment_method === 'advance') {
+        if (!form.trans_payment_method) {
+            return 'Please choose an advance payment method.';
+        }
+        if (!form.account_number.trim()) {
+            return 'Account number is required.';
+        }
+        if (form.trans_payment_method === 'mobile') {
+            if (!form.transaction_id.trim()) return 'Transaction ID is required.';
+            if (!form.bank_name.trim()) return 'Please select a mobile banking provider.';
+        }
+        if (form.trans_payment_method === 'bank') {
+            if (!form.bank_name.trim()) return 'Bank name is required.';
+            if (!form.account_holder_name.trim()) return 'Account holder name is required.';
+        }
     }
-    if (form.trans_payment_method === 'mobile') {
-        if (!form.transaction_id.trim()) return 'Transaction ID is required.';
-        if (!form.bank_name.trim()) return 'Please select a mobile banking provider.';
+
+    // Delivery charge payment validation (checkbox controlled)
+    if (form.is_delivery_charge_payment) {
+        if (!form.delivery_charge_amount || Number(form.delivery_charge_amount) <= 0) {
+            return 'Please enter a valid delivery charge amount.';
+        }
+        if (!form.delivery_account_number.trim()) {
+            return 'Delivery payment account number is required.';
+        }
+        if (form.delivery_trans_payment_method === 'mobile') {
+            if (!form.delivery_transaction_id.trim()) return 'Delivery payment transaction ID is required.';
+            if (!form.delivery_bank_name.trim()) return 'Please select a mobile banking provider for delivery charge.';
+        }
+        if (form.delivery_trans_payment_method === 'bank') {
+            if (!form.delivery_bank_name.trim()) return 'Delivery payment bank name is required.';
+            if (!form.delivery_account_holder_name.trim()) return 'Delivery payment account holder name is required.';
+        }
     }
-    if (form.trans_payment_method === 'bank') {
-        if (!form.bank_name.trim()) return 'Bank name is required.';
-        if (!form.account_holder_name.trim()) return 'Account holder name is required.';
-    }
+
     return '';
 }
-
 
 
 
@@ -1311,6 +1470,11 @@ async function checkOut() {
         return;
     }
 
+    if (!cartReg.value) {
+        formError.value = 'Cart session not found. Please refresh and try again.';
+        return;
+    }
+
     // Build the full order items array from the cart
     const orderItems = cartItems.value.map((item) => ({
         product_id: item.product_id,
@@ -1322,7 +1486,6 @@ async function checkOut() {
         subtotal: (Number(item.price) - Number(item.discount || 0)) * Number(item.quantity),
     }));
 
-    // Full payload sent to the backend
     const payload = {
         // Cart / products
         items: orderItems,
@@ -1339,15 +1502,25 @@ async function checkOut() {
         address: form.address,
 
         // Payment
-        trans_payment_method: form.trans_payment_method,
-        account_number: form.account_number,
-        transaction_id: form.transaction_id,
-        bank_name: form.bank_name,
-        account_holder_name: form.account_holder_name,
+        payment_method: form.payment_method,
+        trans_payment_method: form.payment_method === 'advance' ? form.trans_payment_method : null,
+        account_number: form.payment_method === 'advance' ? form.account_number : null,
+        transaction_id: form.payment_method === 'advance' ? (form.transaction_id || null) : null,
+        bank_name: form.payment_method === 'advance' ? form.bank_name : null,
+        account_holder_name: form.payment_method === 'advance' ? form.account_holder_name : null,
 
         // Coupon
         coupon: form.coupon || null,
         coupon_discount: Number(couponData.value?.discount_amount || 0),
+
+        // Delivery Charge Payment
+        is_delivery_charge_payment: form.is_delivery_charge_payment,
+        delivery_charge_amount: form.is_delivery_charge_payment ? Number(form.delivery_charge_amount) : null,
+        delivery_trans_payment_method: form.is_delivery_charge_payment ? form.delivery_trans_payment_method : null,
+        delivery_account_number: form.is_delivery_charge_payment ? form.delivery_account_number : null,
+        delivery_transaction_id: form.is_delivery_charge_payment ? (form.delivery_transaction_id || null) : null,
+        delivery_bank_name: form.is_delivery_charge_payment ? form.delivery_bank_name : null,
+        delivery_account_holder_name: form.is_delivery_charge_payment ? form.delivery_account_holder_name : null,
 
         // Totals
         subtotal: subtotal.value,
@@ -1358,7 +1531,7 @@ async function checkOut() {
     isCheckingOut.value = true;
     errorMsg.value = '';
     try {
-        const res = await api.post('/admin/cart/confirm/order', payload);
+        const res = await api.post(`/admin/cart/confirm/order/${cartReg.value}`, payload);
         if (res.data?.success) {
             successMsg.value = res.data.message || 'Order created successfully!';
             errorMsg.value = null;
@@ -1380,11 +1553,19 @@ async function checkOut() {
                 postal_code: '',
                 label: 'Home',
                 address: '',
+                payment_method: 'cod',
                 trans_payment_method: 'mobile',
                 account_number: '',
                 transaction_id: '',
                 bank_name: '',
                 account_holder_name: '',
+                is_delivery_charge_payment: false,
+                delivery_charge_amount: '',
+                delivery_trans_payment_method: 'mobile',
+                delivery_account_number: '',
+                delivery_transaction_id: '',
+                delivery_bank_name: '',
+                delivery_account_holder_name: '',
                 coupon: '',
             });
 

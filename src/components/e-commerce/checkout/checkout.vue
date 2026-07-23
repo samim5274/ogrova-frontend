@@ -220,14 +220,14 @@
                                         </label>
                                         
                                         <!-- advance payment -->
-                                        <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
+                                        <!-- <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all"
                                             :class="form.payment_method === 'advance' ? 'border-[#16A34A] bg-[#16A34A]/5 ring-1 ring-[#16A34A]' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'">
                                             <input type="radio" v-model="form.payment_method" value="advance" class="accent-[#16A34A] h-4 w-4" />
                                             <div class="flex flex-col">
                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Advance Payment</span>
                                                 <span class="text-[10px] text-slate-400 dark:text-slate-500">Pay delivery charges and product price in advance.</span>
                                             </div>
-                                        </label>
+                                        </label> -->
                                     </div>
                                 </div>
 
