@@ -156,16 +156,24 @@
 
                                             <!-- Date & Timeline Progress -->
                                             <td class="px-4 py-2.5">
-                                                <div class="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                                                <!-- Order Creation Date -->
+                                                <div class="text-xs text-slate-600 dark:text-slate-400 font-medium mb-1">
                                                     {{ formatDate(order.date) }}
                                                 </div>
-                                                <div v-if="order.delivered_at" class="text-[10px] text-emerald-600 dark:text-emerald-500 font-medium mt-0.5 flex items-center gap-1">
-                                                    <i class="fa-solid fa-circle-check text-[9px]"></i> Del: {{ formatDate(order.delivered_at) }}
+
+                                                <!-- Dynamic Status Badge -->
+                                                <div v-if="order.delivered_at" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                                                    <i class="fa-solid fa-circle-check text-[9px]"></i> 
+                                                    Delivered: {{ formatDate(order.delivered_at) }}
                                                 </div>
-                                                <div v-else-if="order.confirmed_at" class="text-[10px] text-sky-600 dark:text-sky-500 font-medium mt-0.5">
+
+                                                <div v-else-if="order.confirmed_at" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-sky-100 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400 border border-sky-200 dark:border-sky-800">
+                                                    <i class="fa-solid fa-clock text-[9px]"></i> 
                                                     Confirmed
                                                 </div>
-                                                <div v-else class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+
+                                                <div v-else class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                                                    <i class="fa-solid fa-circle-dot text-[9px]"></i> 
                                                     Placed
                                                 </div>
                                             </td>
