@@ -652,10 +652,10 @@ import { useAuth } from '../../../stores/auth';
 
 const { authUser, loadUser, logout: authLogout } = useAuth();
 
-// const props = defineProps({
-//     open: { type: Boolean, default: false },
-//     modelValue: { type: String, default: "" },
-// });
+const props = defineProps({
+    open: { type: Boolean, default: false },
+    modelValue: { type: String, default: "" },
+});
 
 const emit = defineEmits(["close", "update:modelValue", "navigate"]);
 

@@ -463,6 +463,153 @@
                                     </div>
                                 </div>
 
+                                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                                    <div class="flex items-center justify-between mb-5">
+                                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Delivery charge payment</h3>
+                                        <span v-if="deliveryCharge" :class="getPaymentStatus(deliveryCharge.payment_status).badge"
+                                            class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap capitalize">
+                                            <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(deliveryCharge.payment_status).dot"></span>
+                                            {{ deliveryCharge.payment_status }}
+                                        </span>
+                                    </div>
+
+                                    <div v-if="deliveryCharge" class="relative bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-opacity"
+                                        :class="{ 'opacity-60': ['Failed','Cancelled'].includes(deliveryCharge.payment_status) }">
+
+                                        <span class="absolute inset-y-0 left-0 w-1" :class="getPaymentStatus(deliveryCharge.payment_status).accentBar"></span>
+
+                                        <!-- Amount hero row -->
+                                        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                                            <div class="flex items-center gap-3 min-w-0">
+                                                <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                                                    :class="getPaymentMethod(deliveryCharge.payment_method).iconBg">
+                                                    <i :class="[getPaymentMethod(deliveryCharge.payment_method).icon, getPaymentMethod(deliveryCharge.payment_method).iconColor]" class="text-lg"></i>
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                                        {{ getPaymentMethod(deliveryCharge.payment_method).label }}
+                                                    </p>
+                                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                                                        <i class="fa-regular fa-clock mr-1"></i>{{ formatDate(deliveryCharge.payment_date) }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p class="text-lg font-mono font-bold text-slate-900 dark:text-white shrink-0 pl-3">
+                                                {{ deliveryCharge.currency }} ৳ {{ Number(deliveryCharge.amount).toLocaleString() }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Reference identifiers -->
+                                        <div v-if="deliveryCharge.transaction_id || deliveryCharge.reference_no" class="flex items-center gap-4 px-5 py-3 border-b border-slate-100 dark:border-slate-800 text-xs">
+                                            <div v-if="deliveryCharge.transaction_id" class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                                                <i class="fa-solid fa-hashtag text-slate-300 dark:text-slate-600"></i>
+                                                <span class="font-mono">{{ deliveryCharge.transaction_id }}</span>
+                                            </div>
+                                            <div v-if="deliveryCharge.reference_no" class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                                                <i class="fa-solid fa-receipt text-slate-300 dark:text-slate-600"></i>
+                                                <span class="font-mono">{{ deliveryCharge.reference_no }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Payment source details -->
+                                        <div v-if="deliveryCharge.bank_name || deliveryCharge.account_number || deliveryCharge.mobile_number" class="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2.5">Payment source</p>
+                                            <dl class="space-y-2 text-xs">
+                                                <div v-if="deliveryCharge.bank_name" class="flex items-center justify-between">
+                                                    <dt class="text-slate-400 dark:text-slate-500">Bank</dt>
+                                                    <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.bank_name }}</dd>
+                                                </div>
+                                                <div v-if="deliveryCharge.branch_name" class="flex items-center justify-between">
+                                                    <dt class="text-slate-400 dark:text-slate-500">Branch</dt>
+                                                    <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.branch_name }}</dd>
+                                                </div>
+                                                <div v-if="deliveryCharge.account_number" class="flex items-center justify-between">
+                                                    <dt class="text-slate-400 dark:text-slate-500">Account</dt>
+                                                    <dd class="font-mono font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.account_number }}</dd>
+                                                </div>
+                                                <div v-if="deliveryCharge.account_holder_name" class="flex items-center justify-between">
+                                                    <dt class="text-slate-400 dark:text-slate-500">Account holder</dt>
+                                                    <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.account_holder_name }}</dd>
+                                                </div>
+                                                <div v-if="deliveryCharge.mobile_number" class="flex items-center justify-between">
+                                                    <dt class="text-slate-400 dark:text-slate-500">Mobile</dt>
+                                                    <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.mobile_number }}</dd>
+                                                </div>
+                                            </dl>
+                                        </div>
+
+                                        <!-- Verified by -->
+                                        <div v-if="deliveryCharge.paid_by" class="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-slate-800">
+                                            <span class="text-xs text-slate-400 dark:text-slate-500">Paid by</span>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-400 shrink-0">
+                                                    {{ deliveryCharge.paid_by.name?.charAt(0).toUpperCase() }}
+                                                </div>
+                                                <div class="text-right leading-tight">
+                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.paid_by.name }}</p>
+                                                    <p class="text-[10px] text-slate-400 dark:text-slate-500">{{ deliveryCharge.paid_by.user_id }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Attachment -->
+                                        <div v-if="deliveryCharge.attachment" class="px-5 py-3.5 border-b border-slate-100 dark:border-slate-800">
+                                            <a :href="deliveryCharge.attachment" target="_blank"
+                                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                                <i class="fa-solid fa-paperclip"></i>View attachment
+                                            </a>
+                                        </div>
+
+                                        <!-- Notes -->
+                                        <p v-if="deliveryCharge.notes" class="text-xs text-slate-500 dark:text-slate-400 px-5 py-3.5 italic">
+                                            "{{ deliveryCharge.notes }}"
+                                        </p>
+
+                                        
+
+                                    </div>
+
+                                    <!-- Empty state -->
+                                    <div v-else class="flex flex-col items-center text-center py-10 px-4">
+                                        <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center mb-4">
+                                            <i class="fa-solid fa-truck text-2xl text-slate-400 dark:text-slate-500"></i>
+                                        </div>
+                                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">No delivery charge payment yet</p>
+                                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 max-w-xs leading-relaxed">
+                                            Delivery charge payment info will appear here once submitted.
+                                        </p>
+                                    </div>
+
+                                    <!-- Delivery Charge status update -->
+                                    <div v-if="deliveryCharge" class="py-3.5">
+                                        <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2.5">Update status</p>
+
+                                        <div class="relative">
+                                            <button @click="statusDropdownOpen = !statusDropdownOpen"
+                                                class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 transition text-left">
+                                                <span class="flex items-center gap-2">
+                                                    <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(deliveryCharge.payment_status).dot"></span>
+                                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">{{ deliveryCharge.payment_status }}</span>
+                                                </span>
+                                                <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform" :class="{ 'rotate-180': statusDropdownOpen }"></i>
+                                            </button>
+
+                                            <div v-if="statusDropdownOpen"
+                                                class="absolute z-10 mt-1.5 w-full bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden">
+                                                <button v-for="option in statusOptions" :key="option.value" @click="updateDeliveryStatus(option.value)"
+                                                    class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                                                    :class="option.value === deliveryCharge.payment_status ? 'bg-slate-50 dark:bg-slate-800' : ''">
+                                                    <span class="flex items-center gap-2">
+                                                        <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(option.value).dot"></span>
+                                                        <span class="font-medium text-slate-700 dark:text-slate-300 capitalize">{{ option.value }}</span>
+                                                    </span>
+                                                    <i v-if="option.value === deliveryCharge.payment_status" class="fa-solid fa-check text-[11px] text-indigo-500"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Order items -->
                                 <div class="space-y-4">
                                     <div class="flex items-center justify-between mb-4">
@@ -992,6 +1139,7 @@ const errorMsg = ref('');
 // =============================
 const order = ref(null);
 const payments = ref(null);
+const deliveryCharge = ref(null);
 async function fetchOrderDetails(){
     loading.value = true;
     try{
@@ -1005,6 +1153,7 @@ async function fetchOrderDetails(){
         order.value = res.data.data.order;
         const paymentData = res.data.data.payment;
         payments.value = Array.isArray(paymentData) ? paymentData : (paymentData ? [paymentData] : []);
+        deliveryCharge.value = res.data.data.deliveryCharge;
     } catch (err) {
         errorMsg.value =
             err.response?.data?.message ||
@@ -1469,6 +1618,77 @@ function viewCustomerFullProfile(order){
     router.push(`/admin/customer-details/${order?.user.user_id}`);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const statusDropdownOpen = ref(false);
+const statusUpdating = ref(false);
+
+const statusOptions = [
+    { value: 'pending' },
+    { value: 'success' },
+    { value: 'return' },
+    { value: 'failed' },
+];
+
+async function updateDeliveryStatus(newStatus) {
+    if (newStatus === deliveryCharge.value.payment_status) {
+        statusDropdownOpen.value = false;
+        return;
+    }
+
+    const previousStatus = deliveryCharge.value.payment_status;
+    deliveryCharge.value.payment_status = newStatus;
+    statusDropdownOpen.value = false;
+    statusUpdating.value = true;
+
+    try {
+        await api.patch(`/orders/delivery-charge-payments/${deliveryCharge.value.id}/status`, {
+            payment_status: newStatus,
+        });
+    } catch (err) {
+        deliveryCharge.value.payment_status = previousStatus;
+        errorMsg.value = err.response?.data?.message || err.message || 'Failed to update status.';
+    } finally {
+        statusUpdating.value = false;
+    }
+}
+
+function handleClickOutside(event) {
+    if (!event.target.closest('.status-dropdown')) {
+        statusDropdownOpen.value = false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // =============================
 // Print / Download invoice
 // =============================
@@ -1500,6 +1720,28 @@ async function downloadInvoice() {
         invoiceDownloading.value = false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const isDark = ref(false);
 
