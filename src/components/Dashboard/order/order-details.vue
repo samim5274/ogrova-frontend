@@ -560,6 +560,11 @@
                                             </a>
                                         </div>
 
+                                        <!-- Reference -->
+                                        <p v-if="deliveryCharge.reference_no" class="text-xs text-slate-500 dark:text-slate-400 px-5 py-3.5 ">
+                                            "{{ deliveryCharge.reference_no }}"
+                                        </p>
+
                                         <!-- Notes -->
                                         <p v-if="deliveryCharge.notes" class="text-xs text-slate-500 dark:text-slate-400 px-5 py-3.5 italic">
                                             "{{ deliveryCharge.notes }}"
