@@ -959,7 +959,7 @@
                         step="0.01"
                         min="1"
                         max="99999999.99"
-                        required readonly
+                        required
                         class="w-full h-11 pl-7 pr-3 text-sm font-mono rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500" />
                     </div>
                 </div>
