@@ -249,33 +249,16 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRouter } from 'vue-router';
 import api, { makeImg } from '../../../services/api';
+import { useAuth } from '../../../stores/auth';
 
 const router = useRouter();
 
 
 const loading = ref(false);
 
-const authUser = ref(null);
-const isLoggedIn = ref(false);
 
-async function loadAuthUser() {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      isLoggedIn.value = false;
-      authUser.value = null;
-      return;
-    }
+const { authUser, loadUser, logout: authLogout } = useAuth();
 
-    const res = await api.get("/user");
-    authUser.value = res.data;
-    isLoggedIn.value = true;
-  } catch (err) {
-    isLoggedIn.value = false;
-    authUser.value = null;
-    localStorage.removeItem("token");
-  }
-}
 
 
 
@@ -363,13 +346,8 @@ async function pickProfile(action) {
     } catch (error) {
       console.error("Logout failed API side:", error);
     } finally {
-
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      authUser.value = null;   
-      isLoggedIn.value = false;
-      
-      router.push("/login"); 
+      authLogout();
+      router.push("/login");
     }
   }
 }
@@ -408,7 +386,7 @@ function onKey(e) {
 }
 
 onMounted(() => {
-  loadAuthUser();
+  loadUser();
   loadNotice();
   document.addEventListener("click", onDocClick);
   window.addEventListener("keydown", onKey);

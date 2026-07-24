@@ -99,7 +99,7 @@
         </li>
 
         <!-- Tree -->
-        <li>
+        <!-- <li>
           <button
             class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
                    focus:outline-none focus:ring-2 focus:ring-slate-500/40
@@ -109,12 +109,11 @@
               : ''"
             @click="pick('tree')">
             <span class="opacity-90 w-5 text-center">
-              <!-- <i class="fa-solid fa-chart-diagram"></i> -->
               <i class="bi bi-diagram-2-fill"></i>
             </span>
             <span class="text-sm font-medium">Tree</span>
           </button>
-        </li>
+        </li> -->
 
 
 
@@ -280,7 +279,7 @@
 
 
         <!-- Payment -->
-        <li>
+        <!-- <li>
           <button
             class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
                    focus:outline-none focus:ring-2 focus:ring-slate-500/40
@@ -294,13 +293,13 @@
             </span>
             <span class="text-sm font-medium">Payment</span>
           </button>
-        </li>
+        </li> -->
 
 
 
 
         <!-- Users Details Dropdown -->
-        <li>
+        <!-- <li>
           <button
             class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
                    focus:outline-none focus:ring-2 focus:ring-slate-500/40
@@ -341,7 +340,7 @@
                 </button>
               </li>
 
-              <!-- <li>
+              <li>
                 <button
                   class="w-full px-4 py-2 text-sm text-left transition
                          hover:bg-white dark:hover:bg-white/10"
@@ -351,7 +350,7 @@
                   @click="pick('assignUserToTree')">
                   Assign User Tree
                 </button>
-              </li> -->
+              </li>
 
               <li>
                 <button
@@ -366,7 +365,7 @@
               </li>
             </ul>
           </div>
-        </li>
+        </li> -->
 
 
 
@@ -648,12 +647,15 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import api, { makeImg } from '../../../services/api';
+import api from '../../../services/api';
+import { useAuth } from '../../../stores/auth';
 
-const props = defineProps({
-    open: { type: Boolean, default: false },
-    modelValue: { type: String, default: "" },
-});
+const { authUser, loadUser, logout: authLogout } = useAuth();
+
+// const props = defineProps({
+//     open: { type: Boolean, default: false },
+//     modelValue: { type: String, default: "" },
+// });
 
 const emit = defineEmits(["close", "update:modelValue", "navigate"]);
 
@@ -798,7 +800,7 @@ async function pick(key) {
     } catch (e) {
       // ignore
     } finally {
-      localStorage.removeItem("token");
+      authLogout();
       emit("close");
       return router.push("/login");
     }
@@ -926,29 +928,9 @@ watch(
 
 
 
-const authUser = ref({
-  vendor: null
-});
-
-function fetchAuthUser() {
-  try {
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      const parsed = JSON.parse(storedUser)
-      authUser.value = {
-        ...parsed,
-        vendor: parsed.vendor || null
-      }
-    } else {
-      authUser.value = { vendor: null }
-    }
-  } catch (e) {
-    authUser.value = { vendor: null }
-  }
-}
 
 onMounted(() => {
-  fetchAuthUser();
+  loadUser();
 })
 
 </script>
