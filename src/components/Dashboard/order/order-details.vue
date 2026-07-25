@@ -297,30 +297,37 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                    <!-- Payment history (separate card, no longer nested inside Transaction Details) -->
-                                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
-                                        <div class="flex items-center justify-between mb-5">
-                                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Payment History</h3>
-                                            <span v-if="payments && payments.length" class="text-xs font-medium text-slate-400 dark:text-slate-500">
+
+                                    <!-- ============================= -->
+                                    <!-- Payment History               -->
+                                    <!-- ============================= -->
+                                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+                                        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-800">
+                                            <div>
+                                                <h3 class="text-sm font-bold text-slate-900 dark:text-white">Payment History</h3>
+                                                <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Every attempt recorded for this order</p>
+                                            </div>
+                                            <span v-if="payments && payments.length"
+                                                class="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-2.5 py-1 rounded-full shrink-0">
                                                 {{ payments.length }} {{ payments.length === 1 ? 'attempt' : 'attempts' }}
                                             </span>
                                         </div>
 
-                                        <div v-if="payments && payments.length" class="space-y-3">
+                                        <div v-if="payments && payments.length" class="divide-y divide-slate-100 dark:divide-slate-800">
                                             <div v-for="payment in payments" :key="payment.id"
-                                                class="relative bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-opacity"
+                                                class="px-6 py-5 transition-opacity"
                                                 :class="{ 'opacity-60': ['Failed','Cancelled'].includes(payment.status) }">
 
-                                                <!-- Status accent bar -->
-                                                <span class="absolute inset-y-0 left-0 w-1" :class="getPaymentStatus(payment.status).accentBar"></span>
+                                                <div class="flex items-start gap-3.5">
+                                                    <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                                                        :class="getPaymentMethod(payment.payment_method).iconBg">
+                                                        <i :class="[getPaymentMethod(payment.payment_method).icon, getPaymentMethod(payment.payment_method).iconColor]" class="text-base"></i>
+                                                    </div>
 
-                                                <div class="p-4 pl-5">
-                                                    <div class="flex items-start justify-between gap-3">
-                                                        <div class="flex gap-3 min-w-0">
-                                                            <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                                                                :class="getPaymentMethod(payment.payment_method).iconBg">
-                                                                <i :class="[getPaymentMethod(payment.payment_method).icon, getPaymentMethod(payment.payment_method).iconColor]" class="text-base"></i>
-                                                            </div>
+                                                    <div class="min-w-0 flex-1">
+                                                        <!-- Method / status row -->
+                                                        <div class="flex items-start justify-between gap-3">
                                                             <div class="min-w-0">
                                                                 <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
                                                                     {{ getPaymentMethod(payment.payment_method).label }}
@@ -334,122 +341,118 @@
                                                                         Adjustment
                                                                     </span>
                                                                 </p>
-                                                                <p v-if="payment.transaction_id" class="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5 truncate">
-                                                                    {{ payment.transaction_id }}
+                                                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">
+                                                                    <i class="fa-regular fa-clock mr-1"></i>{{ payment.paid_at ? formatDate(payment.paid_at) : formatDate(payment.created_at) }}
+                                                                    <span v-if="payment.receipt_no" class="font-mono ml-1.5">· #{{ payment.receipt_no }}</span>
                                                                 </p>
-                                                                <p v-else-if="payment.sender_mobile || payment.account_holder_name" class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 truncate">
-                                                                    {{ payment.account_holder_name || 'Sender' }} — {{ payment.sender_mobile }}
+                                                            </div>
+
+                                                            <div class="text-right shrink-0">
+                                                                <span :class="getPaymentStatus(payment.status).badge" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap">
+                                                                    <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(payment.status).dot"></span>
+                                                                    {{ payment.status }}
+                                                                </span>
+                                                                <p class="text-sm font-mono font-bold mt-1.5"
+                                                                    :class="payment.payment_type === 'Refund' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-900 dark:text-white'">
+                                                                    {{ payment.payment_type === 'Refund' ? '−' : '' }}{{ payment.currency }} ৳ {{ Number(payment.amount).toLocaleString() }}
                                                                 </p>
                                                             </div>
                                                         </div>
 
-                                                        <div class="text-right shrink-0">
-                                                            <span :class="getPaymentStatus(payment.status).badge" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap">
-                                                                <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(payment.status).dot"></span>
-                                                                {{ payment.status }}
-                                                            </span>
-                                                            <p class="text-sm font-mono font-semibold mt-2"
-                                                                :class="payment.payment_type === 'Refund' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-900 dark:text-white'">
-                                                                {{ payment.payment_type === 'Refund' ? '−' : '' }}{{ payment.currency }} ৳ {{ Number(payment.amount).toLocaleString() }}
-                                                            </p>
+                                                        <!-- Failure reason -->
+                                                        <div v-if="payment.status === 'Failed' && payment.failure_reason"
+                                                            class="flex items-start gap-1.5 text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 rounded-lg px-3 py-2 mt-3">
+                                                            <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+                                                            <span>{{ payment.failure_reason }}</span>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
-                                                        <span class="text-xs text-slate-400 dark:text-slate-500">
-                                                            <i class="fa-regular fa-clock mr-1"></i>{{ payment.paid_at ? formatDate(payment.paid_at) : formatDate(payment.created_at) }}
-                                                        </span>
-                                                        <span v-if="payment.receipt_no" class="text-xs font-mono text-slate-400 dark:text-slate-500">
-                                                            #{{ payment.receipt_no }}
-                                                        </span>
-                                                    </div>
+                                                        <!-- Always-visible details panel — replaces the old collapsed <details> -->
+                                                        <div v-if="payment.transaction_id || payment.sender_mobile || payment.account_holder_name || payment.bank_name || payment.account_number || payment.channel || Number(payment.gateway_fee) > 0 || Number(payment.net_amount) > 0 || payment.receiver?.name || payment.paid_at || payment.user_agent"
+                                                            class="mt-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/30 px-4 py-3.5">
+                                                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
 
-                                                    <div v-if="payment.bank_name || payment.account_number" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs grid grid-cols-2 gap-y-1.5">
-                                                        <template v-if="payment.bank_name">
-                                                            <span class="text-slate-400 dark:text-slate-500">Bank</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.bank_name }}</span>
-                                                        </template>
-                                                        <template v-if="payment.account_number">
-                                                            <span class="text-slate-400 dark:text-slate-500">Account</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_number }}</span>
-                                                        </template>
-                                                        <template v-if="payment.account_holder_name">
-                                                            <span class="text-slate-400 dark:text-slate-500">Acc. holder</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.account_holder_name }}</span>
-                                                        </template>
-                                                    </div>
+                                                                <div v-if="payment.transaction_id">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Transaction ID</p>
+                                                                    <p class="text-xs font-mono font-medium text-slate-700 dark:text-slate-300 truncate">{{ payment.transaction_id }}</p>
+                                                                </div>
+                                                                <div v-if="payment.sender_mobile">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Sender mobile</p>
+                                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ payment.sender_mobile }}</p>
+                                                                </div>
+                                                                <div v-if="payment.account_holder_name">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Acc. holder</p>
+                                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">{{ payment.account_holder_name }}</p>
+                                                                </div>
+                                                                <div v-if="payment.bank_name">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Bank</p>
+                                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">{{ payment.bank_name }}</p>
+                                                                </div>
+                                                                <div v-if="payment.account_number">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Account</p>
+                                                                    <p class="text-xs font-mono font-medium text-slate-700 dark:text-slate-300">{{ payment.account_number }}</p>
+                                                                </div>
+                                                                <div v-if="payment.channel">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Channel</p>
+                                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ payment.channel }}</p>
+                                                                </div>
+                                                                <div v-if="Number(payment.gateway_fee) > 0">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Gateway fee</p>
+                                                                    <p class="text-xs font-mono font-medium text-slate-700 dark:text-slate-300">{{ payment.currency }} ৳ {{ Number(payment.gateway_fee).toLocaleString() }}</p>
+                                                                </div>
+                                                                <div v-if="Number(payment.net_amount) > 0">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Net amount</p>
+                                                                    <p class="text-xs font-mono font-medium text-slate-700 dark:text-slate-300">{{ payment.currency }} ৳ {{ Number(payment.net_amount).toLocaleString() }}</p>
+                                                                </div>
+                                                                <div v-if="payment.receiver?.name">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Received by</p>
+                                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">{{ payment.receiver.name }}</p>
+                                                                </div>
+                                                                <div v-if="payment.paid_at">
+                                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Paid at</p>
+                                                                    <p class="text-xs font-medium text-slate-700 dark:text-slate-300">
+                                                                        {{ new Date(payment.paid_at).toLocaleString('en-BD', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) }}
+                                                                    </p>
+                                                                </div>
+                                                                <template v-if="payment.user_agent">
+                                                                    <div>
+                                                                        <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Browser</p>
+                                                                        <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).browser }}</p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">OS</p>
+                                                                        <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).os }}</p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Device</p>
+                                                                        <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).device }}</p>
+                                                                    </div>
+                                                                </template>
+                                                            </div>
+                                                        </div>
 
-                                                    <!-- Gateway / channel / receiver meta — only rendered when present -->
-                                                    <div v-if="payment.channel || payment.gateway_fee || payment.net_amount || payment.receiver?.name"
-                                                        class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs grid grid-cols-2 gap-y-1.5">
-                                                        <template v-if="payment.channel">
-                                                            <span class="text-slate-400 dark:text-slate-500">Channel</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.channel }}</span>
-                                                        </template>
-                                                        <template v-if="Number(payment.gateway_fee) > 0">
-                                                            <span class="text-slate-400 dark:text-slate-500">Gateway fee</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.currency }} ৳ {{ Number(payment.gateway_fee).toLocaleString() }}</span>
-                                                        </template>
-                                                        <template v-if="Number(payment.net_amount) > 0">
-                                                            <span class="text-slate-400 dark:text-slate-500">Net amount</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.currency }} ৳ {{ Number(payment.net_amount).toLocaleString() }}</span>
-                                                        </template>
-                                                        <template v-if="payment.receiver?.name">
-                                                            <span class="text-slate-400 dark:text-slate-500">Received by</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ payment.receiver.name }}</span>
-                                                        </template>
-                                                    </div>
-
-                                                    <div v-if="payment.paid_at" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs grid grid-cols-2 gap-y-1.5">
-                                                        <span class="text-slate-400 dark:text-slate-500">Paid at</span>
-                                                        <span class="text-right font-medium text-slate-700 dark:text-slate-300">
-                                                            {{ new Date(payment.paid_at).toLocaleString('en-BD', {
-                                                                year: 'numeric', month: 'long', day: 'numeric',
-                                                                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
-                                                            }) }}
-                                                        </span>
-                                                    </div>
-
-                                                    <!-- Failure reason -->
-                                                    <div v-if="payment.status === 'Failed' && payment.failure_reason"
-                                                        class="mt-3 pt-3 border-t border-dashed border-red-200 dark:border-red-900/40">
-                                                        <p class="text-xs text-red-600 dark:text-red-400">
-                                                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>{{ payment.failure_reason }}
+                                                        <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-3 italic">
+                                                            "{{ payment.remarks }}"
                                                         </p>
-                                                    </div>
 
-                                                    <details v-if="payment.user_agent" class="mt-3 pt-3 border-t border-dashed border-slate-200 dark:border-slate-700 text-xs group">
-                                                        <summary class="text-slate-400 dark:text-slate-500 cursor-pointer select-none list-none flex items-center justify-between">
-                                                            <span><i class="fa-solid fa-circle-info mr-1"></i>Device details</span>
-                                                            <i class="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
-                                                        </summary>
-                                                        <div class="mt-2 grid grid-cols-2 gap-y-1.5">
-                                                            <span class="text-slate-400 dark:text-slate-500">Browser</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).browser }}</span>
-                                                            <span class="text-slate-400 dark:text-slate-500">OS</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).os }}</span>
-                                                            <span class="text-slate-400 dark:text-slate-500">Device</span>
-                                                            <span class="text-right font-medium text-slate-700 dark:text-slate-300">{{ parseUserAgent(payment.user_agent).device }}</span>
+                                                        <!-- Verify / verified row -->
+                                                        <div v-if="(payment.status === 'Pending' && payment.provider === 'manual') || payment.verified_at"
+                                                            class="flex items-center justify-between mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                                                            <p v-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                                                                <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                                                                Verified {{ formatDate(payment.verified_at) }} by {{ payment.verifier?.name || '—' }}
+                                                            </p>
+                                                            <span v-else></span>
+                                                            <button v-if="payment.status === 'Pending' && payment.provider === 'manual'" @click="verifyPayment(payment)"
+                                                                class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                                                <i class="fa-solid fa-shield-check mr-1"></i>Verify payment
+                                                            </button>
                                                         </div>
-                                                    </details>
-
-                                                    <p v-if="payment.remarks" class="text-xs text-slate-500 dark:text-slate-400 mt-2 italic">
-                                                        "{{ payment.remarks }}"
-                                                    </p>
-
-                                                    <button v-if="payment.status === 'Pending' && payment.provider === 'manual'" @click="verifyPayment(payment)"
-                                                        class="w-full h-9 mt-3 text-xs font-semibold rounded-lg border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition">
-                                                        <i class="fa-solid fa-shield-check mr-1"></i>Verify payment
-                                                    </button>
-                                                    <p v-else-if="payment.verified_at" class="text-[11px] text-slate-400 dark:text-slate-500 mt-3 flex items-center gap-1">
-                                                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
-                                                        Verified {{ formatDate(payment.verified_at) }} by {{ payment.verifier?.name || '—' }}
-                                                    </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div v-else class="flex flex-col items-center text-center py-10 px-4">
+                                        <div v-else class="flex flex-col items-center text-center py-12 px-6">
                                             <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center mb-4">
                                                 <i class="fa-solid fa-receipt text-2xl text-slate-400 dark:text-slate-500"></i>
                                             </div>
@@ -464,118 +467,112 @@
                                         </div>
                                     </div>
 
+                                    <!-- ============================= -->
+                                    <!-- Delivery charge payment — unchanged, kept as-is -->
+                                    <!-- ============================= -->
                                     <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+
                                         <div class="flex items-center justify-between mb-5">
-                                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Delivery charge payment</h3>
-                                            <span v-if="deliveryCharge" :class="getPaymentStatus(deliveryCharge.payment_status).badge"
-                                                class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap capitalize">
-                                                <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(deliveryCharge.payment_status).dot"></span>
-                                                {{ deliveryCharge.payment_status }}
-                                            </span>
+                                            <div>
+                                                <h3 class="text-sm font-bold text-slate-900 dark:text-white">Delivery Charge Payment</h3>
+                                                <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Courier / shipping fee settlement</p>
+                                            </div>
                                         </div>
 
-                                        <div v-if="deliveryCharge" class="relative bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-opacity"
-                                            :class="{ 'opacity-60': ['Failed','Cancelled'].includes(deliveryCharge.payment_status) }">
+                                        <div v-if="deliveryCharge">
+                                            <!-- Stat strip: amount / status / date as three peers -->
+                                            <div class="grid grid-cols-3 divide-x divide-slate-100 dark:divide-slate-800 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30 mb-5">
+                                                <div class="px-4 py-3.5 text-center">
+                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Amount</p>
+                                                    <p class="text-base font-mono font-bold text-slate-900 dark:text-white">{{ deliveryCharge.currency }} ৳ {{ Number(deliveryCharge.amount).toLocaleString() }}</p>
+                                                </div>
+                                                <div class="px-4 py-3.5 text-center relative">
+                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Status</p>
+                                                    <button @click="statusDropdownOpen = !statusDropdownOpen"
+                                                        :class="getPaymentStatus(deliveryCharge.payment_status).badge"
+                                                        class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap capitalize hover:opacity-80 transition">
+                                                        <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(deliveryCharge.payment_status).dot"></span>
+                                                        {{ deliveryCharge.payment_status }}
+                                                        <i class="fa-solid fa-chevron-down text-[9px] transition-transform" :class="{ 'rotate-180': statusDropdownOpen }"></i>
+                                                    </button>
 
-                                            <span class="absolute inset-y-0 left-0 w-1" :class="getPaymentStatus(deliveryCharge.payment_status).accentBar"></span>
-
-                                            <!-- Amount hero row -->
-                                            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-                                                <div class="flex items-center gap-3 min-w-0">
-                                                    <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                                                        :class="getPaymentMethod(deliveryCharge.payment_method).iconBg">
-                                                        <i :class="[getPaymentMethod(deliveryCharge.payment_method).icon, getPaymentMethod(deliveryCharge.payment_method).iconColor]" class="text-lg"></i>
-                                                    </div>
-                                                    <div class="min-w-0">
-                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
-                                                            {{ getPaymentMethod(deliveryCharge.payment_method).label }}
-                                                        </p>
-                                                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                                                            <i class="fa-regular fa-clock mr-1"></i>{{ formatDate(deliveryCharge.payment_date) }}
-                                                        </p>
+                                                    <div v-if="statusDropdownOpen"
+                                                        class="absolute z-10 left-1/2 -translate-x-1/2 mt-1.5 w-44 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden text-left">
+                                                        <button v-for="option in statusOptions" :key="option.value" @click="updateDeliveryStatus(option.value)"
+                                                            class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                                                            :class="option.value === deliveryCharge.payment_status ? 'bg-slate-50 dark:bg-slate-800' : ''">
+                                                            <span class="flex items-center gap-2">
+                                                                <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(option.value).dot"></span>
+                                                                <span class="font-medium text-slate-700 dark:text-slate-300 capitalize">{{ option.value }}</span>
+                                                            </span>
+                                                            <i v-if="option.value === deliveryCharge.payment_status" class="fa-solid fa-check text-[11px] text-indigo-500"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <p class="text-lg font-mono font-bold text-slate-900 dark:text-white shrink-0 pl-3">
-                                                    {{ deliveryCharge.currency }} ৳ {{ Number(deliveryCharge.amount).toLocaleString() }}
-                                                </p>
-                                            </div>
-
-                                            <!-- Reference identifiers -->
-                                            <div v-if="deliveryCharge.transaction_id || deliveryCharge.reference_no" class="flex items-center gap-4 px-5 py-3 border-b border-slate-100 dark:border-slate-800 text-xs">
-                                                <div v-if="deliveryCharge.transaction_id" class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-                                                    <i class="fa-solid fa-hashtag text-slate-300 dark:text-slate-600"></i>
-                                                    <span class="font-mono">{{ deliveryCharge.transaction_id }}</span>
-                                                </div>
-                                                <div v-if="deliveryCharge.reference_no" class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-                                                    <i class="fa-solid fa-receipt text-slate-300 dark:text-slate-600"></i>
-                                                    <span class="font-mono">{{ deliveryCharge.reference_no }}</span>
-                                                </div>
-                                            </div>
-
-                                            <!-- Payment source details -->
-                                            <div v-if="deliveryCharge.bank_name || deliveryCharge.account_number || deliveryCharge.mobile_number" class="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-                                                <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2.5">Payment source</p>
-                                                <dl class="space-y-2 text-xs">
-                                                    <div v-if="deliveryCharge.bank_name" class="flex items-center justify-between">
-                                                        <dt class="text-slate-400 dark:text-slate-500">Bank</dt>
-                                                        <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.bank_name }}</dd>
-                                                    </div>
-                                                    <div v-if="deliveryCharge.branch_name" class="flex items-center justify-between">
-                                                        <dt class="text-slate-400 dark:text-slate-500">Branch</dt>
-                                                        <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.branch_name }}</dd>
-                                                    </div>
-                                                    <div v-if="deliveryCharge.account_number" class="flex items-center justify-between">
-                                                        <dt class="text-slate-400 dark:text-slate-500">Account</dt>
-                                                        <dd class="font-mono font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.account_number }}</dd>
-                                                    </div>
-                                                    <div v-if="deliveryCharge.account_holder_name" class="flex items-center justify-between">
-                                                        <dt class="text-slate-400 dark:text-slate-500">Account holder</dt>
-                                                        <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.account_holder_name }}</dd>
-                                                    </div>
-                                                    <div v-if="deliveryCharge.mobile_number" class="flex items-center justify-between">
-                                                        <dt class="text-slate-400 dark:text-slate-500">Mobile</dt>
-                                                        <dd class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.mobile_number }}</dd>
-                                                    </div>
-                                                </dl>
-                                            </div>
-
-                                            <!-- Verified by -->
-                                            <div v-if="deliveryCharge.paid_by" class="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-slate-800">
-                                                <span class="text-xs text-slate-400 dark:text-slate-500">Paid by</span>
-                                                <div class="flex items-center gap-2">
-                                                    <div class="w-6 h-6 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-400 shrink-0">
-                                                        {{ deliveryCharge.paid_by.name?.charAt(0).toUpperCase() }}
-                                                    </div>
-                                                    <div class="text-right leading-tight">
-                                                        <p class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.paid_by.name }}</p>
-                                                        <p class="text-[10px] text-slate-400 dark:text-slate-500">{{ deliveryCharge.paid_by.user_id }}</p>
-                                                    </div>
+                                                <div class="px-4 py-3.5 text-center">
+                                                    <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Method</p>
+                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5">
+                                                        <i :class="[getPaymentMethod(deliveryCharge.payment_method).icon, getPaymentMethod(deliveryCharge.payment_method).iconColor]"></i>
+                                                        {{ getPaymentMethod(deliveryCharge.payment_method).label }}
+                                                    </p>
                                                 </div>
                                             </div>
 
-                                            <!-- Attachment -->
-                                            <div v-if="deliveryCharge.attachment" class="px-5 py-3.5 border-b border-slate-100 dark:border-slate-800">
-                                                <a :href="deliveryCharge.attachment" target="_blank"
-                                                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-                                                    <i class="fa-solid fa-paperclip"></i>View attachment
-                                                </a>
-                                            </div>
-
-                                            <!-- Reference -->
-                                            <p v-if="deliveryCharge.reference_no" class="text-xs text-slate-500 dark:text-slate-400 px-5 py-3.5 ">
-                                                "{{ deliveryCharge.reference_no }}"
+                                            <p class="text-[11px] text-slate-400 dark:text-slate-500 mb-4">
+                                                <i class="fa-regular fa-clock mr-1"></i>{{ formatDate(deliveryCharge.payment_date) }}
                                             </p>
 
-                                            <!-- Notes -->
-                                            <p v-if="deliveryCharge.notes" class="text-xs text-slate-500 dark:text-slate-400 px-5 py-3.5 italic">
+                                            <div class="space-y-2 text-xs">
+                                                <div v-if="deliveryCharge.transaction_id" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Transaction ID</span>
+                                                    <span class="font-mono font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.transaction_id }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.reference_no" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Reference no.</span>
+                                                    <span class="font-mono font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.reference_no }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.bank_name" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Provider</span>
+                                                    <span class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.bank_name }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.branch_name" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Branch</span>
+                                                    <span class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.branch_name }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.account_number" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Account</span>
+                                                    <span class="font-mono font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.account_number }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.account_holder_name" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Account holder</span>
+                                                    <span class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.account_holder_name }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.mobile_number" class="flex items-center justify-between">
+                                                    <span class="text-slate-400 dark:text-slate-500">Mobile</span>
+                                                    <span class="font-medium text-slate-700 dark:text-slate-300">{{ deliveryCharge.mobile_number }}</span>
+                                                </div>
+                                                <div v-if="deliveryCharge.paid_by" class="flex items-center justify-between pt-1">
+                                                    <span class="text-slate-400 dark:text-slate-500">Paid by</span>
+                                                    <span class="inline-flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
+                                                        <span class="w-5 h-5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-[9px] font-bold text-indigo-600 dark:text-indigo-400 shrink-0">
+                                                            {{ deliveryCharge.paid_by.name?.charAt(0).toUpperCase() }}
+                                                        </span>
+                                                        {{ deliveryCharge.paid_by.name }}
+                                                    </span>
+                                                </div>
+                                                <div v-if="deliveryCharge.attachment" class="flex items-center justify-between pt-1">
+                                                    <span class="text-slate-400 dark:text-slate-500">Attachment</span>
+                                                    <a :href="deliveryCharge.attachment" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                                        <i class="fa-solid fa-paperclip"></i>View file
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <p v-if="deliveryCharge.notes" class="text-xs text-slate-500 dark:text-slate-400 italic mt-4 pt-4 border-t border-dashed border-slate-200 dark:border-slate-700">
                                                 "{{ deliveryCharge.notes }}"
                                             </p>
-
-                                            
-
                                         </div>
 
-                                        <!-- Empty state -->
                                         <div v-else class="flex flex-col items-center text-center py-10 px-4">
                                             <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center mb-4">
                                                 <i class="fa-solid fa-truck text-2xl text-slate-400 dark:text-slate-500"></i>
@@ -585,36 +582,8 @@
                                                 Delivery charge payment info will appear here once submitted.
                                             </p>
                                         </div>
-
-                                        <!-- Delivery Charge status update -->
-                                        <div v-if="deliveryCharge" class="py-3.5">
-                                            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2.5">Update status</p>
-
-                                            <div class="relative">
-                                                <button @click="statusDropdownOpen = !statusDropdownOpen"
-                                                    class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 transition text-left">
-                                                    <span class="flex items-center gap-2">
-                                                        <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(deliveryCharge.payment_status).dot"></span>
-                                                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">{{ deliveryCharge.payment_status }}</span>
-                                                    </span>
-                                                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform" :class="{ 'rotate-180': statusDropdownOpen }"></i>
-                                                </button>
-
-                                                <div v-if="statusDropdownOpen"
-                                                    class="absolute z-10 mt-1.5 w-full bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden">
-                                                    <button v-for="option in statusOptions" :key="option.value" @click="updateDeliveryStatus(option.value)"
-                                                        class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
-                                                        :class="option.value === deliveryCharge.payment_status ? 'bg-slate-50 dark:bg-slate-800' : ''">
-                                                        <span class="flex items-center gap-2">
-                                                            <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatus(option.value).dot"></span>
-                                                            <span class="font-medium text-slate-700 dark:text-slate-300 capitalize">{{ option.value }}</span>
-                                                        </span>
-                                                        <i v-if="option.value === deliveryCharge.payment_status" class="fa-solid fa-check text-[11px] text-indigo-500"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
+
                                 </div>
 
                                 <!-- Order items -->
