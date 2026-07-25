@@ -31,165 +31,235 @@
                 </div>
             </section>
 
-            <section v-else class="py-10 sm:py-16 text-gray-900 dark:text-gray-100 min-h-screen selection:bg-indigo-500 selection:text-white">
-                <div class="container mx-auto p-4 max-w-7xl rounded-2xl border border-slate-200 dark:border-slate-800">
-                    <main class="min-w-0 bg-gray-50 dark:bg-[#0C1326] px-0">
+            <section v-else class="min-h-screen bg-slate-50/50 dark:bg-[#080d1a] py-8 sm:py-12 text-slate-800 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+                <div class="container mx-auto px-4 sm:px-6 max-w-7xl">
+                    <main class="min-w-0 space-y-6">
 
-                        <!-- Page header -->
-                        <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <!-- ============================= -->
+                        <!-- Page Header                   -->
+                        <!-- ============================= -->
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">My Profile</h1>
-                                <p class="text-sm text-slate-500 dark:text-slate-400">Manage your personal information and account details</p>
+                                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">My Profile</h1>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage your personal information, security, and preferences.</p>
                             </div>
                             <button
                                 type="button"
                                 @click="refreshProfile"
                                 :disabled="loading"
-                                class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm
-                                    hover:bg-slate-50 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800">
-                                <i class="fa-solid fa-rotate" :class="{ 'animate-spin': loading }"></i>
-                                Refresh
+                                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white active:scale-95 disabled:opacity-60">
+                                <i class="fa-solid fa-rotate text-xs transition-transform" :class="{ 'animate-spin': loading }"></i>
+                                <span>Refresh</span>
                             </button>
                         </div>
 
                         <!-- ============================= -->
-                        <!-- Hero / identity card          -->
+                        <!-- Hero / Identity Card          -->
                         <!-- ============================= -->
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden mb-6">
-                            <div class="px-5 sm:px-8 py-6">
-                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+                        <div class="relative overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-sm">
+                            <!-- Top Accent Gradient Line -->
+                            <div class="h-1.5 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
 
-                                    <div class="flex items-center gap-5 min-w-0">
-                                        <div class="relative shrink-0">
+                            <div class="p-6 sm:p-8">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+
+                                    <!-- User Info Left Side -->
+                                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 min-w-0">
+                                        <!-- Avatar Picker -->
+                                        <div class="relative group shrink-0">
                                             <img :src="photoPreview || photoUrl" alt="User photo"
-                                                class="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl object-cover ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm" />
+                                                class="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl object-cover ring-4 ring-slate-100 dark:ring-slate-800/50 shadow-md transition group-hover:opacity-90" />
                                             <button type="button" @click="triggerPhotoPicker"
                                                 title="Change photo"
-                                                class="absolute -bottom-1.5 -right-1.5 h-7 w-7 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-md ring-2 ring-white dark:ring-slate-900 transition">
-                                                <i class="fa-solid fa-camera text-[11px]"></i>
+                                                class="absolute -bottom-2 -right-2 h-8 w-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-lg ring-4 ring-white dark:ring-slate-900 transition hover:scale-105 active:scale-95">
+                                                <i class="fa-solid fa-camera text-xs"></i>
                                             </button>
                                             <input ref="photoInputRef" type="file" accept="image/*" @change="onPhotoChange" class="hidden" />
                                         </div>
 
-                                        <div class="min-w-0">
-                                            <div class="flex items-center flex-wrap gap-2">
-                                                <p class="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 truncate">
+                                        <!-- Name & Details -->
+                                        <div class="min-w-0 space-y-1">
+                                            <div class="flex items-center flex-wrap gap-2.5">
+                                                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">
                                                     {{ user?.name || "User" }}
-                                                </p>
+                                                </h2>
                                                 <span v-if="user?.designation"
-                                                    class="inline-flex items-center rounded-full bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">
+                                                    class="inline-flex items-center rounded-lg bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 ring-1 ring-inset ring-indigo-500/10">
                                                     {{ user.designation }}
                                                 </span>
                                             </div>
 
-                                            <p class="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 truncate mt-1">
-                                                <i class="fa-regular fa-envelope text-slate-400 dark:text-slate-500 text-xs shrink-0"></i>
+                                            <p class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 truncate">
+                                                <i class="fa-regular fa-envelope text-slate-400 text-xs shrink-0"></i>
                                                 <span class="truncate">{{ user?.email || "No email" }}</span>
-                                                <span
-                                                    v-if="user?.email"
-                                                    class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide shrink-0"
+                                                
+                                                <span v-if="user?.email"
+                                                    class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0"
                                                     :class="user?.email_verified_at
-                                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
-                                                        : 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400'">
-                                                    <i class="fa-solid" :class="user?.email_verified_at ? 'fa-circle-check' : 'fa-circle-exclamation'"></i>
-                                                    {{ user?.email_verified_at ? 'Verified' : 'Not verified' }}
+                                                        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20'
+                                                        : 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border border-rose-200/50 dark:border-rose-500/20'">
+                                                    <i class="fa-solid" :class="user?.email_verified_at ? 'fa-circle-check text-[9px]' : 'fa-circle-exclamation text-[9px]'"></i>
+                                                    {{ user?.email_verified_at ? 'Verified' : 'Unverified' }}
                                                 </span>
                                             </p>
                                         </div>
                                     </div>
 
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-200">
-                                            <i class="fa-solid fa-user-shield mr-1.5 text-slate-400"></i>
-                                            {{ user?.role || "user" }}
+                                    <!-- Status Badges -->
+                                    <div class="flex flex-wrap items-center gap-2 shrink-0">
+                                        <span class="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50">
+                                            <i class="fa-solid fa-user-shield text-slate-400"></i>
+                                            <span class="capitalize">{{ user?.role || "user" }}</span>
                                         </span>
-                                        <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold"
+                                        <span class="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold border"
                                             :class="user?.is_active
-                                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
-                                                : 'bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400'">
-                                            <span class="h-1.5 w-1.5 rounded-full" :class="user?.is_active ? 'bg-emerald-500' : 'bg-red-500'"></span>
-                                            {{ user?.is_active ? "Active" : "Inactive" }}
+                                                ? 'bg-emerald-50/80 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/60 dark:border-emerald-500/20'
+                                                : 'bg-rose-50/80 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/60 dark:border-rose-500/20'">
+                                            <span class="h-2 w-2 rounded-full" :class="user?.is_active ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'"></span>
+                                            {{ user?.is_active ? "Active Account" : "Inactive Account" }}
                                         </span>
                                     </div>
                                 </div>
 
-                                <!-- Profile completion -->
-                                <div class="mt-6 pt-5 border-t border-dashed border-slate-200 dark:border-slate-800">
+                                <!-- Profile Completion Bar -->
+                                <div class="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800/80">
                                     <div class="flex items-center justify-between mb-2">
-                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                                             <i class="fa-solid" :class="user?.is_profile_completed ? 'fa-circle-check text-emerald-500' : 'fa-triangle-exclamation text-amber-500'"></i>
-                                            {{ user?.is_profile_completed ? "Your profile is complete" : "Complete your profile" }}
+                                            {{ user?.is_profile_completed ? "Your profile setup is complete" : "Complete your profile details" }}
                                         </p>
-                                        <p class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ profileCompletion }}%</p>
+                                        <p class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ profileCompletion }}%</p>
                                     </div>
-                                    <div class="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                                        <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
+                                    <div class="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 transition-all duration-700 ease-out"
                                             :style="{ width: profileCompletion + '%' }"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3 mb-6">
-                            <div class="rounded-xl border border-slate-800 p-4">
-                                <p class="text-slate-400 text-sm">Orders</p>
-                                <h3 class="text-2xl font-bold">156</h3>
+                        <!-- ============================= -->
+                        <!-- Dashboard Stats Cards         -->
+                        <!-- ============================= -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Total Orders</p>
+                                    <span class="p-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs">
+                                        <i class="fa-solid fa-box"></i>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">156</h3>
                             </div>
 
-                            <div class="rounded-xl border border-slate-800 p-4">
-                                <p class="text-slate-400 text-sm">Reviews</p>
-                                <h3 class="text-2xl font-bold">48</h3>
+                            <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Reviews</p>
+                                    <span class="p-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">
+                                        <i class="fa-solid fa-star"></i>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">48</h3>
                             </div>
 
-                            <div class="rounded-xl border border-slate-800 p-4">
-                                <p class="text-slate-400 text-sm">Referral</p>
-                                <h3 class="text-2xl font-bold">12</h3>
+                            <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Referrals</p>
+                                    <span class="p-2 rounded-xl bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs">
+                                        <i class="fa-solid fa-users"></i>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">12</h3>
                             </div>
 
-                            <div class="rounded-xl border border-slate-800 p-4">
-                                <p class="text-slate-400 text-sm">Points</p>
-                                <h3 class="text-2xl font-bold">890</h3>
+                            <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Earned Points</p>
+                                    <span class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs">
+                                        <i class="fa-solid fa-coins"></i>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">890</h3>
                             </div>
                         </div>
 
+                        <!-- ============================= -->
+                        <!-- Main Content Layout           -->
+                        <!-- ============================= -->
                         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
-                            <!-- ============================= -->
-                            <!-- Left: account details         -->
-                            <!-- ============================= -->
+                            <!-- Left Column: Details & Referral -->
                             <aside class="space-y-6 lg:sticky lg:top-6 self-start">
-                                <section class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
-                                    <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-                                        <h2 class="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">Account details</h2>
+                                
+                                <!-- Account Details Card -->
+                                <section class="rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
+                                    <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+                                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Account Details</h2>
+                                        <i class="fa-solid fa-shield-halved text-xs text-slate-400"></i>
                                     </div>
-                                    <div class="p-5 space-y-2">
+                                    <div class="p-5 space-y-3">
                                         <InfoRow icon="fa-solid fa-phone" label="Phone" :value="[
                                             user?.phone || 'N/A',
                                             user?.phone ? h('span', {
                                                 class: [
-                                                    'inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase',
+                                                    'inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ml-2',
                                                     user?.phone_verified_at
-                                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
-                                                        : 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400',
+                                                        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
+                                                        : 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400',
                                                 ].join(' ')
-                                            }, user?.phone_verified_at ? 'Verified' : 'Not verified') : null
+                                            }, user?.phone_verified_at ? 'Verified' : 'Unverified') : null
                                         ]"/>
                                         <InfoRow icon="fa-regular fa-calendar" label="Date of birth" :value="formatOnlyDate(user?.dob)" />
                                         <InfoRow icon="fa-solid fa-venus-mars" label="Gender" :value="capitalize(user?.gender) || 'N/A'" />
                                         <InfoRow icon="fa-solid fa-droplet" label="Blood group" :value="user?.blood_group || 'N/A'" />
                                         <InfoRow icon="fa-regular fa-id-card" label="NID" :value="user?.national_id || 'N/A'" />
-                                        <InfoRow icon="fa-solid fa-place-of-worship" label="Religion" :value="user?.religion || 'N/A'" />
-                                        <InfoRow icon="fa-regular fa-clock" label="Last login" :value="formatDateTime(user?.last_login_at)" />
-                                        <InfoRow icon="fa-solid fa-location-crosshairs" label="Login IP" :value="user?.last_login_ip || 'N/A'" />
                                     </div>
                                 </section>
 
+                                <!-- Recent Activity Card -->
+                                <section class="rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-sm p-5">
+                                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4">
+                                        Recent Activity
+                                    </h2>
+
+                                    <div class="space-y-4 relative before:absolute before:inset-0 before:left-2.5 before:w-0.5 before:bg-slate-100 dark:before:bg-slate-800">
+                                        <div class="flex items-start gap-3 relative">
+                                            <span class="h-5 w-5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 ring-4 ring-white dark:ring-slate-900 text-emerald-600 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                                                <i class="fa-solid fa-key"></i>
+                                            </span>
+                                            <div>
+                                                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Password changed</p>
+                                                <span class="text-[11px] text-slate-400">2 hours ago</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-start gap-3 relative">
+                                            <span class="h-5 w-5 rounded-full bg-blue-50 dark:bg-blue-500/10 ring-4 ring-white dark:ring-slate-900 text-blue-600 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                                                <i class="fa-solid fa-user-pen"></i>
+                                            </span>
+                                            <div>
+                                                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Profile updated</p>
+                                                <span class="text-[11px] text-slate-400">{{ formatDateTime(user?.updated_at) }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-start gap-3 relative">
+                                            <span class="h-5 w-5 rounded-full bg-purple-50 dark:bg-purple-500/10 ring-4 ring-white dark:ring-slate-900 text-purple-600 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                                                <i class="fa-solid fa-location-dot"></i>
+                                            </span>
+                                            <div>
+                                                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Logged in from Dhaka</p>
+                                                <span class="text-[11px] text-slate-400">{{ formatDateTime(user?.last_login_at) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <!-- Refer Component -->
                                 <ReferLink :user="user" />
                             </aside>
 
-                            <!-- ============================= -->
-                            <!-- Right: editable form          -->
-                            <!-- ============================= -->
+                            <!-- Right Column: Editable Forms -->
                             <section class="lg:col-span-2 space-y-6">
 
                                 <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm p-5 sm:p-6">
@@ -242,10 +312,6 @@
                                         <Field label="National ID" class="sm:col-span-2">
                                             <input v-model="form.national_id" type="text" class="input" placeholder="NID number" />
                                         </Field>
-
-                                        <Field label="Religion" class="sm:col-span-2">
-                                            <input v-model="form.religion" type="text" class="input" placeholder="Religion" />
-                                        </Field>
                                     </div>
                                 </div>
 
@@ -287,45 +353,6 @@
                                     </button>
                                 </div>
                             </section>
-                        </div>
-
-
-                        <div class="rounded-2xl border border-slate-800 p-5 mt-4">
-                            <h3 class="font-semibold mb-4">
-                                Recent Activity
-                            </h3>
-
-                            <div class="space-y-4">
-                                <div class="flex gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-2"></div>
-                                    <div>
-                                        <p>Password changed</p>
-                                        <span class="text-sm text-slate-500">
-                                            2 hours ago
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="flex gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
-                                    <div>
-                                        <p>Profile updated</p>
-                                        <span class="text-sm text-slate-500">
-                                            Yesterday
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="flex gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-purple-500 mt-2"></div>
-                                    <div>
-                                        <p>Logged in from Dhaka</p>
-                                        <span class="text-sm text-slate-500">
-                                            Jul 24, 2026
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </main>
                 </div>
@@ -390,7 +417,6 @@ const form = ref({
     present_address: "",
     permanent_address: "",
     national_id: "",
-    religion: "",
 });
 
 const photoFile = ref(null);
@@ -474,6 +500,22 @@ function onPhotoChange(e) {
     photoPreview.value = URL.createObjectURL(file);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // -----------------------------------------------------------------------
 // API calls
 // -----------------------------------------------------------------------
@@ -494,7 +536,6 @@ async function refreshProfile() {
         form.value.present_address = user.value?.present_address ?? "";
         form.value.permanent_address = user.value?.permanent_address ?? "";
         form.value.national_id = user.value?.national_id ?? "";
-        form.value.religion = user.value?.religion ?? "";
     } catch (e) {
         setError(e?.response?.data?.message || "Failed to load profile");
     } finally {
@@ -538,6 +579,20 @@ async function updateProfile() {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // -----------------------------------------------------------------------
 // Theme / navbar / search
 // -----------------------------------------------------------------------
@@ -560,6 +615,18 @@ function handleEsc(e) {
     if (e.key === "Escape") mobileMenu.value = false;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 // -----------------------------------------------------------------------
 // Lifecycle
 // -----------------------------------------------------------------------
@@ -581,12 +648,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.input {
+.input{
     @apply w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400
         focus:outline-none focus:ring-2 focus:ring-indigo-500
         dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100;
 }
-.inputDisabled {
+.inputDisabled{
     @apply w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600
         dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300;
 }
