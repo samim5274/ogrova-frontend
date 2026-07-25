@@ -56,10 +56,10 @@ const props = defineProps({
 
 const copied = ref(false);
 
-// Computed property ব্যবহারের ফলে user_id আপডেট হলে লিঙ্ক অটো আপডেট হবে
+
 const referralLink = computed(() => {
     return props.user?.user_id 
-        ? `https://dynamicbazarmerchantbd.com/register/${props.user.user_id}` 
+        ? `https://ogrova.com/register/${props.user.user_id}` 
         : 'Loading link...';
 });
 
@@ -68,7 +68,7 @@ const copyLink = async () => {
 
     try {
         await navigator.clipboard.writeText(referralLink.value);
-        copied.value = true; // .value ব্যবহার করা হয়েছে
+        copied.value = true; 
         
         setTimeout(() => {
             copied.value = false;

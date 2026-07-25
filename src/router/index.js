@@ -39,6 +39,7 @@ const Super_Admin_Make_Admin = () => import('../components/Dashboard/super_admin
 
 // E-commerce Routes
 const Home = () => import('../components/e-commerce/home.vue');
+const UserProfile = () => import('../components/e-commerce/profile.vue');
 const productDetails = () => import('../components/e-commerce/product-details.vue');
 const CartDetails = () => import('../components/e-commerce/cart.vue');
 const Checkout = () => import('../components/e-commerce/checkout/checkout.vue');
@@ -135,9 +136,11 @@ const routes = [
   { path: '/product-details/:slug', component: productDetails, meta: { title: "Product Details - OGROVA | Bangladesh's Smart Online Marketplace" } },
   { path: '/category/:slug/:id', component: CategoryProducts, meta: { title: "Category Products - OGROVA | Bangladesh's Smart Online Marketplace" } },
   { path: '/search', component: SearchProducts, meta: { title: "Search Results Products - OGROVA | Bangladesh's Smart Online Marketplace" } },
-
+  // Cart and checkout
   { path: '/cart', component: CartDetails, meta: { title: "Shopping Cart - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },
   { path: '/checkout/:reg', component: Checkout, meta: { title: "Secure Checkout - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },
+  // Profile
+  { path: '/profile', component: UserProfile, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Profile"}},
 
 
 
@@ -229,7 +232,6 @@ const routes = [
 
   // customer dashboard
   { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Dashboard"}},
-  { path: '/profile', component: Profile, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Profile"}},
   { path: '/reference', component: Reference, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Reference"}},
   { path: '/orders-list', component: CustomerOrders, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Orders"}},
   { path: '/orders-details/:reg/:slug', component: C_OrderDetails, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Order Details"}},
