@@ -58,7 +58,7 @@
                         <!-- ============================= -->
                         <div class="relative overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-sm">
                             <!-- Top Accent Gradient Line -->
-                            <div class="h-1.5 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                            <!-- <div class="h-1.5 w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-orange-500 dark:from-emerald-500 dark:via-emerald-400 dark:to-orange-400 transition-colors duration-300"></div> -->
 
                             <div class="p-6 sm:p-8">
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
@@ -141,7 +141,7 @@
                         <!-- ============================= -->
                         <!-- Dashboard Stats Cards         -->
                         <!-- ============================= -->
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
                                 <div class="flex items-center justify-between">
                                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Total Orders</p>
@@ -149,7 +149,7 @@
                                         <i class="fa-solid fa-box"></i>
                                     </span>
                                 </div>
-                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">156</h3>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">{{ otherDetails.total_order }}</h3>
                             </div>
 
                             <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
@@ -159,10 +159,10 @@
                                         <i class="fa-solid fa-star"></i>
                                     </span>
                                 </div>
-                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">48</h3>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">{{ otherDetails.total_rating }}</h3>
                             </div>
 
-                            <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
+                            <!-- <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
                                 <div class="flex items-center justify-between">
                                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Referrals</p>
                                     <span class="p-2 rounded-xl bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs">
@@ -170,7 +170,7 @@
                                     </span>
                                 </div>
                                 <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">12</h3>
-                            </div>
+                            </div> -->
 
                             <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-4 transition hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
                                 <div class="flex items-center justify-between">
@@ -179,7 +179,7 @@
                                         <i class="fa-solid fa-coins"></i>
                                     </span>
                                 </div>
-                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">890</h3>
+                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">{{ otherDetails.total_point }}</h3>
                             </div>
                         </div>
 
@@ -248,7 +248,7 @@
                                                 <i class="fa-solid fa-location-dot"></i>
                                             </span>
                                             <div>
-                                                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Logged in from Dhaka</p>
+                                                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Login</p>
                                                 <span class="text-[11px] text-slate-400">{{ formatDateTime(user?.last_login_at) }}</span>
                                             </div>
                                         </div>
@@ -536,6 +536,8 @@ async function refreshProfile() {
         form.value.present_address = user.value?.present_address ?? "";
         form.value.permanent_address = user.value?.permanent_address ?? "";
         form.value.national_id = user.value?.national_id ?? "";
+
+        await fetchedOtherDetails();
     } catch (e) {
         setError(e?.response?.data?.message || "Failed to load profile");
     } finally {
@@ -579,7 +581,26 @@ async function updateProfile() {
     }
 }
 
+const otherDetails = ref({
+    total_order: 0,
+    total_point: 0,
+    total_rating: 0,
+});
 
+async function fetchedOtherDetails() {
+    if (!user.value?.id) return;
+
+    try {
+        const res = await api.get(`/public/${user.value.id}/details`);
+
+        if (res.data.success) {
+            otherDetails.value = res.data.data;
+        }
+
+    } catch (e) {
+        setError(e?.response?.data?.message || "Failed to load other details");
+    }
+}
 
 
 
