@@ -45,6 +45,7 @@ const CartDetails = () => import('../components/e-commerce/cart.vue');
 const Checkout = () => import('../components/e-commerce/checkout/checkout.vue');
 const CategoryProducts = () => import('../components/e-commerce/category-products.vue');
 const SearchProducts = () => import('../components/e-commerce/searchProducts.vue');
+const CustomerSetting = () => import('../components/e-commerce/setting/setting.vue');
 
 
 
@@ -141,6 +142,7 @@ const routes = [
   { path: '/checkout/:reg', component: Checkout, meta: { title: "Secure Checkout - OGROVA | Bangladesh's Smart Online Marketplace", requiresAuth: true} },
   // Profile
   { path: '/profile', component: UserProfile, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Profile"}},
+  { path: '/setting', component: CustomerSetting, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Manage Account"}},
 
 
 
@@ -236,7 +238,6 @@ const routes = [
   { path: '/orders-list', component: CustomerOrders, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Orders"}},
   { path: '/orders-details/:reg/:slug', component: C_OrderDetails, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Order Details"}},
   { path: '/orders-tracking', component: C_OrderTracking, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Order Tracking"}},
-  { path: '/setting', component: C_Setting, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Setting"}},
   { path: '/tree-user', component: C_tree, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Tree"}},
   { path: '/account', component: C_Account, meta: {requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Account"}},
   { path: '/withdraw', component: C_Withdrawal, meta: {requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Withdraw"}},

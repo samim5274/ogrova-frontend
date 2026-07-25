@@ -1,16 +1,13 @@
 <template>
-    <div class="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-200">
-        <Header
-            @open-sidebar="sidebarOpen = true"
-            @search="onSearch"
-            :isDark="isDark" @toggle-theme="toggleTheme"
-        />
+    <div :class="{ 'dark': isDark }">
+        <div class="min-h-screen bg-white dark:bg-[#0C1326] text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
 
-        <div class="flex  min-h-[calc(100vh-56px)]">
             <Navbar
-                v-model="active"
-                :open="sidebarOpen"
-                @close="sidebarOpen = false"
+                :is-dark="isDark"
+                :mobile-menu="mobileMenu"
+                @toggle-dark="toggleDarkMode"
+                @toggle-menu="toggleMenu"
+                @search="handleSearch"
             />
 
             <Message
@@ -21,113 +18,118 @@
             />
 
             <!-- Content -->
-            <div class="flex-1 min-w-0">
-                <main class="min-h-screen bg-gray-50 dark:bg-[#0C1326]">
-                    <div class="mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <section class="min-h-screen bg-slate-50/50 dark:bg-[#080d1a] rounded-2xl  text-slate-800 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+                <div class="">
+                    <div class="flex-1 min-w-0">
+                        <main class="min-h-screen bg-gray-50 dark:bg-[#0C1326]">
+                            <div class="mx-auto px-4 sm:px-6 lg:px-8 py-5">
 
-                        <!-- Header -->
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
-                                ⚙️ Settings
-                                </h1>
-                                <p class="text-sm text-gray-600 dark:text-slate-400">Manage all complaint and software settings</p>
+                                <!-- Header -->
+                                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
+                                        <i class="fa-regular fa-chart-bar"></i> Manage Account
+                                        </h1>
+                                        <p class="text-sm text-gray-600 dark:text-slate-400">Manage all order and ratings settings</p>
+                                    </div>
+                                </div>
+
+                                <!-- Content -->
+                                <div class="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+                                    <!-- LEFT SIDEBAR -->
+                                    <aside class="lg:col-span-1">
+                                        <div class="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+
+                                        <div class="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible">
+                                            <button
+                                            v-for="item in menus"
+                                            :key="item.key"
+                                            @click="activeTab = item.key"
+                                            class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm whitespace-nowrap transition"
+                                            :class="activeTab === item.key
+                                                ? 'bg-green-600 dark:bg-orange-600 text-white shadow'
+                                                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                                            >
+                                            <span><i :class="item.icon"></i></span>
+                                            <span>{{ item.label }}</span>
+                                            </button>
+                                        </div>
+
+                                        </div>
+                                    </aside>
+
+                                    <!-- RIGHT CONTENT -->
+                                    <section class="lg:col-span-3">
+                                        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 min-h-[400px]">
+
+                                            <!-- General -->
+                                            <div v-if="activeTab === 'Orders'">
+                                                <settingOrders />
+                                            </div>
+
+                                        
+                                        <!-- <div v-if="activeTab === 'theme'">
+                                            <settingTheme />
+                                        </div>
+
+                                        <div v-if="activeTab === 'notification'">
+                                            <settingNotification />
+                                        </div>
+
+                                        <div v-if="activeTab === 'privacyAndPolicy'">
+                                            <privacyAndPolicy />
+                                        </div>
+
+                                        <div v-if="activeTab === 'about'">
+                                            <settingAbout />
+                                        </div>
+
+                                        <div v-if="activeTab === 'security'">
+                                            <settingSecurity />
+                                        </div> -->
+
+
+                                        </div>
+                                    </section>
+
+                                </div>
+
                             </div>
-                        </div>
-
-                        <!-- Content -->
-                        <div class="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-
-                            <!-- LEFT SIDEBAR -->
-                            <aside class="lg:col-span-1">
-                                <div class="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-
-                                <div class="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible">
-                                    <button
-                                    v-for="item in menus"
-                                    :key="item.key"
-                                    @click="activeTab = item.key"
-                                    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm whitespace-nowrap transition"
-                                    :class="activeTab === item.key
-                                        ? 'bg-indigo-600 text-white shadow'
-                                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
-                                    >
-                                    <span><i :class="item.icon"></i></span>
-                                    <span>{{ item.label }}</span>
-                                    </button>
-                                </div>
-
-                                </div>
-                            </aside>
-
-                            <!-- RIGHT CONTENT -->
-                            <section class="lg:col-span-3">
-                                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 min-h-[400px]">
-
-                                    <!-- General -->
-                                <div v-if="activeTab === 'general'">
-                                    <settingGeneral />
-                                </div>
-
-                                <!-- Theme -->
-                                 <div v-if="activeTab === 'theme'">
-                                    <settingTheme />
-                                 </div>
-
-                                <!-- Notification -->
-                                <div v-if="activeTab === 'notification'">
-                                    <settingNotification />
-                                </div>
-
-                                <!-- Privacy & Policy -->
-                                <div v-if="activeTab === 'privacyAndPolicy'">
-                                    <privacyAndPolicy />
-                                </div>
-
-                                <!-- About -->
-                                <div v-if="activeTab === 'about'">
-                                    <settingAbout />
-                                </div>
-
-                                <!-- Security -->
-                                <div v-if="activeTab === 'security'">
-                                    <settingSecurity />
-                                </div>
-
-
-                                </div>
-                            </section>
-
-                        </div>
-
+                        </main>
                     </div>
-                </main>
-            </div>
-        </div>
+                </div>
+            </section>
+        
+
         <FooterSection />
+        </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, h, onBeforeUnmount, onMounted, ref } from "vue";
+import { useRouter } from 'vue-router';
+import api, { makeImg } from "../../../services/api";
 
 const router = useRouter();
 
-import Message from '../../../Message/message.vue'
-import Navbar from '../navbar.vue'
-import Header from '../header.vue'
+import Message from '../../Message/message.vue';
+import Navbar from '../navbar.vue';
+import FooterSection from '../footer.vue';
 
 const successMsg = ref("");
 const errorMsg = ref("");
+const isDark = ref(false);
+const mobileMenu = ref(false);
 
-import FooterSection from "../../../e-commerce/footer.vue";
-import settingGeneral from "./setting-general.vue";
-import settingAbout from "./setting-about.vue";
-import privacyAndPolicy from "./setting-privacy.vue";
-import settingSecurity from "./setting-security.vue";
-import settingNotification from "./setting-notification.vue";
-import settingTheme from "./setting-theme.vue";
+
+import settingOrders from "./setting-orders.vue";
+// import settingAbout from "./setting-about.vue";
+// import privacyAndPolicy from "./setting-privacy.vue";
+// import settingSecurity from "./setting-security.vue";
+// import settingNotification from "./setting-notification.vue";
+// import settingTheme from "./setting-theme.vue";
 
 const sidebarOpen = ref(false);
 const active = ref("dashboard");
@@ -139,10 +141,10 @@ const active = ref("dashboard");
 
 
 
-const activeTab = ref('general')
+const activeTab = ref('Orders')
 
 const menus = [
-    { key: 'general', label: 'General', icon: 'fa-solid fa-gear' },
+    { key: 'Orders', label: 'Orders', icon: 'fa-brands fa-opencart' },
     { key: 'theme', label: 'Theme', icon: 'fa-brands fa-affiliatetheme' },
     { key: 'notification', label: 'Notification', icon: 'fa-solid fa-bell' },
     { key: 'security', label: 'Security', icon: 'fa-solid fa-lock' },
@@ -155,52 +157,39 @@ const menus = [
 
 
 
-const isDark = ref(false);
-
-function applyTheme(dark) {
-    isDark.value = dark;   // VERY IMPORTANT
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
+// -----------------------------------------------------------------------
+// Theme / navbar / search
+// -----------------------------------------------------------------------
+function toggleDarkMode() {
+    isDark.value = !isDark.value;
+    localStorage.setItem("theme", isDark.value ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", isDark.value);
 }
 
-function toggleTheme() {
-    applyTheme(!isDark.value);
+function toggleMenu() {
+    mobileMenu.value = !mobileMenu.value;
 }
 
-function onSearch(q) {
-    console.log("search:", q);
+function handleSearch(query) {
+    router.push({ path: "/search", query: { q: query } });
 }
+
+
+function handleEsc(e) {
+    if (e.key === "Escape") mobileMenu.value = false;
+}
+
+
 
 
 /* ESC to close drawer */
 onMounted(() => {
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") sidebarOpen.value = false;
-    });
+    window.addEventListener("keydown", handleEsc);
 
-    const saved = localStorage.getItem("theme");
-
-    if (saved === "dark") applyTheme(true);
-    else if (saved === "light") applyTheme(false);
-    else {
-        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        applyTheme(systemDark);
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
+        isDark.value = true;
+        document.documentElement.classList.add("dark");
     }
 });
 </script>
-
-
-<style scoped>
-.input {
-    @apply w-full px-3 py-2 text-sm rounded-lg border 
-    border-slate-200 dark:border-slate-700 
-    bg-white dark:bg-slate-800 
-    text-slate-700 dark:text-white
-    focus:ring-2 focus:ring-indigo-500 outline-none;
-}
-
-.section-title {
-    @apply text-lg font-semibold mb-4 text-slate-800 dark:text-white;
-}
-
-</style>
