@@ -655,7 +655,7 @@
 
 
 
-
+        <NewsLatter />
         <FooterSection />
         </div>
     </div>
@@ -669,6 +669,7 @@ import api from '../../../services/api.js';
 import Message from '../../Message/message.vue';
 import Navbar from '../navbar.vue';
 import AddressModel from './customer-address.vue';
+import NewsLatter from '../news-latter.vue';
 import FooterSection from '../footer.vue';
 import TransactionDetailsSection from './transaction-details.vue';
 import { useAuth } from '../../../stores/auth.js';

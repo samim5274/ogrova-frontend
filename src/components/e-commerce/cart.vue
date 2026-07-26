@@ -259,7 +259,7 @@
 
 
 
-
+        <NewsLatter />
         <FooterSection />
         </div>
     </div>
@@ -272,6 +272,7 @@ import api from '../../services/api';
 
 import Message from '../Message/message.vue';
 import Navbar from './navbar.vue';
+import NewsLatter from './news-latter.vue';
 import FooterSection from './footer.vue';
 import { useAuth } from '../../stores/auth';
 

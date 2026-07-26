@@ -297,21 +297,68 @@
                                         </button>
                                     </div>
 
-                                    <button @click="addToCart(product)" class="relative w-full sm:flex-1 h-[68px] sm:h-[64px] group overflow-hidden rounded-[2.2rem] bg-gray-950 dark:bg-orange-500 transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(5,150,105,0.4)] dark:hover:shadow-[0_25px_50px_-12px_rgba(249,115,22,0.4)] active:scale-[0.98]">
-                                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -skew-x-[35deg] -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] ease-in-out"></div>
-                                        <div class="relative flex items-center justify-center gap-4">
-                                            <div class="relative flex items-center justify-center">
-                                                <i class="fa-solid fa-bag-shopping text-white text-lg group-hover:scale-110 transition-transform duration-500"></i>
-                                                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-gray-950 dark:border-orange-500 scale-0 group-hover:scale-100 transition-transform duration-300"></span>
+                                    <button 
+                                        @click="addToCart(product)" 
+                                        :disabled="isAddingToCart"
+                                        class="relative w-full sm:flex-1 h-14 group overflow-hidden rounded-2xl border-2 border-emerald-600 dark:border-slate-700 bg-transparent transition-all duration-300 hover:bg-emerald-600 dark:hover:bg-slate-800 hover:shadow-lg hover:shadow-emerald-600/20 dark:hover:shadow-slate-800/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center">
+                                        
+                                        <!-- Light Shine Animation Effect -->
+                                        <div class="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-emerald-600/10 dark:via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+
+                                        <!-- Content -->
+                                        <div class="relative z-10 flex items-center justify-center gap-3">
+                                            <!-- Icon Container -->
+                                            <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-50 dark:bg-slate-800 group-hover:bg-white/20 group-hover:scale-110 transition-all duration-300">
+                                                <i v-if="!isAddingToCart" class="fa-solid fa-cart-plus text-emerald-600 dark:text-slate-300 group-hover:text-white text-xs"></i>
+                                                <i v-else class="fa-solid fa-circle-notch animate-spin text-emerald-600 dark:text-slate-300 group-hover:text-white text-xs"></i>
                                             </div>
-                                            <div :disabled="isAddingToCart" class="flex flex-col items-start leading-tight">
-                                                <span class="text-white text-[11px] font-black uppercase tracking-[0.3em] group-hover:tracking-[0.4em] transition-all duration-500">Add to Cart</span>
-                                                <span class="text-white/40 text-[9px] font-bold uppercase tracking-widest mt-0.5">Secure Checkout</span>
+
+                                            <!-- Text Container -->
+                                            <div class="flex flex-col items-start text-left">
+                                                <span class="text-emerald-600 dark:text-slate-200 group-hover:text-white text-xs font-bold uppercase tracking-wider group-hover:translate-x-0.5 transition-all duration-300">
+                                                    {{ isAddingToCart ? 'Adding...' : 'Add to Cart' }}
+                                                </span>
+                                                <span class="text-slate-500 dark:text-slate-400 group-hover:text-white/80 text-[10px] font-semibold tracking-tight transition-colors duration-300">
+                                                    Save to Bag
+                                                </span>
                                             </div>
+
+                                            <!-- Plus Icon / Arrow -->
+                                            <i class="fa-solid fa-plus text-emerald-600/70 dark:text-slate-500 group-hover:text-white text-xs group-hover:rotate-90 transition-all duration-300 ml-1"></i>
                                         </div>
-                                        <div class="absolute inset-0 border border-white/10 rounded-[2.2rem] pointer-events-none"></div>
                                     </button>
                                 </div>
+
+                                <button 
+                                    @click="goToCart(product)" 
+                                    :disabled="isAddingToCart"
+                                    class="relative w-full sm:flex-1 h-14 group overflow-hidden rounded-2xl border-2 border-emerald-600 dark:border-slate-700 bg-transparent transition-all duration-300 hover:bg-emerald-600 dark:hover:bg-slate-800 hover:shadow-lg hover:shadow-emerald-600/20 dark:hover:shadow-slate-800/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center">
+                                    
+                                    <!-- Light Shine Animation Effect -->
+                                    <div class="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-emerald-600/10 dark:via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+
+                                    <!-- Content -->
+                                    <div class="relative z-10 flex items-center justify-center gap-3">
+                                        <!-- Icon Container -->
+                                        <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-50 dark:bg-slate-800 group-hover:bg-white/20 group-hover:scale-110 transition-all duration-300">
+                                            <i v-if="!isAddingToCart" class="fa-solid fa-bolt text-emerald-600 dark:text-slate-300 group-hover:text-white text-xs"></i>
+                                            <i v-else class="fa-solid fa-circle-notch animate-spin text-emerald-600 dark:text-slate-300 group-hover:text-white text-xs"></i>
+                                        </div>
+
+                                        <!-- Text Container -->
+                                        <div class="flex flex-col items-start text-left">
+                                            <span class="text-emerald-600 dark:text-slate-200 group-hover:text-white text-xs font-bold uppercase tracking-wider group-hover:translate-x-0.5 transition-all duration-300">
+                                                {{ isAddingToCart ? 'Adding...' : 'Buy Now' }}
+                                            </span>
+                                            <span class="text-slate-500 dark:text-slate-400 group-hover:text-white/80 text-[10px] font-semibold tracking-tight transition-colors duration-300">
+                                                Instant Checkout
+                                            </span>
+                                        </div>
+
+                                        <!-- Plus Icon / Arrow -->
+                                        <i class="fa-solid fa-plus text-emerald-600/70 dark:text-slate-500 group-hover:text-white text-xs group-hover:rotate-90 transition-all duration-300 ml-1"></i>
+                                    </div>
+                                </button>
                             </div>
 
                             <!-- Shipping Alert -->
@@ -506,7 +553,7 @@
 
 
 
-
+        <NewsLatter />
         <FooterSection />
         </div>
     </div>
@@ -521,6 +568,7 @@ import api from '../../services/api';
 import Message from '../Message/message.vue';
 import Navbar from './navbar.vue';
 import RatingSection from './rating/rating.vue';
+import NewsLatter from './news-latter.vue';
 import FooterSection from './footer.vue';
 import { useAuth } from '../../stores/auth';
 import { useCartStore } from './stores/cart';
@@ -779,6 +827,61 @@ const getProductImage = (product) => {
         ?? product?.images?.[0];
 
     return image?.url || defaultProductImage;
+}
+
+// cart section
+async function goToCart(product) {
+    if (product.variants?.length && !selectedVariant.value) {
+        errorMsg.value = "Please select a variant.";
+        return;
+    }
+
+    const quantity = qty.value;
+
+    const cartData = {
+        product_id: product.id,
+        variant_id: selectedVariant.value?.id ?? null,
+        quantity,
+    };
+
+    try {
+        isAddingToCart.value = true;
+
+        const res = await api.post("/cart/add-to-cart", cartData);
+
+        if (res.data?.success) {
+            // successMsg.value = res.data.message || "Added to cart!";
+            errorMsg.value = null;
+
+            CartItem.value = res.data.data;
+
+            cartStore.addToCartLocal({
+                product_id: product.id,
+                variant_id: selectedVariant.value?.id ?? null,
+                quantity,
+                price: selectedVariant.value?.price ?? product.price,
+            })
+            
+            qty.value = 1;
+            // console.log(CartItem.value);
+            router.push('/cart');
+        } else {
+            errorMsg.value = res.data?.message || "Something went wrong";
+            successMsg.value = null;
+        }
+
+    } catch (error) {
+
+        if (error.response) {
+            errorMsg.value = error.response.data?.message || "Server error";
+        } else {
+            errorMsg.value = "Network error";
+            console.error(error);
+        }
+
+    } finally {
+        isAddingToCart.value = false;
+    }
 }
 // ================================= Other =================================
 
