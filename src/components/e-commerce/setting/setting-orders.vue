@@ -113,7 +113,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300">
-                            <tr v-for="order in orders" :key="order.id" class="hover:bg-slate-50/60 dark:hover:bg-slate-800/20 transition">
+                            <tr v-for="order in orders" :key="order.id" @click="openOrderDetails(order)" class="hover:bg-slate-50/60 dark:hover:bg-slate-800/20 transition">
                                 
                                 <!-- Registration / Order Number -->
                                 <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
@@ -154,8 +154,7 @@
 
                                 <!-- View Details Action Button -->
                                 <td class="px-6 py-4 text-right whitespace-nowrap">
-                                    <button type="button" @click="openOrderDetails(order)" class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition">
-                                        <span>Details</span>
+                                    <button type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition">
                                         <i class="fa-solid fa-chevron-right text-[10px]"></i>
                                     </button>
                                 </td>
@@ -236,7 +235,7 @@
                 <div class="fixed inset-0" @click="closeModal"></div>
 
                 <!-- Modal Box -->
-                <div class="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-2xl border border-slate-200 dark:border-slate-800 transition-all max-h-[90vh] flex flex-col">
+                <div class="relative z-10 w-full max-w-4xl overflow-hidden rounded-2xl bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-2xl border border-slate-200 dark:border-slate-800 transition-all max-h-[90vh] flex flex-col">
                     
                     <!-- Modal Header -->
                     <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-4">
@@ -275,6 +274,30 @@
                                     {{ selectedOrder?.payment_method || 'N/A' }} 
                                     <span class="text-[10px] text-slate-400">({{ selectedOrder?.payment_status }})</span>
                                 </span>
+                            </div>
+                        </div>
+
+                        <!-- Order timeline -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-6">Order Timeline</h3>
+                            <div class="flex items-start overflow-x-auto pb-1 -mx-1 px-1">
+                                <template v-for="(step, idx) in timelineSteps" :key="step.key">
+                                    <div class="flex flex-col items-center text-center min-w-[86px] shrink-0">
+                                        <div class="w-9 h-9 rounded-full flex items-center justify-center border-2" :class="stepClass(step)">
+                                            <i :class="step.icon" class="text-xs"></i>
+                                        </div>
+                                        <p class="text-[11px] font-semibold mt-2 leading-tight"
+                                            :class="step.reached ? 'text-slate-700 dark:text-slate-300' : 'text-slate-400 dark:text-slate-600'">
+                                            {{ step.label }}
+                                        </p>
+                                        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+                                            {{ step.at ? formatDate(step.at) : (step.reached ? 'Reached' : 'Pending') }}
+                                        </p>
+                                    </div>
+                                    <div v-if="idx < timelineSteps.length - 1"
+                                        class="flex-1 h-0.5 mt-[18px] mx-1 min-w-[20px]"
+                                        :class="step.reached ? 'bg-indigo-400 dark:bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'"></div>
+                                </template>
                             </div>
                         </div>
 
@@ -567,6 +590,74 @@ const selectedOrderCartItems = computed(() => {
 const selectedOrderPayment = computed(() => {
     return selectedOrder.value?.payment ?? null;
 });
+
+const STATUS_SEQUENCE = ['Pending', 'Confirmed', 'Processing', 'Picked', 'Shipped', 'Out for Delivery', 'Delivered'];
+
+const TERMINAL_META = {
+    Cancelled: { icon: 'fa-solid fa-circle-xmark', style: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400', atField: 'cancelled_at' },
+    Failed: { icon: 'fa-solid fa-triangle-exclamation', style: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400', atField: null },
+    Returned: { icon: 'fa-solid fa-rotate-left', style: 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400', atField: null },
+};
+
+const timelineSteps = computed(() => {
+    if (!selectedOrder.value) return [];
+
+    const o = selectedOrder.value;
+
+    const currentIndex = STATUS_SEQUENCE.findIndex(
+        s => s.toLowerCase() === (o.status || "").toLowerCase()
+    );
+
+    const terminal = TERMINAL_META[o.status] ?? null;
+
+    const steps = [
+        { key: 'placed', label: 'Placed', at: o.date, icon: 'fa-solid fa-cart-shopping', reached: true, },
+        { key: 'confirmed', label: 'Confirmed', at: o.confirmed_at, icon: 'fa-solid fa-circle-check', reached: currentIndex >= 1, },
+        { key: 'processing', label: 'Processing', at: o.processing_at, icon: 'fa-solid fa-gears', reached: currentIndex >= 2, },
+        { key: 'picked', label: 'Picked', at: o.picked_at, icon: 'fa-solid fa-box', reached: currentIndex >= 3, },
+        { key: 'shipped', label: 'Shipped', at: o.shipped_at, icon: 'fa-solid fa-truck', reached: currentIndex >= 4, },
+        { key: 'out_for_delivery', label: 'Out for delivery', at: o.out_for_delivery_at ?? null, icon: 'fa-solid fa-truck-fast', reached: currentIndex >= 5, },
+        { key: 'delivered', label: 'Delivered', at: o.delivered_at, icon: 'fa-solid fa-house-circle-check', reached: currentIndex >= 6, },
+    ].map((s, idx) => ({
+        ...s,
+        // reached if it has its own timestamp, or the order's current
+        // status has already passed this step in the sequence
+        reached: idx === 0 || !!s.at || (currentIndex >= 0 && idx <= currentIndex),
+    }));
+
+    if (terminal) {
+        return [
+            ...steps.filter(s => s.reached),
+            {
+                key: "terminal",
+                label: o.status,
+                at: terminal.atField ? o[terminal.atField] : null,
+                icon: terminal.icon,
+                reached: true,
+                style: terminal.style,
+            },
+        ];
+    }
+
+    return steps;
+});
+
+const stepClass = (step) => {
+    if (step.style) {
+        return step.style;
+    }
+
+    return step.reached
+        ? "bg-indigo-600 border-indigo-600 text-white"
+        : "bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-400";
+};
+
+
+
+
+
+
+
 
 
 
