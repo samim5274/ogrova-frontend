@@ -598,7 +598,7 @@
 
                                         <div class="flex flex-col gap-1.5">
                                             <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                অ্যাকাউন্টের নাম (Account Title / Name) <span class="text-red-500">*</span>
+                                                Account Title / Name <span class="text-red-500">*</span>
                                             </label>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 text-slate-400 dark:text-slate-500">
@@ -607,7 +607,7 @@
                                                 <input 
                                                     type="text" 
                                                     v-model="form.account_holder_name" 
-                                                    placeholder="যে নাম থেকে টাকা পাঠিয়েছেন"
+                                                    placeholder="Account Holder Name"
                                                     class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
                                                     required
                                                 />
@@ -616,7 +616,7 @@
 
                                         <div class="flex flex-col gap-1.5">
                                             <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                ব্যাংক অ্যাকাউন্ট নম্বর (Account Number) <span class="text-red-500">*</span>
+                                                Account Number <span class="text-red-500">*</span>
                                             </label>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 text-slate-400 dark:text-slate-500">
@@ -625,7 +625,7 @@
                                                 <input 
                                                     type="text" 
                                                     v-model="form.account_number"
-                                                    placeholder="আপনার ব্যাংক অ্যাকাউন্ট নম্বর"
+                                                    placeholder="Account Number"
                                                     class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
                                                     required
                                                 />
@@ -634,7 +634,7 @@
 
                                         <div class="flex flex-col gap-1.5">
                                             <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                ট্রানজেকশন আইডি / স্লিপ নম্বর (Optional)
+                                                Transaction ID / Slip No (Optional)
                                             </label>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 text-slate-400 dark:text-slate-500">
@@ -643,7 +643,7 @@
                                                 <input 
                                                     type="text" 
                                                     v-model="form.transaction_id"
-                                                    placeholder="ব্যাংক ডিপোজিট বা স্লিপ নম্বর (ঐচ্ছিক)"
+                                                    placeholder="Bank deposit or slip number (optional)"
                                                     class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
                                                 />
                                             </div>
@@ -1401,7 +1401,6 @@ function validateOrderForm() {
         return 'Please select a payment method.';
     }
 
-    // ✅ শুধু advance payment হলেই product payment fields validate করো
     if (form.payment_method === 'advance') {
         if (!form.trans_payment_method) {
             return 'Please choose an advance payment method.';
