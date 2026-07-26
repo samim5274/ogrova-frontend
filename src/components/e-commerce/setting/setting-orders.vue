@@ -474,16 +474,17 @@ async function fetchedUserOrder(page = 1) {
     try{
         const res = await api.get(`/orders/user/details?page=${page}`);
         if (res.data.success) {
+            const paginator = res.data.data;
 
-            orders.value = res.data.data.data ?? [];
+            orders.value = paginator.data ?? [];
             
             pagination.value = {
-                page: res?.data?.current_page ?? 1,
-                lastPage: res?.data?.last_page ?? 1,
-                total: res?.data?.total ?? 0,
-                perPage: res?.data?.per_page ?? 10,
-                from: res?.data?.from ?? 0,
-                to: res?.data?.to ?? 0,
+                page: paginator.current_page ?? 1,
+                lastPage: paginator.last_page ?? 1,
+                total: paginator.total ?? 0,
+                perPage: paginator.per_page ?? 10,
+                from: paginator.from ?? 0,
+                to: paginator.to ?? 0,
             };
         }
     } catch (e) {
