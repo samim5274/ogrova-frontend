@@ -580,7 +580,7 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeIn">
                                         <div class="flex flex-col gap-1.5">
                                             <label class="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                আপনার ব্যাংকের নাম (Your Bank Name) <span class="text-red-500">*</span>
+                                                Your Bank Name <span class="text-red-500">*</span>
                                             </label>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 text-slate-400 dark:text-slate-500">
@@ -589,7 +589,7 @@
                                                 <input 
                                                     type="text" 
                                                     v-model="form.bank_name"
-                                                    placeholder="যেমন: Islami Bank, BRAC Bank"
+                                                    placeholder="like: Islami Bank, BRAC Bank"
                                                     class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all focus:border-emerald-500 dark:focus:border-orange-500 focus:ring-1 focus:ring-emerald-500 dark:focus:ring-orange-500"
                                                     required
                                                 />
