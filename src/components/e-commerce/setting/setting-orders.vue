@@ -279,11 +279,47 @@
                         </div>
 
                         <!-- Customer & Shipping Info -->
-                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-xs space-y-1 bg-white dark:bg-slate-900">
-                            <h4 class="font-bold text-slate-700 dark:text-slate-300 mb-2">Shipping Information</h4>
-                            <p><span class="text-slate-500">Name:</span> <span class="font-medium text-slate-800 dark:text-slate-200">{{ selectedOrder?.contact_name || 'N/A' }}</span></p>
-                            <p><span class="text-slate-500">Phone:</span> <span class="font-medium text-slate-800 dark:text-slate-200">{{ selectedOrder?.contact_number || 'N/A' }}</span></p>
-                            <p><span class="text-slate-500">Address:</span> <span class="font-medium text-slate-800 dark:text-slate-200">{{ selectedOrder?.shipping_address || 'N/A' }}</span></p>
+                        <div class="p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm transition-all duration-200 hover:shadow-md">
+                            <!-- Header with FontAwesome Icon -->
+                            <div class="flex items-center gap-3 pb-3.5 mb-4 border-b border-slate-100 dark:border-slate-800/80">
+                                <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-truck-fast"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">Shipping Details</h4>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Customer delivery information</p>
+                                </div>
+                            </div>
+
+                            <!-- Info List with Field Icons -->
+                            <div class="space-y-3 text-xs">
+                                <!-- Name -->
+                                <div class="flex items-start gap-2.5">
+                                    <i class="fa-solid fa-user text-slate-400 dark:text-slate-500 text-xs mt-0.5 w-4 text-center"></i>
+                                    <div>
+                                        <span class="block text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Recipient</span>
+                                        <span class="font-medium text-slate-800 dark:text-slate-200">{{ selectedOrder?.contact_name || 'N/A' }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="flex items-start gap-2.5">
+                                    <i class="fa-solid fa-phone text-slate-400 dark:text-slate-500 text-xs mt-0.5 w-4 text-center"></i>
+                                    <div>
+                                        <span class="block text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Phone</span>
+                                        <span class="font-medium text-slate-800 dark:text-slate-200">{{ selectedOrder?.contact_number || 'N/A' }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Address -->
+                                <div class="flex items-start gap-2.5 pt-1 border-t border-slate-100 dark:border-slate-800/40">
+                                    <i class="fa-solid fa-location-dot text-slate-400 dark:text-slate-500 text-xs mt-0.5 w-4 text-center"></i>
+                                    <div>
+                                        <span class="block text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Address</span>
+                                        <p class="font-medium text-slate-700 dark:text-slate-300 leading-relaxed">{{ selectedOrder?.shipping_address || 'N/A' }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Product Items List -->
@@ -300,16 +336,16 @@
                                             <img v-if="item.product?.image" :src="makeImg(item.product.image)" class="w-12 h-12 object-cover rounded-lg border border-slate-200 dark:border-slate-800" />
                                             <div>
                                                 <h5 class="font-semibold text-xs text-slate-800 dark:text-slate-200">
-                                                    {{ item.product?.name ?? 'Product' }}
+                                                    {{ item.product?.name }}
                                                 </h5>
                                                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                                                    Qty: {{ item.quantity }} × ৳{{ Number(item.price).toFixed(2) }}
+                                                    Qty : {{ item.quantity }} × ৳{{ Number(item.price).toFixed(2) }}
                                                 </p>
                                             </div>
                                         </div>
 
                                         <div class="font-semibold text-xs text-slate-900 dark:text-white">
-                                            ৳{{ (Number(item.quantity) * Number(item.price)).toFixed(2) }}
+                                            ৳{{ Number(item.quantity * item.price).toFixed(2) }}
                                         </div>
                                     </div>
                                 </div>
@@ -438,21 +474,20 @@ async function fetchedUserOrder(page = 1) {
     try{
         const res = await api.get(`/orders/user/details?page=${page}`);
         if (res.data.success) {
-            const response = res.data;
 
-            orders.value = response?.data?.data ?? [];
-
+            orders.value = res.data.data.data ?? [];
+            
             pagination.value = {
-                page: response?.data?.current_page ?? 1,
-                lastPage: response?.data?.last_page ?? 1,
-                total: response?.data?.total ?? 0,
-                perPage: response?.data?.per_page ?? 10,
-                from: response?.data?.from ?? 0,
-                to: response?.data?.to ?? 0,
+                page: res?.data?.current_page ?? 1,
+                lastPage: res?.data?.last_page ?? 1,
+                total: res?.data?.total ?? 0,
+                perPage: res?.data?.per_page ?? 10,
+                from: res?.data?.from ?? 0,
+                to: res?.data?.to ?? 0,
             };
         }
     } catch (e) {
-        errorMsg.value = e?.response?.data?.message || "Failed to load orders";
+        errorMsg.value = e?.res?.data?.message || "Failed to load orders";
 
         orders.value = [];
 
@@ -514,50 +549,23 @@ const getStatusBadge = (status) => {
 const isModalOpen = ref(false);
 const selectedOrder = ref(null);
 
-const cartItems = ref([]);
-const orderPayment = ref(null);
-// Open Modal with selected order data
-async function openOrderDetails(order) {
-
+function openOrderDetails(order) {
     selectedOrder.value = order;
-    cartItems.value = [];
-    orderPayment.value = null;
     isModalOpen.value = true;
-    loading.value = true;
-
-    try {
-        const { data } = await api.get(`/orders/items/${order.reg}/payment/details`);
-        if (data.success) {
-            cartItems.value = data.data.cartItems || [];
-            orderPayment.value = data.data.orderPayment;
-        }
-    } catch (error) {
-        errorMsg.value =
-            error.response?.data?.message ||
-            "Failed to load order details.";
-    } finally {
-        loading.value = false;
-    }
-
 }
 
-// Close Modal
-const closeModal = () => {
+function closeModal() {
     isModalOpen.value = false;
     selectedOrder.value = null;
-    cartItems.value = [];
-    orderPayment.value = null;
-};
+}
 
-// শুধুমাত্র সিলেক্ট করা অর্ডারের কার্ট আইটেমস ফিল্টার করবে
 const selectedOrderCartItems = computed(() => {
-    if (!selectedOrder.value || !cartItems.value.length) return [];
-    
-    return cartItems.value.filter(item => item.reg === selectedOrder.value.reg);
+    return selectedOrder.value?.items ?? [];
 });
 
-
-
+const selectedOrderPayment = computed(() => {
+    return selectedOrder.value?.payment ?? null;
+});
 
 
 
