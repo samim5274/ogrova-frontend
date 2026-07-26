@@ -1,334 +1,274 @@
 <template>
-    <div class="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-[#1F2937] dark:via-[#111827] dark:to-[#0D1117] text-gray-800 dark:text-gray-100 flex flex-col items-center justify-center p-4 sm:p-6 selection:bg-[#16A34A]/30 selection:text-white transition-colors duration-500 font-sans relative overflow-hidden">
 
-            <Message
-                :successMsg="successMsg"
-                :errorMsg="errorMsg"
-                @update:successMsg="successMsg = $event"
-                @update:errorMsg="errorMsg = $event"
-            />
+        <!-- Background Glow Accents -->
+        <div class="absolute top-[-25%] left-[-15%] w-[600px] h-[600px] bg-[#16A34A]/5 dark:bg-[#16A34A]/10 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute bottom-[-25%] right-[-15%] w-[600px] h-[600px] bg-[#F97316]/5 dark:bg-[#F97316]/10 rounded-full blur-[140px] pointer-events-none"></div>
 
-            <div class="flex-1 min-w-0">
-                <main class="flex-1 min-w-0 bg-gray-50 dark:bg-[#0C1326] px-4 sm:px-6 lg:px-8 py-6">
-                    <!-- Header -->
-                    <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                        <div>
+        <!-- Notification Message Component -->
+        <Message
+            :successMsg="successMsg"
+            :errorMsg="errorMsg"
+            @update:successMsg="successMsg = $event"
+            @update:errorMsg="errorMsg = $event"
+        />
+
+        <!-- Main Wrapper Card -->
+        <div class="w-full max-w-7xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800/80 p-5 sm:p-8 md:p-10 shadow-xl shadow-slate-200/50 dark:shadow-none transition-all duration-300 relative z-10">
+            
+            <!-- Page Header Section -->
+            <header class="mb-8 pb-6 border-b border-slate-200/80 dark:border-slate-800">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    
+                    <!-- Left Section: Back Button, Logo & Title Info -->
+                    <div class="flex items-start gap-4 sm:gap-5">
+                        <!-- Brand / Application Logo -->
+                        <div class="h-20 w-20 bg-gray-50 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl flex items-center justify-center border border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-500 group-hover:scale-105 group-hover:border-[#16A34A]/40">
+                            <img src="/logo/logo.png" alt="Logo" class="w-13 h-13 object-contain drop-shadow-sm rounded-2xl dark:hidden" />
+                            <img src="/logo/white-logo.png" alt="Logo" class="hidden dark:block w-13 h-13 rounded-2xl object-contain drop-shadow-[0_4px_12px_rgba(22,163,74,0.35)]" />
+                        </div>
+
+                        <!-- Header Titles & Navigation -->
+                        <div class="space-y-1">
+                            <!-- Back Action -->
                             <button 
                                 @click="$router.back()" 
-                                class="fixed top-6 left-6 flex items-center gap-2 text-white/80 hover:text-white transition-all group">
-                                <div class="h-8 w-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10 transition-all">
-                                    <i class="fa-solid fa-arrow-left text-sm"></i>
-                                </div>
-                                <span class="text-sm font-semibold tracking-wide">Go Back</span>
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors group">
+                                <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
+                                <span>Go Back</span>
                             </button>
-                            <div class="flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-2">
-                                <i class="fa-solid fa-user-plus"></i>
-                                <span>Administration</span>
-                            </div>
-                            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Create New Profile</h1>
-                            <p class="text-slate-500 dark:text-slate-400 mt-1">Register a new member and assign network placement.</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <button @click="CreateUser()" :disabled="loading" 
-                                class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-indigo-200 dark:shadow-none disabled:opacity-50">
-                                <i v-if="loading" class="fa-solid fa-circle-notch animate-spin"></i>
-                                <i v-else class="fa-solid fa-cloud-arrow-up"></i>
-                                {{ loading ? "Processing..." : "Save Profile" }}
-                            </button>
-                        </div>
-                    </header>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                        <!-- Left Column: Form Fields (8 Columns) -->
-                        <div class="lg:col-span-8 space-y-6">
-                            
-                            <Message :successMsg="successMsg" :errorMsg="errorMsg" 
-                                @update:successMsg="successMsg = $event" @update:errorMsg="errorMsg = $event" />
+                            <!-- Main Title -->
+                            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+                                Create New Profile
+                            </h1>
 
-                            <!-- Personal Info Card -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                                <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
-                                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Basic Information</h2>
-                                </div>
-                                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <Field label="Full Name">
-                                        <input v-model="form.name" type="text" required class="input-pro" placeholder="e.g. Rahim Uddin" />
-                                    </Field>
-                                    <Field label="Phone Number">
-                                        <input v-model="form.phone" type="text" required class="input-pro" placeholder="01XXXXXXXXX" />
-                                    </Field>
-                                    <Field label="Email Address">
-                                        <input v-model="form.email" type="email" required class="input-pro" placeholder="name@example.com" />
-                                    </Field>
-                                    <Field label="Date of Birth">
-                                        <input v-model="form.dob" type="date" class="input-pro" />
-                                    </Field>
-                                    <Field label="Gender">
-                                        <select v-model="form.gender" class="input-pro">
-                                            <option value="" disabled>Select Gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </Field>
-                                    <Field label="Blood Group">
-                                        <select v-model="form.blood_group" class="input-pro">
-                                            <option value="" disabled>Select Blood Group</option>
-                                            <option v-for="bg in ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']" :key="bg">{{bg}}</option>
-                                        </select>
-                                    </Field>
-                                    <Field label="National ID (NID)">
-                                        <input v-model="form.national_id" type="text" required class="input-pro" placeholder="123456789" />
-                                    </Field>
-                                    <Field label="Religion">
-                                        <input v-model="form.religion" type="text" class="input-pro" placeholder="Islam/Hinduism..." />
-                                    </Field>
-                                </div>
-                            </div>
-
-                            <!-- Security Card -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                                <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-800">
-                                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Security Credentials</h2>
-                                </div>
-                                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="space-y-1">
-                                        <label class="text-sm font-medium text-slate-700 dark:text-slate-300">New Password</label>
-                                        <div class="relative">
-                                            <input 
-                                                v-model="form.password" 
-                                                :type="showPassword ? 'text' : 'password'"
-                                                :class="[
-                                                    'w-full px-4 py-2.5 rounded-xl border bg-transparent focus:ring-2 outline-none transition-all dark:text-white',
-                                                    form.password_confirmation && !isMatched ? 'border-red-500 focus:ring-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500'
-                                                ]" 
-                                                required
-                                                placeholder="••••••••"
-                                            />
-                                            <button 
-                                                type="button"
-                                                @click="showPassword = !showPassword"
-                                                class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-indigo-500 transition-colors">
-                                                <i v-if="!showPassword" class="fa-solid fa-eye h-5 w-5"></i>
-                                                <i v-else class="fa-solid fa-eye-slash h-5 w-5"></i>
-                                            </button>
-                                        </div>
-                                        <div class="mt-2 flex flex-wrap gap-2">
-                                            <span :class="form.password.length >= 8 ? 'text-green-500' : 'text-slate-400'" class="text-[11px] flex items-center">
-                                                <span class="mr-1">●</span> 8+ Digits
-                                            </span>
-                                            <span :class="/[A-Za-z]/.test(form.password) ? 'text-green-500' : 'text-slate-400'" class="text-[11px] flex items-center">
-                                                <span class="mr-1">●</span> Character
-                                            </span>
-                                            <span :class="/\d/.test(form.password) ? 'text-green-500' : 'text-slate-400'" class="text-[11px] flex items-center">
-                                                <span class="mr-1">●</span> Number
-                                            </span>
-                                            <span :class="/[!@#$%^&*]/.test(form.password) ? 'text-green-500' : 'text-slate-400'" class="text-[11px] flex items-center">
-                                                <span class="mr-1">●</span> Special Char
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="space-y-1">
-                                        <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Confirm Password</label>
-                                        <div class="relative">
-                                            <input 
-                                                v-model="form.password_confirmation" 
-                                                :type="showPassword ? 'text' : 'password'" 
-                                                :class="[
-                                                    'w-full px-4 py-2.5 rounded-xl border bg-transparent focus:ring-2 outline-none transition-all dark:text-white',
-                                                    form.password_confirmation && !isMatched ? 'border-red-500 focus:ring-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500'
-                                                ]" 
-                                                required
-                                                placeholder="••••••••" 
-                                            />
-                                            <button 
-                                                type="button"
-                                                @click="showPassword = !showPassword"
-                                                class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-indigo-500 transition-colors">
-                                                <i v-if="!showPassword" class="fa-solid fa-eye h-5 w-5"></i>
-                                                <i v-else class="fa-solid fa-eye-slash h-5 w-5"></i>
-                                            </button>
-                                        </div>
-                                        <p v-if="form.password_confirmation && !isMatched" class="text-xs text-red-500 mt-1">
-                                            Passwords do not match.
-                                        </p>
-                                        <p v-if="form.password_confirmation && isMatched" class="text-xs text-green-500 mt-1">
-                                            Passwords matched!
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Placement Card -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                                <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
-                                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Placement & Network</h2>
-                                </div>
-                                <div class="p-6 space-y-6">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <Field label="Referrer Code">
-                                            <div class="relative">
-                                                <input 
-                                                    v-model="form.refer_id" 
-                                                    type="text" required
-                                                    :readonly="referUser?.user_id"
-                                                    class="input-pro font-mono border-dashed" 
-                                                    :class="referUser?.user_id ? 'bg-slate-50 dark:bg-slate-800/50 cursor-not-allowed text-indigo-600 dark:text-indigo-400 font-bold' : 'bg-indigo-50/30 dark:bg-indigo-500/5'"
-                                                    placeholder="DBMBL-XXXX" 
-                                                />
-                                                <div v-if="referUser?.user_id" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                                                    <span class="text-[10px] font-bold text-emerald-500 uppercase">Verified</span>
-                                                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
-                                                </div>
-                                            </div>
-                                            <p v-if="referUser?.name" class="mt-1 text-[11px] text-slate-500">
-                                                Referred by: <span class="font-bold text-slate-700 dark:text-slate-300">{{ referUser.name }}</span>
-                                            </p>
-                                        </Field>
-                                        <Field label="Search Placement User">
-                                            <div class="relative flex items-center">
-                                                <input 
-                                                    type="text" 
-                                                    v-model="search" 
-                                                    required 
-                                                    placeholder="Type User ID to auto-select..." 
-                                                    class="input-pro pl-11 w-full border-indigo-100 dark:border-indigo-900/30" 
-                                                />
-                                            </div>
-                                        </Field>
-                                    </div>
-
-                                    <Field label="Select Parent Node">
-                                        <select v-model="form.root_user_id" required class="input-pro">
-                                            <option disabled value="">-- Choose Placement Parent -- </option>
-                                            <option v-for="u in filteredRootUsers" :key="u.id" :value="u.id">{{ u.name }} ({{ u.user_id }})</option>
-                                        </select>
-                                    </Field>
-
-                                    <Field label="Placement">
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <label :class="[
-                                                'relative flex cursor-pointer flex-col rounded-xl border-2 p-4 transition-all duration-300',
-                                                selectedRootUser?.left_child_id 
-                                                    ? 'bg-slate-50 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800 opacity-50 cursor-not-allowed' 
-                                                    : (placement === 'left' 
-                                                        ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-500/10 ring-2 ring-indigo-500 ring-offset-2 dark:ring-offset-slate-900' 
-                                                        : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-slate-500')
-                                            ]">
-                                                <input type="radio" v-model="placement" value="left" :disabled="selectedRootUser?.left_child_id" class="sr-only" />
-                                                
-                                                <div class="flex items-center justify-between">
-                                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight">A Group</span>
-                                                    <div v-if="placement === 'left' && !selectedRootUser?.left_child_id" class="h-5 w-5 rounded-full bg-indigo-500 flex items-center justify-center shadow-sm">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mt-2 flex items-center gap-1.5">
-                                                    <span :class="['h-2 w-2 rounded-full', selectedRootUser?.left_child_id ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse']"></span>
-                                                    <span class="text-[10px] font-semibold uppercase tracking-wide" :class="selectedRootUser?.left_child_id ? 'text-rose-500' : 'text-emerald-500'">
-                                                        {{ selectedRootUser?.left_child_id ? 'Occupied' : 'Available' }}
-                                                    </span>
-                                                </div>
-                                            </label>
-
-                                            <label :class="[
-                                                'relative flex cursor-pointer flex-col rounded-xl border-2 p-4 transition-all duration-300',
-                                                selectedRootUser?.right_child_id 
-                                                    ? 'bg-slate-50 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800 opacity-50 cursor-not-allowed' 
-                                                    : (placement === 'right' 
-                                                        ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-500/10 ring-2 ring-indigo-500 ring-offset-2 dark:ring-offset-slate-900' 
-                                                        : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-slate-500')
-                                            ]">
-                                                <input type="radio" v-model="placement" value="right" :disabled="selectedRootUser?.right_child_id" class="sr-only" />
-                                                
-                                                <div class="flex items-center justify-between">
-                                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight">B Group</span>
-                                                    <div v-if="placement === 'right' && !selectedRootUser?.right_child_id" class="h-5 w-5 rounded-full bg-indigo-500 flex items-center justify-center shadow-sm">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mt-2 flex items-center gap-1.5">
-                                                    <span :class="['h-2 w-2 rounded-full', selectedRootUser?.right_child_id ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse']"></span>
-                                                    <span class="text-[10px] font-semibold uppercase tracking-wide" :class="selectedRootUser?.right_child_id ? 'text-rose-500' : 'text-emerald-500'">
-                                                        {{ selectedRootUser?.right_child_id ? 'Occupied' : 'Available' }}
-                                                    </span>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </Field>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Column: Avatar & Summary (4 Columns) -->
-                        <div class="lg:col-span-4 space-y-6">
-                            
-                            <!-- Avatar Card -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 text-center">
-                                <div class="relative inline-block group">
-                                    <img :src="photoPreview || photoUrl" class="h-32 w-32 rounded-3xl object-cover ring-4 ring-slate-50 dark:ring-slate-800 shadow-xl mx-auto" />
-                                    <label class="absolute inset-0 flex items-center justify-center bg-black/40 text-white rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                        <i class="fa-solid fa-camera text-2xl"></i>
-                                        <input type="file" @change="onPhotoChange" class="hidden" accept="image/*" />
-                                    </label>
-                                </div>
-                                <h3 class="mt-4 font-bold text-slate-800 dark:text-white">Profile Picture</h3>
-                                <p class="text-xs text-slate-500 mt-1">Click to upload JPG, PNG</p>
-                            </div>
-
-                            <!-- Product Card -->
-                            <div class="bg-indigo-900 rounded-3xl p-6 dark:text-white text-black shadow-xl">
-                                <div class="flex items-center gap-3 mb-6">
-                                    <div class="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center">
-                                        <i class="fa-solid fa-box-open text-indigo-300"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">Select Package</p>
-                                        <h3 class="font-bold">Subscription Product</h3>
-                                    </div>
-                                </div>
-                                <select v-model="form.product_id" class="input">
-                                    <option value="" disabled selected>-- Select Product --</option>
-                                    <option v-for="product in products" :key="product.id" :value="product.id">
-                                        {{ product.id }} - {{ product.name }} - ৳{{ product.price }} - {{ product.point }}
-                                    </option>
-                                </select>
-                                
-                                <div v-if="form.product_id" class="space-y-2 pt-4 border-t border-white/10">
-                                    <div class="flex justify-between text-sm">
-                                        <span class="text-indigo-200">Price</span>
-                                        <span class="font-bold text-xl">৳{{ products.find(p => p.id == form.product_id)?.price }}</span>
-                                    </div>
-                                    <div class="flex justify-between text-sm">
-                                        <span class="text-indigo-200">Points</span>
-                                        <span class="font-medium">{{ products.find(p => p.id == form.product_id)?.point }} PV</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Address Card -->
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 space-y-4">
-                                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4">Address Information</h3>
-                                <Field label="Present Address">
-                                    <textarea v-model="form.present_address" rows="2" class="input-pro text-sm" placeholder="Full address..."></textarea>
-                                </Field>
-                                <Field label="Permanent Address">
-                                    <textarea v-model="form.permanent_address" rows="2" class="input-pro text-sm" placeholder="Full address..."></textarea>
-                                </Field>
-                            </div>
-
+                            <!-- Subtitle / Meta -->
+                            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                                Register a new member and assign network placement.
+                            </p>
                         </div>
                     </div>
-                </main>
+
+                    <!-- Right Section: Header Actions -->
+                    <div class="flex items-center gap-3 self-end md:self-center shrink-0">
+                        <!-- Cancel / Reset Button -->
+                        <button 
+                            type="button" 
+                            @click="$router.back()"
+                            class="px-4 py-2.5 text-xs font-medium  text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border dark:border-slate-700">
+                            Cancel
+                        </button>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+        
+                <!-- Left Column: Form Fields (8 Columns) -->
+                <div class="lg:col-span-8 space-y-6">
+
+                    <!-- Basic Information Card -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-800/30">
+                            <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-regular fa-id-card text-emerald-600 dark:text-emerald-400"></i>
+                                Basic Information
+                            </h2>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Full Name -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Full Name</label>
+                                <input v-model="form.name" type="text" required class="input-pro" placeholder="e.g. Rahim Uddin" />
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Phone Number</label>
+                                <input v-model="form.phone" type="text" required class="input-pro" placeholder="01XXXXXXXXX" />
+                            </div>
+
+                            <!-- Email Address -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Email Address</label>
+                                <input v-model="form.email" type="email" required class="input-pro" placeholder="name@example.com" />
+                            </div>
+
+                            <!-- Date of Birth -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Date of Birth</label>
+                                <input v-model="form.dob" type="date" class="input-pro" />
+                            </div>
+
+                            <!-- Gender -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Gender</label>
+                                <select v-model="form.gender" class="w-full px-4 py-3 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer">
+                                    <option value="" disabled>-- Select Gender --</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+
+                            <!-- Blood Group -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Blood Group</label>
+                                <select v-model="form.blood_group" class="w-full px-4 py-3 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer">
+                                    <option value="" disabled>-- Select Blood Group --</option>
+                                    <option v-for="bg in ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']" :key="bg">{{bg}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Credentials Card -->
+                    <div class="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 overflow-hidden shadow-sm">
+                        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-800/30">
+                            <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-emerald-600 dark:text-emerald-400"></i>
+                                Security Credentials
+                            </h2>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Password Field -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">New Password</label>
+                                <div class="relative">
+                                    <input 
+                                        v-model="form.password" 
+                                        :type="showPassword ? 'text' : 'password'"
+                                        :class="[
+                                            'w-full px-4 py-2.5 rounded-xl border bg-slate-50/50 dark:bg-slate-900/50 text-sm outline-none transition-all dark:text-white',
+                                            form.password_confirmation && !isMatched ? 'border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700/80 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:focus:border-orange-500 dark:focus:ring-orange-500/20'
+                                        ]" 
+                                        required
+                                        placeholder="••••••••"
+                                    />
+                                    <button 
+                                        type="button"
+                                        @click="showPassword = !showPassword"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-emerald-600 transition-colors">
+                                        <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="text-xs"></i>
+                                    </button>
+                                </div>
+                                <div class="pt-2 flex flex-wrap gap-x-3 gap-y-1">
+                                    <span :class="form.password.length >= 8 ? 'text-emerald-500' : 'text-slate-400'" class="text-[11px] font-medium flex items-center gap-1">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> 8+ Digits
+                                    </span>
+                                    <span :class="/[A-Za-z]/.test(form.password) ? 'text-emerald-500' : 'text-slate-400'" class="text-[11px] font-medium flex items-center gap-1">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Letters
+                                    </span>
+                                    <span :class="/\d/.test(form.password) ? 'text-emerald-500' : 'text-slate-400'" class="text-[11px] font-medium flex items-center gap-1">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Numbers
+                                    </span>
+                                    <span :class="/[!@#$%^&*]/.test(form.password) ? 'text-emerald-500' : 'text-slate-400'" class="text-[11px] font-medium flex items-center gap-1">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Special
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password Field -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Confirm Password</label>
+                                <div class="relative">
+                                    <input 
+                                        v-model="form.password_confirmation" 
+                                        :type="showPassword ? 'text' : 'password'" 
+                                        :class="[
+                                            'w-full px-4 py-2.5 rounded-xl border bg-slate-50/50 dark:bg-slate-900/50 text-sm outline-none transition-all dark:text-white',
+                                            form.password_confirmation && !isMatched ? 'border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700/80 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:focus:border-orange-500 dark:focus:ring-orange-500/20'
+                                        ]" 
+                                        required
+                                        placeholder="••••••••" 
+                                    />
+                                    <button 
+                                        type="button"
+                                        @click="showPassword = !showPassword"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-emerald-600 transition-colors">
+                                        <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="text-xs"></i>
+                                    </button>
+                                </div>
+                                <p v-if="form.password_confirmation && !isMatched" class="text-xs text-red-500 font-medium pt-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Passwords do not match.
+                                </p>
+                                <p v-if="form.password_confirmation && isMatched" class="text-xs text-emerald-500 font-medium pt-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> Passwords matched!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Avatar & Address (4 Columns) -->
+                <div class="lg:col-span-4 space-y-6">
+    
+                    <!-- Avatar Upload Card -->
+                    <div class="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-6 text-center shadow-sm">
+                        <div class="relative inline-block group">
+                            <img :src="photoPreview || photoUrl || 'https://via.placeholder.com/150'" class="h-28 w-28 rounded-full object-cover ring-4 ring-slate-100 dark:ring-slate-800 shadow-md mx-auto transition-transform duration-300 group-hover:scale-105" />
+                            <label class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-[2px]">
+                                <i class="fa-solid fa-camera text-xl mb-1"></i>
+                                <span class="text-[10px] font-bold uppercase tracking-wider">Change</span>
+                                <input type="file" @change="onPhotoChange" class="hidden" accept="image/*" />
+                            </label>
+                        </div>
+                        <h3 class="mt-4 font-bold text-sm text-slate-800 dark:text-slate-100">Profile Picture</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">JPG, PNG or WEBP (Max 2MB)</p>
+                    </div>
+
+                    <!-- Address Card -->
+                    <div class="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-6 space-y-4 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/80 pb-3">
+                            <i class="fa-solid fa-location-dot text-emerald-600 dark:text-emerald-400"></i>
+                            Address Information
+                        </h3>
+                        
+                        <!-- Present Address -->
+                        <div>
+                            <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Present Address</label>
+                            <textarea v-model="form.present_address" rows="2" class="input-pro text-sm resize-none" placeholder="House, Road, Area..."></textarea>
+                        </div>
+
+                        <!-- Permanent Address -->
+                        <div>
+                            <label class="mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200">Permanent Address</label>
+                            <textarea v-model="form.permanent_address" rows="2" class="input-pro text-sm resize-none" placeholder="House, Road, Area..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div>
+                        <button @click="CreateUser()" :disabled="loading" 
+                            class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 dark:bg-orange-500 hover:dark:bg-orange-700 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 shadow-md shadow-emerald-600/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i v-if="loading" class="fa-solid fa-circle-notch animate-spin text-xs"></i>
+                            <i v-else class="fa-solid fa-cloud-arrow-up text-xs"></i>
+                            <span>{{ loading ? "Processing..." : "Create Profile" }}</span>
+                        </button>
+                    </div>
+
+                </div>
             </div>
+
+            <!-- Divider -->
+            <div class="relative flex items-center gap-4 py-2">
+                <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
+                <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Or connect with</span>
+                <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
+            </div>
+
+            <!-- Social Logins (Perfectly adapt to both dark/light backgrounds) -->
+            <div class="grid grid-cols-3 gap-3">
+                <button v-for="social in ['google', 'github', 'facebook']" :key="social" type="button" @click="handleSocialLogin(social)"
+                    class="h-11 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 hover:border-[#16A34A] hover:bg-white dark:hover:bg-gray-800 transition-all flex items-center justify-center group">
+                    <i :class="`fa-brands fa-${social} text-gray-400 dark:text-gray-500 group-hover:text-[#1F2937] dark:group-hover:text-white transition-colors`"></i>
+                </button>
+            </div>
+
         </div>
     </div>
 </template>
@@ -347,13 +287,6 @@ const successMsg = ref('');
 const errorMsg = ref('');
 const loading = ref(false);
 
-
-const Field = (props, { slots }) =>
-    h("div", { class: props.class || "" }, [
-        h("label", { class: "mb-2 block text-xs font-semibold text-slate-600 dark:text-slate-200" }, props.label),
-        slots.default?.(),
-    ]);
-
 const photoFile = ref(null);
 const photoPreview = ref("");
 
@@ -366,182 +299,11 @@ function onPhotoChange(e) {
 }
 
 const photoUrl = computed(() => {
-    const p = users.value?.photo;
-    if (!p) return "/images/avatar.png";
-    return makeImg(p);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-const referUser = ref(null);
-async function fetchRefer(){
-    try
-    {
-        loading.value = true;
-        errorMsg.value = "";
-
-        const referCode = route.params.refer_code;
-
-        if (!referCode) {
-            return;
-        }
-
-        const res = await api.get(`/register/get-refer/${referCode}`);
-        referUser.value = res.data.data;
-        // console.log(referUser.value);
-    } catch (error) {
-        console.error("Failed to fetch refer user:", error);
-        errorMsg.value =
-            error?.res?.data?.message ||
-            "Unable to fetch referral information.";
-
-    } finally {
-        loading.value = false;
+    if (photoPreview.value) {
+        return photoPreview.value;
     }
-}
 
-// referUser আপডেট হলে অটোমেটিক ফর্মে refer_id সেট হবে
-watch(() => referUser.value, (newUser) => {
-    if (newUser && newUser.user_id) {
-        form.value.refer_id = newUser.user_id;
-    }
-}, { immediate: true });
-
-
-
-
-
-
-
-
-
-
-
-const users = ref([]);
-const loadingUsers = ref(false);
-// fetch all admin and customer
-async function fetchedUsers() {
-    loadingUsers.value = true;
-    try {
-        const res = await api.get('/register/root-users');
-        if (res.data?.success) {
-            users.value = res.data.data;
-        }
-    } catch (err) {
-        console.error(err);
-    } finally {
-        loadingUsers.value = false;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const search = ref("");
-const filteredRootUsers = computed(() => {
-    if (!users.value || !users.value.length) return [];
-
-    const term = search.value.toLowerCase();
-
-    return users.value.filter(user => {
-        if (!term) return true;
-
-        return (
-            user.name?.toLowerCase().includes(term) ||
-            user.email?.toLowerCase().includes(term) ||
-            user.user_id?.toLowerCase().includes(term) ||
-            String(user.id).includes(term)
-        );
-  });
-});
-
-// সার্চ ভ্যালু ওয়াচ করে অটোমেটিক ইউজার সিলেক্ট করা
-watch(search, (newVal) => {
-    if (!newVal) return;
-
-    const term = newVal.trim().toLowerCase();
-    
-    // চেক করা হচ্ছে কোনো ইউজারের user_id বা email এর সাথে হুবহু মিলে যায় কি না
-    const exactMatch = users.value.find(user => 
-        user.user_id?.toLowerCase() === term || 
-        user.email?.toLowerCase() === term
-    );
-
-    if (exactMatch) {
-        // যদি মিলে যায়, তবে root_user_id আপডেট হবে
-        form.value.root_user_id = exactMatch.id;
-    }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const selectedRootUser = computed(() => {
-    return users.value.find(u => u.id == form.value.root_user_id) || null;
-});
-
-
-
-// Set placement
-const placement = ref(null);
-
-watch(() => selectedRootUser.value, (newUser) => {
-    if (newUser) {
-        if (!newUser.left_child_id && newUser.right_child_id) {
-            placement.value = 'left';
-        } else if (newUser.left_child_id && !newUser.right_child_id) {
-            placement.value = 'right';
-        } else if (!newUser.left_child_id && !newUser.right_child_id) {
-            placement.value = 'left'; 
-        } else {
-            placement.value = null;
-        }
-    } else {
-        placement.value = null;
-    }
-}, { immediate: true });
-
-watch(placement, (val) => {
-    form.value.position = val;
+    return "/images/avatar.png";
 });
 
 
@@ -571,22 +333,16 @@ const form = ref({
     blood_group: "",
     present_address: "",
     permanent_address: "",
-    national_id: "",
-    religion: "",
-    refer_id: "",
-    root_user_id: "",
-    position: '',
     password: '',
     password_confirmation: '',
-    product_id: '',
 });
 
 const showPassword = ref(false);
 
-// Password Validation Logic (form.value use koro jodi ref hoy)
+
 const passwordErrors = computed(() => {
     const errors = [];
-    const p = form.value.password; // ref hole .value lagbe
+    const p = form.value.password;
     
     if (p.length < 8) errors.push("At least 8 characters long.");
     if (!/[A-Z]/.test(p) && !/[a-z]/.test(p)) errors.push("Include letters.");
@@ -623,7 +379,7 @@ async function CreateUser() {
         
         // fetch users
         emit('userCreated');
-        fetchedUsers();
+
         Object.keys(form.value).forEach(key => form.value[key] = "");
         photoPreview.value = null;
     } catch(err) {
@@ -644,46 +400,12 @@ async function CreateUser() {
 
 
 
-
-
-
-
-
-
-const products = ref([]);
-// fetch all admin and customer
-async function fetchProducts() {
-    loading.value = true;
-    errorMsg.value = '';
-    try {
-        const res = await api.get('/register/products');
-        if (res.data?.success) {
-            products.value = res.data.data;
-            // console.log(products.value);
-        } else {
-            errorMsg.value = res.data?.message || "Failed to fetch products";
-        }
-    } catch (err) {
-        console.error(err);
-        errorMsg.value = err.response?.data?.message || err.message || "Something went wrong";
-    } finally {
-        loading.value = false;
-    }
-}
-
-
-
-
-
-
-
-
-
+const handleSocialLogin = (provider) => {
+    console.log(`Initializing ${provider} auth...`);
+};
 
 onMounted(() => {
-    fetchRefer();
-    fetchedUsers();
-    fetchProducts();
+    //
 });
 </script>
 
@@ -693,14 +415,8 @@ onMounted(() => {
         focus:outline-none focus:ring-2 focus:ring-indigo-500
         dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100;
 }
-.inputDisabled{
-    @apply w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600
-        dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300;
-}
 
 .input-pro {
-    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400
-        focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-        dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 transition-all duration-200;
+    @apply w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white text-sm outline-none transition-all duration-200 focus:ring-2 focus:ring-emerald-500/20 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500 dark:focus:border-orange-500 dark:focus:ring-orange-500/20;
 }
 </style>
