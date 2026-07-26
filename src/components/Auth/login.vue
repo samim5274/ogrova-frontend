@@ -198,8 +198,9 @@ const handleLogin = async () => {
     }
 };
 
+const API_URL = import.meta.env.VITE_STORAGE_URL;
 const handleSocialLogin = (provider) => {
-    console.log(`Initializing ${provider} auth...`);
+    window.location.href = `${API_URL}/auth/${provider}/redirect`;
 };
 </script>
 
