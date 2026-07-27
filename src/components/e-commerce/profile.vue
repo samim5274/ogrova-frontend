@@ -283,7 +283,7 @@
                                         </Field>
 
                                         <Field label="Email address">
-                                            <input :value="user?.email || ''" disabled class="inputDisabled" />
+                                            <input v-model="form.email" class="input" placeholder="Email" required />
                                         </Field>
 
                                         <Field label="Date of birth">
@@ -410,6 +410,7 @@ const mobileMenu = ref(false);
 const user = ref(null);
 const form = ref({
     name: "",
+    email: "",
     phone: "",
     dob: "",
     gender: "",
@@ -437,6 +438,7 @@ const photoUrl = computed(() => {
 const profileCompletion = computed(() => {
     const fields = [
         user.value?.name,
+        user.value?.email,
         user.value?.phone,
         user.value?.dob,
         user.value?.gender,
@@ -529,6 +531,7 @@ async function refreshProfile() {
         const rawGender = user.value?.gender;
 
         form.value.name = user.value?.name ?? "";
+        form.value.email = user.value?.email ?? "";
         form.value.phone = user.value?.phone ?? "";
         form.value.dob = rawDob ? String(rawDob).slice(0, 10) : "";
         form.value.gender = rawGender ? String(rawGender).toLowerCase().trim() : "";
@@ -562,6 +565,7 @@ async function updateProfile() {
 
         if (user.value) {
             form.value.name = user.value.name ?? "";
+            form.value.email = user.value.email ?? "";
             form.value.phone = user.value.phone ?? "";
         }
 
