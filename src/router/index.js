@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Auth Routes
 const Login = () => import('../components/Auth/login.vue');
 const Register = () => import('../components/Auth/register.vue');
+const SocialLogin = () => import('../components/Auth/SocialCallback.vue');
 const FindAccount = () => import('../components/Auth/find-account.vue');
 const otpVerification = () => import('../components/Auth/otp-verification.vue');
 const resetPassword = () => import('../components/Auth/reset-password.vue');
@@ -153,6 +154,8 @@ const routes = [
   { path: '/otp-verification', component: otpVerification, meta: {title: "OTP Verification", requiresEmail: true} },
   { path: '/reset-password', component: resetPassword, meta: {title: "Reset Password", requiresEmail: true} },
   { path: '/unauthorized', component: Unauthorized, meta: {title: "Unauthorized"} },
+
+  { path: "/auth/social", component: SocialLogin, meta: { title: "Social Login" }},
 
   { path: '/public-tree-user', component: treeUser, meta: {title: "Tree User", requiresAuth: true}},
 
