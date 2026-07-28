@@ -15,6 +15,24 @@
 
                 <featureProduct :products="categoryProducts"/>
 
+                <div class="flex items-center justify-between mb-8 px-2">
+                    <div class="flex items-center gap-3">
+                        <div class="h-8 w-1.5 bg-emerald-600 dark:bg-orange-500 rounded-full"></div>
+                        <div>
+                        <h2 class="text-xl md:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                            Category <span class="text-emerald-600 dark:text-orange-500">Products</span>
+                        </h2>
+                        <p class="text-[11px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                            Handpicked collections for you
+                        </p>
+                        </div>
+                    </div>
+
+                    <!-- <button class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
+                        View All <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button> -->
+                </div>
+
                 <div class="w-full mb-8">
                     <div class="flex items-center gap-3 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x">
                         
