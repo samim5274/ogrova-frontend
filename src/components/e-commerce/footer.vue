@@ -34,7 +34,7 @@
                 
                 <!-- Logo & Text -->
                 <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-                    <a href="https://mercuviax.com" target="_blank" class="flex items-center gap-3 group">
+                    <router-link to="/" target="_blank" class="flex items-center gap-3 group">
                         <div class="h-10 w-10 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
                             <img src="/logo/logo.png" alt="Logo" class="w-8 h-8 object-contain dark:hidden" />
                             <img src="/logo/white-logo.png" alt="Logo" class="hidden dark:block w-8 h-8 object-contain" />
@@ -42,7 +42,7 @@
                         <span class="text-base font-black tracking-tight text-slate-900 dark:text-white uppercase">
                             Ogro<span class="text-orange-500">v</span><span class="text-emerald-600">a</span> Business.
                         </span>
-                    </a>
+                    </router-link>
                 </div>
 
                 <!-- Status Badge & Social Networks -->
@@ -72,7 +72,7 @@
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-4 flex-wrap text-center md:text-left">
                     <p>© {{ new Date().getFullYear() }} <a href="https://mercuviax.com" target="_blank" class="hover:text-emerald-600 dark:hover:text-orange-400 font-bold transition-colors">Ogrova</a>. All Rights Reserved.</p>
                     <div class="hidden sm:block h-3.5 w-px bg-slate-200 dark:bg-slate-800"></div>
-                    <p>Powered By: <a href="https://mercuviax.com" target="_blank" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors font-bold italic">Mercuviax Business</a>.</p>
+                    <p>Powered By: <a href="https://mercuviax.com" target="_blank" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors font-bold italic">Mercuviax Software</a>.</p>
                 </div>
 
                 <!-- Payment Partners Premium Mock Icons -->

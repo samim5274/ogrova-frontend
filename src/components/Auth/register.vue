@@ -270,6 +270,13 @@
             </div>
 
         </div>
+
+        <footer class="mt-8 pt-4 border-t border-gray-100 dark:border-white/5 flex justify-between text-[11px] text-gray-400 dark:text-gray-500">
+            <router-link to="/privacy-policy" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Privacy Policy</router-link>
+            <router-link to="/return-policy" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Return Policy</router-link>
+            <router-link to="terms-and-conditions" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Terms & Conditions</router-link>
+            <router-link to="/cookies-settings" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Cookies Settings</router-link>
+        </footer>
     </div>
 </template>
 

@@ -48,6 +48,15 @@ const CategoryProducts = () => import('../components/e-commerce/category-product
 const SearchProducts = () => import('../components/e-commerce/searchProducts.vue');
 const CustomerSetting = () => import('../components/e-commerce/setting/setting.vue');
 
+// Policy
+const PrivacyAndPolicy = () => import('../components/e-commerce/policy/PrivacyPolicy.vue');
+const TramsAndCondition = () => import('../components/e-commerce/policy/TermsAndConditions.vue');
+const ReturnPolicy = () => import('../components/e-commerce/policy/ReturnPolicy.vue');
+const CookiesSetting = () => import('../components/e-commerce/policy/cookie-setting.vue');
+// Information
+const AboutUs = () => import('../components/e-commerce/information/about-us.vue');
+const ContactUs = () => import('../components/e-commerce/information/contact-us.vue');
+const CompanyInfo = () => import('../components/e-commerce/information/company-information.vue');
 
 
 
@@ -145,17 +154,27 @@ const routes = [
   { path: '/profile', component: UserProfile, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Profile"}},
   { path: '/setting', component: CustomerSetting, meta: { requiresAuth: true, roles: ['customer', 'admin', 'super_admin'], title: "Manage Account"}},
 
+  // policy routes
+  { path: '/privacy-policy', component: PrivacyAndPolicy, meta: { title: "Privacy and Policy"} },
+  { path: '/terms-and-conditions', component: TramsAndCondition, meta: { title: "Terms & Conditions"} },
+  { path: '/return-policy', component: ReturnPolicy, meta: { title: "Return Policy"} },
+  { path: '/cookies-settings', component: CookiesSetting, meta: { title: "Cookies Settings"} },
+  // information
+  { path: '/about-us', component: AboutUs, meta: { title: "About us - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/contact-us', component: ContactUs, meta: { title: "Contact us - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/company-information', component: CompanyInfo, meta: { title: "Company information - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  
 
 
   // Auth Routes
-  { path: '/login', component: Login, meta: {title: "Login"} },
-  { path: '/register/:refer_code?', component: Register, meta: {title: "Register"} },
-  { path: '/forget-password', component: FindAccount, meta: {title: "Forget Password"} },
-  { path: '/otp-verification', component: otpVerification, meta: {title: "OTP Verification", requiresEmail: true} },
-  { path: '/reset-password', component: resetPassword, meta: {title: "Reset Password", requiresEmail: true} },
-  { path: '/unauthorized', component: Unauthorized, meta: {title: "Unauthorized"} },
+  { path: '/login', component: Login, meta: {title: "Login - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/register/:refer_code?', component: Register, meta: {title: "Register - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/forget-password', component: FindAccount, meta: {title: "Forget Password - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/otp-verification', component: otpVerification, meta: {title: "OTP Verification - OGROVA | Bangladesh's Smart Online Marketplace", requiresEmail: true} },
+  { path: '/reset-password', component: resetPassword, meta: {title: "Reset Password - OGROVA | Bangladesh's Smart Online Marketplace", requiresEmail: true} },
+  { path: '/unauthorized', component: Unauthorized, meta: {title: "Unauthorized - OGROVA | Bangladesh's Smart Online Marketplace"} },
 
-  { path: "/auth/social", component: SocialLogin, meta: { title: "Social Login" }},
+  { path: "/auth/social", component: SocialLogin, meta: { title: "Social Login - OGROVA | Bangladesh's Smart Online Marketplace" }},
 
   { path: '/public-tree-user', component: treeUser, meta: {title: "Tree User", requiresAuth: true}},
 

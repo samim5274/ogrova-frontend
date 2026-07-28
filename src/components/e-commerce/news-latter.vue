@@ -168,11 +168,11 @@
                 <div class="lg:col-span-2">
                     <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Information</h4>
                     <ul class="space-y-2.5 text-sm font-medium">
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">About Us</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Contact Us</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Company Information</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Privacy Policy</a></li>
+                        <li><router-link to="/about-us" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">About Us</router-link></li>
+                        <li><router-link to="/contact-us" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Contact Us</router-link></li>
+                        <li><router-link to="/company-information" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Company Information</router-link></li>
+                        <li><router-link to="terms-and-conditions" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</router-link></li>
+                        <li><router-link to="/privacy-policy" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Privacy Policy</router-link></li>
                     </ul>
                 </div>
 
@@ -205,10 +205,8 @@
                     <div>
                         <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Consumer Policy</h4>
                         <ul class="space-y-2.5 text-sm font-medium">
-                            <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Happy Return</a></li>
-                            <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Refund Policy</a></li>
-                            <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Exchange Policy</a></li>
-                            <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Cancellation</a></li>
+                            <li><router-link to="/return-policy" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Return & Refund</router-link></li>
+                            <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Cancellation</router-link></li>
                         </ul>
                     </div>
                     
