@@ -153,7 +153,7 @@ const getRoleRedirect = (role) => {
     const configs = {
         'super_admin':  { path: "/super-admin/dashboard", name: "Super Admin" },
         'admin':        { path: "/admin/dashboard",       name: "Admin" },
-        'customer':     { path: "/",             name: "Customer" },
+        'customer':     { path: "/",                      name: "Customer" },
     };
     return configs[role] || { path: "/", name: "User" };
 };
