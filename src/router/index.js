@@ -57,7 +57,14 @@ const CookiesSetting = () => import('../components/e-commerce/policy/cookie-sett
 const AboutUs = () => import('../components/e-commerce/information/about-us.vue');
 const ContactUs = () => import('../components/e-commerce/information/contact-us.vue');
 const CompanyInfo = () => import('../components/e-commerce/information/company-information.vue');
-
+const SupportCenter = () => import('../components/e-commerce/information/support-center.vue');
+const HowToOrder = () => import('../components/e-commerce/information/how-to-order.vue');
+const TrackingOrder = () => import('../components/e-commerce/information/tracking-order.vue');
+const PaymentMathods = () => import('../components/e-commerce/information/payment-mathod.vue');
+const ShippingInfo = () => import('../components/e-commerce/information/shipping-info.vue');
+const FAQComponent = () => import('../components/e-commerce/information/faq.vue');
+const Cancilation = () => import('../components/e-commerce/information/cancilation.vue');
+const ExchangePolicy = () => import('../components/e-commerce/information/exchange-policy.vue');
 
 
 
@@ -160,9 +167,17 @@ const routes = [
   { path: '/return-policy', component: ReturnPolicy, meta: { title: "Return Policy"} },
   { path: '/cookies-settings', component: CookiesSetting, meta: { title: "Cookies Settings"} },
   // information
-  { path: '/about-us', component: AboutUs, meta: { title: "About us - OGROVA | Bangladesh's Smart Online Marketplace"} },
-  { path: '/contact-us', component: ContactUs, meta: { title: "Contact us - OGROVA | Bangladesh's Smart Online Marketplace"} },
-  { path: '/company-information', component: CompanyInfo, meta: { title: "Company information - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/about-us', component: AboutUs, meta: { title: "About Us - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/contact-us', component: ContactUs, meta: { title: "Contact Us - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/company-information', component: CompanyInfo, meta: { title: "Company Information - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/support-center', component: SupportCenter, meta: { title: "Support Center - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/how-to-order', component: HowToOrder, meta: { title: "How to order? - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/tracking-order', component: TrackingOrder, meta: { title: "Tracking Order - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/payment-mathods', component: PaymentMathods, meta: { title: "Payments Mathods - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/shipping-information', component: ShippingInfo, meta: { title: "Shipping Inforamtion - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/faq', component: FAQComponent, meta: { title: "FAQ - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/cancilation', component: Cancilation, meta: { title: "Cancilation - OGROVA | Bangladesh's Smart Online Marketplace"} },
+  { path: '/exchange-policy', component: ExchangePolicy, meta: { title: "Exchange Policy - OGROVA | Bangladesh's Smart Online Marketplace"} },
   
 
 

@@ -147,7 +147,7 @@
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-phone text-sm text-emerald-600 dark:text-orange-500 w-4 text-center"></i>
                             <a href="tel:+8801533021557" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
-                                +8801533021557
+                                +880 1533-021557
                             </a>
                         </li>
                         <li class="flex items-center gap-3">
@@ -158,9 +158,10 @@
 
                     <!-- Socials -->
                     <div class="flex items-center gap-3 pt-1">
-                        <a href="#" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
-                        <a href="#" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-x-twitter text-xs"></i></a>
-                        <a href="#" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                        <a href="https://www.facebook.com/ogrova2026" target="_blank" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <!-- <a href="#" target="_blank" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-x-twitter text-xs"></i></a> -->
+                        <a href="https://www.instagram.com/ogrova2026/" target="_blank" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                        <a href="https://www.linkedin.com/company/143007240" target="_blank" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-linkedin text-xs"></i></a>
                     </div>
                 </div>
 
@@ -180,7 +181,7 @@
                 <div class="lg:col-span-2">
                     <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Shop By</h4>
                     <ul class="space-y-2.5 text-sm font-medium">
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Groceries & Fresh</a></li>
+                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Groceries & Fresh</router-link></li>
                         <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Premium Electronics</a></li>
                         <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Fashion & Apparel</a></li>
                         <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Nuts & Seeds</a></li>
@@ -191,12 +192,12 @@
                 <div class="lg:col-span-2">
                     <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Support</h4>
                     <ul class="space-y-2.5 text-sm font-medium">
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Support Center</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">How to Order</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Track Your Order</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Payment Methods</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Shipping Info</a></li>
-                        <li><a href="#" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">FAQ</a></li>
+                        <li><router-link to="/support-center" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Support Center</router-link></li>
+                        <li><router-link to="/how-to-order" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">How to Order</router-link></li>
+                        <li><router-link to="/tracking-order" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Track Your Order</router-link></li>
+                        <li><router-link to="/payment-mathods" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Payment Methods</router-link></li>
+                        <li><router-link to="/shipping-information" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Shipping Info</router-link></li>
+                        <li><router-link to="/faq" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">FAQ</router-link></li>
                     </ul>
                 </div>
 
@@ -206,7 +207,8 @@
                         <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Consumer Policy</h4>
                         <ul class="space-y-2.5 text-sm font-medium">
                             <li><router-link to="/return-policy" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Return & Refund</router-link></li>
-                            <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Cancellation</router-link></li>
+                            <li><router-link to="/cancilation" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Cancellation</router-link></li>
+                            <li><router-link to="/exchange-policy" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Exchange</router-link></li>
                         </ul>
                     </div>
                     
