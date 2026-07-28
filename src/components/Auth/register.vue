@@ -274,7 +274,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, h, watch, reactive } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import api, { makeImg } from "../../services/api.js";
 
@@ -405,7 +405,9 @@ const handleSocialLogin = (provider) => {
 };
 
 onMounted(() => {
-    //
+    if (route.query.error) {
+        errorMsg.value = decodeURIComponent(route.query.error);
+    }
 });
 </script>
 

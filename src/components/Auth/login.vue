@@ -126,12 +126,13 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import api from '../../services/api.js';
 import Message from '../Message/message.vue';
 
 const router = useRouter();
+const route = useRoute();
 const features = ['Enterprise-grade security', 'Cloud-based dashboard', 'Real-time analytics'];
 
 // States
@@ -202,6 +203,12 @@ const API_URL = import.meta.env.VITE_STORAGE_URL;
 const handleSocialLogin = (provider) => {
     window.location.href = `${API_URL}/auth/${provider}/redirect`;
 };
+
+onMounted(() => {
+    if (route.query.error) {
+        errorMsg.value = decodeURIComponent(route.query.error);
+    }
+});
 </script>
 
 <style scoped>
