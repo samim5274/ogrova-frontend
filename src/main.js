@@ -1,30 +1,34 @@
 import { createApp } from 'vue'
-
-import App from './App.vue'
-import router from './router'
 import { createPinia } from 'pinia'
 import { createHead } from '@vueuse/head'
 
+import App from './App.vue'
+import router from './router'
+
+
 import './style.css';
+
+// Icons
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import "leaflet/dist/leaflet.css";
+// import "leaflet/dist/leaflet.css"; // it's use only for map
 
-// theme
-const saved = localStorage.getItem("theme");
+// -----------------------------
+// Theme Initialization
+// -----------------------------
+const savedTheme = localStorage.getItem("theme");
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-const dark = saved ? saved === "dark" : systemDark;
+const isDark = savedTheme ? savedTheme === "dark" : systemDark;
 
-const head = createHead();
+document.documentElement.classList.toggle("dark", isDark);
 
-document.documentElement.classList.toggle("dark", dark);
-
-// app
+// -----------------------------
+// Vue App
+// -----------------------------
 const app = createApp(App)
-const pinia = createPinia()
 
 app.use(router)
-app.use(pinia)
-app.use(head)
+app.use(createPinia());
+app.use(createHead());
 
 app.mount('#app')

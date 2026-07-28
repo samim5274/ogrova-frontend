@@ -17,6 +17,9 @@
             <img 
               :src="slide.image" 
               :alt="slide.title" 
+              :loading="index === 0 ? 'eager' : 'lazy'"
+              :fetchpriority="index === 0 ? 'high' : 'auto'"
+              decoding="async"
               class="w-full h-full object-center select-none transform scale-100 transition-transform duration-[2000ms] group-hover/slide:scale-105">
             
             <!-- Cinematic Overlay Content -->
