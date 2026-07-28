@@ -23,44 +23,45 @@
                     </router-link>
                 </div>
 
-            <div class="flex items-center gap-1.5 sm:gap-2 lg:hidden">
-                
-                <!-- Cart Button -->
-                <button @click="goToCart()" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-emerald-500 hover:text-white dark:bg-white/5 dark:text-slate-300 dark:hover:bg-emerald-600 transition-all shadow-sm">
-                    <i class="fa-solid fa-bag-shopping text-xs sm:text-sm"></i>
-                    <span class="absolute -top-1 -right-1 min-w-[16px] h-3.5 sm:min-w-[18px] sm:h-4 px-1 bg-emerald-500 text-white text-[8px] sm:text-[9px] font-black flex items-center justify-center rounded-full border border-white dark:border-slate-900">
-                        {{ cartStore.items.reduce((total, item) => total + item.quantity, 0) }}
-                    </span>
-                </button>
-
-                <!-- Theme Toggle -->
-                <ThemeToggle :isDark="isDark" @toggle-theme="$emit('toggle-dark')" />
-                
-                <!-- Mobile Profile Dropdown Wrapper -->
-                <div class="relative">
-                    <button
-                        class="flex items-center rounded-full p-0.5 transition hover:bg-slate-100 dark:hover:bg-white/10"
-                        aria-label="Profile menu"
-                        @click.stop="toggleProfile">
-                        <img class="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-white/10" :src="avatarUrl" alt="User" />
+                <div class="flex items-center gap-1.5 sm:gap-2 lg:hidden">
+                    
+                    <!-- Cart Button -->
+                    <button @click="goToCart()" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-emerald-500 hover:text-white dark:bg-white/5 dark:text-slate-300 dark:hover:bg-emerald-600 transition-all shadow-sm">
+                        <i class="fa-solid fa-bag-shopping text-xs sm:text-sm"></i>
+                        <span class="absolute -top-1 -right-1 min-w-[16px] h-3.5 sm:min-w-[18px] sm:h-4 px-1 bg-emerald-500 text-white text-[8px] sm:text-[9px] font-black flex items-center justify-center rounded-full border border-white dark:border-slate-900">
+                            {{ cartStore.items.reduce((total, item) => total + item.quantity, 0) }}
+                        </span>
                     </button>
-                
-                    <!-- Dropdown Card for Mobile -->
-                    <div
-                        v-show="profileOpen"
-                        class="absolute z-50 right-0 mt-2 w-52 rounded-xl border shadow-xl overflow-hidden bg-white text-slate-900 border-slate-200 dark:bg-slate-900 dark:text-slate-100 dark:border-white/10">
-                        <div class="px-4 py-2.5 border-b border-slate-200 dark:border-white/10">
-                        <div class="text-xs font-semibold truncate">{{ authUser?.name || "Guest User" }}</div>
-                        </div>
-                        <div class="py-1">
-                        <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
-                        <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('settings')">Manage</button>
-                        <button class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10 border-t border-slate-100 dark:border-white/5 mt-1" @click="pickProfile('logout')">Logout</button>
+
+                    <!-- Theme Toggle -->
+                    <ThemeToggle :isDark="isDark" @toggle-theme="$emit('toggle-dark')" />
+                    
+                    <!-- Mobile Profile Dropdown Wrapper -->
+                    <div class="relative">
+                        <button
+                            class="flex items-center rounded-full p-0.5 transition hover:bg-slate-100 dark:hover:bg-white/10"
+                            aria-label="Profile menu"
+                            @click.stop="toggleProfile">
+                            <img class="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-white/10" :src="avatarUrl" alt="User" />
+                        </button>
+                    
+                        <!-- Dropdown Card for Mobile -->
+                        <div
+                            v-show="profileOpen"
+                            class="absolute z-50 right-0 mt-2 w-52 rounded-xl border shadow-xl overflow-hidden bg-white text-slate-900 border-slate-200 dark:bg-slate-900 dark:text-slate-100 dark:border-white/10">
+                            <div class="px-4 py-2.5 border-b border-slate-200 dark:border-white/10">
+                                <div class="text-xs font-semibold truncate">{{ authUser?.name || "Guest User" }}</div>
+                            </div>
+                            <div class="py-1">
+                                <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
+                                <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('settings')">Manage</button>
+                                <button v-if="isLoggedIn" class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10 border-t border-slate-100 dark:border-white/5 mt-1" @click="pickProfile('logout')">Logout</button>
+                                <button v-else class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10 border-t border-slate-100 dark:border-white/5 mt-1" @click="pickProfile('login')">Login</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
             </div>
 
             <div class="w-full flex-1 max-w-2xl mx-auto lg:mx-0">
@@ -307,32 +308,37 @@
                 <!-- Desktop Profile Dropdown -->
                 <div class="relative" ref="profileWrap">
                     <button
-                    class="ml-1 flex items-center gap-2 rounded-full p-1 pr-2 transition hover:bg-slate-100 dark:hover:bg-white/10"
-                    aria-label="Profile menu"
-                    @click.stop="toggleProfile">
-                    <img class="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-white/10" :src="avatarUrl" alt="User" />
-                    <svg class="h-4 w-4 hidden sm:block text-slate-500 dark:text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
+                        class="ml-1 flex items-center gap-2 rounded-full p-1 pr-2 transition hover:bg-slate-100 dark:hover:bg-white/10"
+                        aria-label="Profile menu"
+                        @click.stop="toggleProfile">
+                        <img class="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-white/10" :src="avatarUrl" alt="User" />
+                        <svg class="h-4 w-4 hidden sm:block text-slate-500 dark:text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </button>
                     <div
-                    v-show="profileOpen"
-                    class="absolute z-50 right-0 mt-2 w-56 rounded-xl border shadow-xl overflow-hidden
-                            bg-white text-slate-900 border-slate-200
-                            dark:bg-slate-900 dark:text-slate-100 dark:border-white/10">
-                    <div class="px-4 py-3 border-b border-slate-200 dark:border-white/10">
-                        <div class="text-sm font-semibold">{{ authUser?.name || "Guest User" }}</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400">{{ authUser?.email || "No email" }}</div>
-                    </div>
-                    <div class="py-2">
-                        <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
-                        <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('settings')">Manage</button>
-                    </div>
-                    <div class="border-t border-slate-200 dark:border-white/10">
-                        <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10" @click="pickProfile('logout')">
-                        Logout
-                        </button>
-                    </div>
+                        v-show="profileOpen"
+                        class="absolute z-50 right-0 mt-2 w-56 rounded-xl border shadow-xl overflow-hidden
+                                bg-white text-slate-900 border-slate-200
+                                dark:bg-slate-900 dark:text-slate-100 dark:border-white/10">
+                        <div class="px-4 py-3 border-b border-slate-200 dark:border-white/10">
+                            <div class="text-sm font-semibold">{{ authUser?.name || "Guest User" }}</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">{{ authUser?.email || "No email" }}</div>
+                        </div>
+                        <div class="py-2">
+                            <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
+                            <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('settings')">Manage</button>
+                        </div>
+                        <div v-if="isLoggedIn" class="border-t border-slate-200 dark:border-white/10">
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10" @click="pickProfile('logout')">
+                            Logout
+                            </button>
+                        </div>
+                        <div v-else class="border-t border-slate-200 dark:border-white/10">
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10" @click="pickProfile('login')">
+                            Login
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -425,6 +431,9 @@ async function pickProfile(action) {
     if (action === "settings") {
         return router.push("/setting"); 
     }
+    if (action === "login") {
+        return router.push("/login"); 
+    }
     if (action === "logout") {
         try {
             loading.value = true;
@@ -436,7 +445,7 @@ async function pickProfile(action) {
             localStorage.removeItem("user");
             authUser.value = null;   
             isLoggedIn.value = false;
-            router.push("/login"); 
+            router.push("/"); 
         }
     }
 }
