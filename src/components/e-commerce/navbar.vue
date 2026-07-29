@@ -11,7 +11,7 @@
                 <!-- Brand Logo -->
                 <div class="font-semibold tracking-wide text-lg text-slate-900 dark:text-white shrink-0">
                     <router-link 
-                    to="/" 
+                    to="/" aria-label="Go to homepage"
                     class="flex items-center gap-3 group transition-all duration-300 hover:opacity-90">
                     <div class="relative flex items-center justify-center overflow-hidden h-10 w-10 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 transition-transform group-hover:scale-105">
                         <img src="/logo/logo.avif" alt="Brand Logo" class="w-7 h-7 object-contain drop-shadow-sm dark:hidden" />
@@ -74,6 +74,7 @@
                         ref="searchInput"
                         v-model="q"
                         type="text"
+                        aria-label="Search"
                         placeholder="Search for Ogrova..."
                         class="w-full rounded-xl border pl-11 pr-16 py-2 md:py-2.5 text-sm outline-none transition-all duration-200
                                 bg-slate-50 text-slate-900 border-slate-200 placeholder:text-slate-400
@@ -217,12 +218,12 @@
             
                 <!-- Cart Button -->
                 <button 
-                    @click="goToCart()" 
+                    @click="goToCart()" aria-label="Shopping Cart" 
                     class="relative w-10 h-10 flex items-center justify-center rounded-xl border transition-all duration-300 shadow-sm group
                             bg-slate-50 text-slate-700 border-slate-200/80 hover:border-[#16A34A] hover:bg-[#16A34A]/5 hover:text-[#16A34A]
                             dark:bg-slate-800/40 dark:text-slate-300 dark:border-slate-700/80 dark:hover:border-[#F97316] dark:hover:bg-[#F97316]/5 dark:hover:text-[#F97316]">
                     
-                    <i class="fa-solid fa-bag-shopping text-sm transition-transform duration-300 group-hover:scale-110"></i>
+                    <i class="fa-solid fa-bag-shopping text-sm transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
                     
                     <span class="absolute -top-1 -right-1 min-w-[18px] h-4.5 px-1 text-[9px] font-black flex items-center justify-center rounded-full border shadow-sm text-white transition-colors duration-300
                         bg-[#16A34A] border-white

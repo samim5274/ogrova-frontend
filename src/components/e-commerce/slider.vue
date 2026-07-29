@@ -74,7 +74,7 @@
           class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-300 z-10 group/btn
                 bg-white/10 text-white border border-white/20 backdrop-blur-md shadow-lg
                 hover:bg-[#16A34A] hover:border-[#16A34A] hover:scale-105">
-          <i class="fa-solid fa-chevron-left text-xs md:text-sm transition-transform group-hover/btn:-translate-x-0.5"></i>
+          <i class="fa-solid fa-chevron-left text-xs md:text-sm transition-transform group-hover/btn:-translate-x-0.5" aria-hidden="true"></i>
         </button>
         
         <button 
@@ -82,7 +82,7 @@
           class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-300 z-10 group/btn
                 bg-white/10 text-white border border-white/20 backdrop-blur-md shadow-lg
                 hover:bg-[#F97316] hover:border-[#F97316] hover:scale-105">
-          <i class="fa-solid fa-chevron-right text-xs md:text-sm transition-transform group-hover/btn:translate-x-0.5"></i>
+          <i class="fa-solid fa-chevron-right text-xs md:text-sm transition-transform group-hover/btn:translate-x-0.5" aria-hidden="true"></i>
         </button>
 
         <!-- Indicator Dots -->

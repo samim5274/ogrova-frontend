@@ -8,24 +8,24 @@
                 <!-- Back to Top Button -->
                 <button 
                     v-show="showButton"
-                    @click="scrollToTop"
+                    @click="scrollToTop" aria-label="Back to top"
                     class="h-10 w-10 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95
                         bg-emerald-600 hover:bg-emerald-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white">
-                    <i class="fa-solid fa-angle-up text-sm"></i>
+                    <i class="fa-solid fa-angle-up text-sm" aria-hidden="true"></i>
                 </button>
                 
                 <!-- WhatsApp Button -->
                 <a 
                     href="https://wa.me/8801533021557" 
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"    aria-label="Chat with Ogrova on WhatsApp"    title="WhatsApp"
                     class="relative h-12 w-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95
                         bg-[#25D366] hover:bg-[#20bd5a] text-white">
                     
                     <!-- Pulse Effect Layers -->
-                    <span class="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-40"></span>
-                    <span class="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-20"></span>
+                    <span aria-hidden="true" class="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-40"></span>
+                    <span aria-hidden="true" class="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-20"></span>
                     
-                    <i class="fa-brands fa-whatsapp text-2xl relative z-10"></i>
+                    <i class="fa-brands fa-whatsapp text-2xl relative z-10" aria-hidden="true"></i>
                 </a>
             </div>
         
@@ -34,10 +34,10 @@
                 
                 <!-- Logo & Text -->
                 <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-                    <router-link to="/" target="_blank" class="flex items-center gap-3 group">
+                    <router-link to="/" target="_blank" aria-label="Go to homepage" class="flex items-center gap-3 group">
                         <div class="h-10 w-10 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
-                            <img src="/logo/logo.avif" alt="Logo" class="w-8 h-8 object-contain dark:hidden" />
-                            <img src="/logo/white-logo.avif" alt="Logo" class="hidden dark:block w-8 h-8 object-contain" />
+                            <img src="/logo/logo.avif" alt="Ogrova Logo" class="w-8 h-8 object-contain dark:hidden" />
+                            <img src="/logo/white-logo.avif" alt="Ogrova Logo" class="hidden dark:block w-8 h-8 object-contain" />
                         </div>
                         <span class="text-base font-black tracking-tight text-slate-900 dark:text-white uppercase">
                             Ogro<span class="text-orange-500">v</span><span class="text-emerald-600">a</span> Business.
@@ -58,9 +58,9 @@
                     </div>
 
                     <div class="flex items-center gap-5 text-slate-400 dark:text-slate-500">
-                        <a href="#" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="#" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.facebook.com/ogrova2026" target="_blank" rel="noopener noreferrer"  aria-label="Visit Ogrova on Facebook"  title="Facebook" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/company/143007240" target="_blank" rel="noopener noreferrer" aria-label="Visit Ogrova on LinkedIn" title="Instagram" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/ogrova2026/" target="_blank" rel="noopener noreferrer" aria-label="Visit Ogrova on Instagram"  title="LinkedIn" class="hover:text-emerald-600 dark:hover:text-orange-500 transition-colors text-sm"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>

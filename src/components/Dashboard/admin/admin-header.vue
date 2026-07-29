@@ -71,7 +71,7 @@
           class="p-2 rounded-lg transition
                  hover:bg-slate-100 text-slate-700
                  dark:hover:bg-white/10 dark:text-slate-200"
-          aria-label="Theme"
+          :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="$emit('toggle-theme')"
         >
           <!-- Moon (when light) -->
