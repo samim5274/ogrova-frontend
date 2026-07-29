@@ -115,8 +115,8 @@ const loading = ref(false);
 
 
 
-const bazarLogoLight = "/logo/logo.png";
-const bazarLogoDark = "/logo/white-logo.png";
+const bazarLogoLight = "/logo/logo.avif";
+const bazarLogoDark = "/logo/white-logo.avif";
 
 
 

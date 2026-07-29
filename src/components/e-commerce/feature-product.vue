@@ -112,7 +112,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 const router = useRouter();
-const defaultProductImage = "/images/product/default-product.png";
+const defaultProductImage = "/images/product/default-product.webp";
 
 const props = defineProps({
     products: {

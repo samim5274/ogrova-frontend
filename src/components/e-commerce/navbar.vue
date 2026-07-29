@@ -14,8 +14,8 @@
                     to="/" 
                     class="flex items-center gap-3 group transition-all duration-300 hover:opacity-90">
                     <div class="relative flex items-center justify-center overflow-hidden h-10 w-10 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 transition-transform group-hover:scale-105">
-                        <img src="/logo/logo.png" alt="Brand Logo" class="w-7 h-7 object-contain drop-shadow-sm dark:hidden" />
-                        <img src="/logo/white-logo.png" alt="Brand Logo" class="hidden dark:block w-7 h-7 object-contain drop-shadow-[0_4px_10px_rgba(163,217,33,0.3)]" />
+                        <img src="/logo/logo.avif" alt="Brand Logo" class="w-7 h-7 object-contain drop-shadow-sm dark:hidden" />
+                        <img src="/logo/white-logo.avif" alt="Brand Logo" class="hidden dark:block w-7 h-7 object-contain drop-shadow-[0_4px_10px_rgba(163,217,33,0.3)]" />
                     </div>
                     <span class="text-lg font-black tracking-tighter uppercase text-slate-800 dark:text-white group-hover:text-emerald-500 transition-colors">
                         Ogro<span class="text-[#F97316]">v</span><span class="text-[#16A34A]">a</span>
@@ -569,7 +569,7 @@ const clearSuggestions = () => {
     q.value = '';
 }
 
-const defaultProductImage = "/images/product/default-product.png"
+const defaultProductImage = "/images/product/default-product.webp"
 const getProductImage = (product) => {
     if (!product || !product.images || product.images.length === 0) {
         return defaultProductImage;

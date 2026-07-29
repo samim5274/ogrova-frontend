@@ -818,7 +818,7 @@ function ProductDetails(product) {
 }
 
 // default image
-const defaultProductImage = "/images/product/default-product.png"
+const defaultProductImage = "/images/product/default-product.webp"
 
 
 const getProductImage = (product) => {

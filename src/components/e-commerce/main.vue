@@ -279,7 +279,7 @@ const categoryGroups = ref([])
 const selectedCategory = ref(null)
 const couponCopied = ref(false)
 
-const defaultProductImage = "/images/product/default-product.png"
+const defaultProductImage = "/images/product/default-product.webp"
 
 /* ---------- Helpers ---------- */
 

@@ -460,7 +460,7 @@ async function  checkOut(cartItems) {
 
 
 
-const defaultProductImage = "/images/product/default-product.png";
+const defaultProductImage = "/images/product/default-product.webp";
 
 const getProductImage = (item) => {
     // Nested optional chaining 

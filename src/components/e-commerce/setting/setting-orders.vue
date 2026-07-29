@@ -426,8 +426,8 @@ const loading = ref(false);
 const successMsg = ref("");
 const errorMsg = ref("");
 
-const LogoLight = "/logo/logo.png";
-const LogoDark = "/logo/white-logo.png";
+const LogoLight = "/logo/logo.avif";
+const LogoDark = "/logo/white-logo.avif";
 
 
 

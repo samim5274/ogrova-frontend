@@ -254,7 +254,7 @@ const loading = ref(false);
 const categoryProducts = ref([]);
 const categories = ref([]);
 const seoCategory = ref(null);
-const defaultProductImage = "/images/product/default-product.png"
+const defaultProductImage = "/images/product/default-product.webp"
 
 
 
@@ -493,7 +493,7 @@ useHead(() => {
             ? makeImg(c.og_image)
             : c?.image
                 ? makeImg(c.image)
-                : "/images/logo.png"
+                : "/images/logo.avif"
 
     const url =
         c?.canonical_url ||

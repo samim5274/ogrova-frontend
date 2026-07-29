@@ -125,8 +125,8 @@
                     <!-- Logo -->
                     <div class="flex items-center gap-2">
                         <div class="h-10 w-10 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
-                            <img src="/logo/logo.png" alt="Logo" class="w-8 h-8 object-contain dark:hidden" />
-                            <img src="/logo/white-logo.png" alt="Logo" class="hidden dark:block w-8 h-8 object-contain" />
+                            <img src="/logo/logo.avif" alt="Logo" class="w-8 h-8 object-contain dark:hidden" />
+                            <img src="/logo/white-logo.avif" alt="Logo" class="hidden dark:block w-8 h-8 object-contain" />
                         </div>
                         <span class="text-lg font-black text-slate-900 dark:text-white tracking-tight uppercase">
                             Ogro<span class="text-orange-500">v</span><span class="text-emerald-600">a</span>.

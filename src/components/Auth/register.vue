@@ -24,8 +24,8 @@
                     <div class="flex items-start gap-4 sm:gap-5">
                         <!-- Brand / Application Logo -->
                         <div class="h-20 w-20 bg-gray-50 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl flex items-center justify-center border border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-500 group-hover:scale-105 group-hover:border-[#16A34A]/40">
-                            <img src="/logo/logo.png" alt="Logo" class="w-13 h-13 object-contain drop-shadow-sm rounded-2xl dark:hidden" />
-                            <img src="/logo/white-logo.png" alt="Logo" class="hidden dark:block w-13 h-13 rounded-2xl object-contain drop-shadow-[0_4px_12px_rgba(22,163,74,0.35)]" />
+                            <img src="/logo/logo.avif" alt="Logo" class="w-13 h-13 object-contain drop-shadow-sm rounded-2xl dark:hidden" />
+                            <img src="/logo/white-logo.avif" alt="Logo" class="hidden dark:block w-13 h-13 rounded-2xl object-contain drop-shadow-[0_4px_12px_rgba(22,163,74,0.35)]" />
                         </div>
 
                         <!-- Header Titles & Navigation -->
