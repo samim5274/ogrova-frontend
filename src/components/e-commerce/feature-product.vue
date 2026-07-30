@@ -158,7 +158,7 @@ const formattedProducts = computed(() => {
 
         // Category truncation
         const categoryName = product.category?.name 
-        ? (product.category.name.length > 15 ? product.category.name.slice(0, 15) + '...' : product.category.name)
+        ? (product.category.name.length > 10 ? product.category.name.slice(0, 10) + '...' : product.category.name)
         : 'Products';
 
         return {
