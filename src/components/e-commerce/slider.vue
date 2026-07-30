@@ -1,11 +1,11 @@
 <template>
   <section class="relative w-full overflow-hidden px-4 py-6 transition-colors duration-300">
     <div class="container mx-auto max-w-7xl">
-      <div @mouseenter="stopTimer" @mouseleave="startTimer" class="relative aspect-[16/9] md:aspect-[16/9] max-h-[520px] w-full rounded-2xl overflow-hidden shadow-xl border border-slate-200/60 dark:border-white/5">
+      <div @mouseenter="stopTimer" @mouseleave="startTimer" class="relative aspect-[4/5] md:aspect-[16/9] max-h-[520px] w-full rounded-2xl overflow-hidden shadow-xl border border-slate-200/60 dark:border-white/5">
         
         <!-- Wrapper for Slides -->
         <div 
-          class="slider-track flex h-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+          class="slider-track flex h-full transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
           :style="{ transform: `translate3d(-${currentSlide * 100}%,0,0)` }">
           
           <div 
@@ -15,11 +15,15 @@
             
             <!-- Image -->
             <picture>
-              <source :srcset="`${slide.image}.avif`" type="image/avif" />
-              <source :srcset="`${slide.image}.webp`" type="image/webp" />
+              <!-- Mobile -->
+              <source media="(max-width:768px)" :srcset="`${slide.mobile}.avif`" type="image/avif" />
+              <source media="(max-width:768px)" :srcset="`${slide.mobile}.webp`" type="image/webp" />
+              <!-- Desktop -->
+              <source :srcset="`${slide.desktop}.avif`" type="image/avif" />
+              <source :srcset="`${slide.desktop}.webp`" type="image/webp" />
 
               <img
-                :src="`${slide.image}.png`"
+                :src="`${slide.desktop}.png`"
                 :alt="slide.title"
                 :loading="index === 0 ? 'eager' : 'lazy'"
                 :fetchpriority="index === 0 ? 'high' : 'auto'"
@@ -27,12 +31,12 @@
                 width="1600"
                 height="900"
                 sizes="100vw"
-                class="slide-image w-full h-full object-cover object-center select-none transition-transform duration-700 md:group-hover/slide:scale-105"
+                class="slide-image w-full h-full object-cover object-center select-none transition-transform duration-500 md:group-hover/slide:scale-105"
               />
             </picture>
 
             <!-- Cinematic Overlay Content -->
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent lg:bg-gradient-to-r lg:from-slate-950/85 lg:via-slate-950/30 lg:to-transparent flex flex-col justify-end p-6 md:p-14 lg:p-20 text-white">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/40 to-transparent lg:bg-gradient-to-r lg:from-slate-950/85 lg:via-slate-950/30 lg:to-transparent flex flex-col justify-end p-6 md:p-14 lg:p-20 text-white">
               
               <!-- Tag -->
               <span class="inline-block text-white text-[10px] md:text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg w-max mb-4 shadow-sm
@@ -41,7 +45,7 @@
               </span>
               
               <!-- Title -->
-              <h2 class="text-2xl md:text-5xl font-black tracking-tight max-w-2xl mb-3 md:mb-4 leading-tight md:leading-[1.15] text-white drop-shadow-sm">
+              <h2 class="text-xl md:text-5xl font-black tracking-tight max-w-2xl mb-3 md:mb-4 leading-tight md:leading-[1.15] text-white drop-shadow-sm">
                 {{ slide.title }}
               </h2>
               
@@ -116,25 +120,29 @@ const slides = Object.freeze([
     tag: "New Arrival",
     title: "Next-Gen Wireless Audio Experience",
     description: "Immerse yourself in pure sound with our latest noise-cancelling technology. Limited edition colors available.",
-    image: "/images/slide/1"
+    desktop: "/images/slide/desktop/1",
+    mobile: "/images/slide/mobile/1"
   },
   {
     tag: "Summer Sale",
     title: "Step Up Your Lifestyle Fashion",
     description: "Get up to 50% off on all premium sneakers and sports apparel this season. Move with style.",
-    image: "/images/slide/2"
+    desktop: "/images/slide/desktop/2",
+    mobile: "/images/slide/mobile/2"
   },
   {
     tag: "Limited Stock",
     title: "Elegance on Your Wrist",
     description: "Modern smartwatches designed for both health and luxury. Experience the future of timekeeping.",
-    image: "/images/slide/3"
+    desktop: "/images/slide/desktop/3",
+    mobile: "/images/slide/mobile/3"
   },
   {
     tag: "Limited Stock",
     title: "Elegance on Your Wrist",
     description: "Modern smartwatches designed for both health and luxury. Experience the future of timekeeping.",
-    image: "/images/slide/4"
+    desktop: "/images/slide/desktop/4",
+    mobile: "/images/slide/mobile/4"
   }
 ]);
 
@@ -171,12 +179,15 @@ const handleVisibility = () => {
 }
 
 onMounted(() => {
-  slides.slice(1).forEach(slide => { // slides.slice(1,3) if slide 15-20
-    const img = new Image();
-    img.decoding = "async";
-    img.loading = "eager";
-    img.src = `${slide.image}.avif`;
-  })
+  const isMobile = window.innerWidth < 768;
+
+  const preloadSlides = isMobile ? slides.slice(1,2) : slides.slice(1);
+
+  preloadSlides.forEach(slide=>{
+      const img=new Image();
+      img.decoding="async";
+      img.src=isMobile ? `${slide.mobile}.avif` : `${slide.desktop}.avif`;
+  });
 
   startTimer()
 
@@ -199,6 +210,11 @@ onUnmounted(() => {
 
 .slider-track{
     will-change: transform;
+}
+
+.slide-image{
+    content-visibility:auto;
+    contain-intrinsic-size:1600px 900px;
 }
 
 @media (hover:hover){
