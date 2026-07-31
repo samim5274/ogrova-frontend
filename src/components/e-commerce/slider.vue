@@ -181,13 +181,12 @@ const handleVisibility = () => {
 onMounted(() => {
   const isMobile = window.innerWidth < 768;
 
-  const preloadSlides = isMobile ? slides.slice(1,2) : slides.slice(1);
+  const firstSlide = slides[0];
 
-  preloadSlides.forEach(slide=>{
-      const img=new Image();
-      img.decoding="async";
-      img.src=isMobile ? `${slide.mobile}.avif` : `${slide.desktop}.avif`;
-  });
+  const img = new Image();
+  img.src = `${firstSlide.desktop}.avif`;
+  img.fetchPriority = "high";
+  img.decoding = "async";
 
   startTimer()
 
