@@ -930,19 +930,400 @@ const { loadUser } = useAuth()
 
 // SEO Section
 useHead({
-    title: computed(() => product.value?.meta_title || product.value?.name || "OGROVA"),
 
-    meta: [
+    title: computed(() => {
+
+        if(!product.value) 
+            return "Ogrova Bangladesh";
+
+        return product.value.meta_title 
+            || `${product.value.name} | Buy Online in Bangladesh | Ogrova`;
+
+    }),
+
+
+
+    meta:[
+
+
         {
-            name: "description",
-            content: computed(() => product.value?.meta_description || product.value?.summary || "")
+            name:'description',
+
+            content:computed(()=>{
+
+                if(!product.value)
+                    return '';
+
+                return product.value.meta_description
+                    || product.value.summary
+                    || `Buy ${product.value.name} online from Ogrova Bangladesh at best price.`;
+
+            })
+
         },
+
+
         {
-            name: "keywords",
-            content: computed(() => product.value?.meta_keywords || "")
+            name:'keywords',
+
+            content:computed(()=>{
+
+                return product.value?.meta_keywords || 
+                `${product.value?.name}, online shopping Bangladesh, Ogrova`;
+
+            })
+
+        },
+
+
+        // Open Graph
+
+        {
+            property:'og:title',
+
+            content:computed(()=>{
+
+                return product.value?.meta_title 
+                || product.value?.name;
+
+            })
+
+        },
+
+
+        {
+            property:'og:description',
+
+            content:computed(()=>{
+
+                return product.value?.meta_description
+                || product.value?.summary
+                || '';
+
+            })
+
+        },
+
+
+        {
+            property:'og:type',
+
+            content:'product'
+
+        },
+
+
+        {
+            property:'og:image',
+
+            content:computed(()=>{
+
+                return product.value?.images?.[0]?.url
+                || 'https://ogrova.com/images/default-product.webp';
+
+            })
+
+        },
+
+
+        {
+            property:'product:price:amount',
+
+            content:computed(()=>{
+
+                return product.value?.price || '';
+
+            })
+
+        },
+
+
+        {
+            property:'product:price:currency',
+
+            content:'BDT'
+
+        },
+
+
+
+        // Twitter
+
+        {
+            name:'twitter:card',
+
+            content:'summary_large_image'
+
+        },
+
+
+        {
+            name:'twitter:title',
+
+            content:computed(()=>product.value?.name || '')
+
+        },
+
+
+        {
+            name:'twitter:description',
+
+            content:computed(()=>product.value?.summary || '')
+
+        },
+
+
+        {
+            name:'twitter:image',
+
+            content:computed(()=>product.value?.images?.[0]?.url || '')
+
+        },
+
+
+        {
+            name:'robots',
+
+            content:'index, follow'
+
         }
+
+
+    ],
+
+
+
+    link:[
+
+        {
+
+            rel:'canonical',
+
+            href:computed(()=>{
+
+                return product.value?.canonical_url
+                || window.location.href;
+
+            })
+
+        }
+
+    ],
+
+
+
+
+    script:[
+
+
+        // Product Schema
+
+        {
+
+        type:'application/ld+json',
+
+        children:computed(()=>{
+
+            if(!product.value)
+                return '';
+
+            const p = product.value;
+
+
+            return JSON.stringify({
+
+                "@context":"https://schema.org",
+
+                "@type":"Product",
+
+
+                "name":p.name,
+
+
+                "image":
+                    p.images?.map(i=>i.url) || [],
+
+
+
+                "description":
+                    p.meta_description 
+                    || p.summary 
+                    || "",
+
+
+
+                "sku":
+                    p.sku,
+
+
+
+                "brand":{
+
+                    "@type":"Brand",
+
+                    "name":
+                    p.brand?.name || "Ogrova"
+
+                },
+
+
+
+                "category":
+                    p.category?.name || "",
+
+
+
+                "offers":{
+
+                    "@type":"Offer",
+
+                    "url":
+                    window.location.href,
+
+
+                    "priceCurrency":"BDT",
+
+
+                    "price":
+                    Number(p.price - (p.discount || 0)),
+
+
+                    "availability":
+                    p.stock_quantity > 0
+
+                    ? "https://schema.org/InStock"
+
+                    : "https://schema.org/OutOfStock",
+
+
+                    "seller":{
+
+                        "@type":"Organization",
+
+                        "name":"Ogrova"
+
+                    }
+
+                },
+
+
+
+                "aggregateRating":
+
+                p.ratings_count > 0
+
+                ? {
+
+                    "@type":"AggregateRating",
+
+                    "ratingValue":
+                    p.ratings_avg_rating,
+
+
+                    "reviewCount":
+                    p.ratings_count
+
+                }
+
+                : undefined
+
+
+
+            })
+
+        })
+
+        },
+
+
+
+
+
+        // Breadcrumb Schema
+
+        {
+
+        type:'application/ld+json',
+
+        children:computed(()=>{
+
+
+            if(!product.value)
+                return '';
+
+            const p=product.value;
+
+
+            return JSON.stringify({
+
+                "@context":"https://schema.org",
+
+                "@type":"BreadcrumbList",
+
+
+                "itemListElement":[
+
+
+                    {
+
+                    "@type":"ListItem",
+
+                    "position":1,
+
+                    "name":"Home",
+
+                    "item":
+                    window.location.origin
+
+                    },
+
+
+
+                    {
+
+                    "@type":"ListItem",
+
+                    "position":2,
+
+                    "name":
+                    p.category?.name || "Category",
+
+                    "item":
+                    `${window.location.origin}/category/${p.category?.slug}/${p.category?.id}`
+
+                    },
+
+
+
+                    {
+
+                    "@type":"ListItem",
+
+                    "position":3,
+
+                    "name":
+                    p.name,
+
+                    "item":
+                    window.location.href
+
+                    }
+
+
+                ]
+
+            })
+
+
+        })
+
+
+        }
+
+
     ]
-});
+
+})
 
 
 

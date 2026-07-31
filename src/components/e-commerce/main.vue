@@ -4,10 +4,9 @@
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
 
             <!-- 1. Sidebar Navigation -->
-            <aside class="hidden lg:block w-64 shrink-0">
+            <!-- <aside class="hidden lg:block w-64 shrink-0">
                 <div class="sticky top-28 space-y-6">
 
-                    <!-- Premium Categories Card -->
                     <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800/80 shadow-[0_8px_30px_rgb(0,0,0,0.015)] dark:shadow-none transition-all duration-300">
                         <h3 class="font-bold text-slate-800 dark:text-slate-200 text-xs mb-4 flex items-center gap-2 uppercase tracking-widest opacity-90">
                             <span class="w-1 h-3.5 bg-emerald-600 dark:bg-orange-500 rounded-full"></span>
@@ -23,7 +22,6 @@
                         </ul>
                     </div>
 
-                    <!-- Luxury Vibe Coupon Card -->
                     <div class="p-6 rounded-2xl relative overflow-hidden group transition-all duration-300 border bg-slate-950 text-white border-slate-900 shadow-xl shadow-slate-950/10 dark:bg-slate-900 dark:border-slate-800/80 dark:shadow-none">
 
                         <div class="absolute -top-12 -left-12 w-32 h-32 bg-[#16A34A]/8 rounded-full blur-2xl group-hover:bg-[#16A34A]/12 transition-all duration-500"></div>
@@ -47,7 +45,7 @@
                     </div>
 
                 </div>
-            </aside>
+            </aside> -->
 
             <!-- Main Content Area -->
             <div class="flex-1 min-w-0" ref="productSectionRef">
@@ -66,18 +64,18 @@
                 </div>
 
                 <!-- Mobile & Tablet Friendly Categories (Horizontal Scroll) -->
-                <div class="lg:hidden mb-6 -mx-4 px-4 overflow-x-auto flex gap-2 scrollbar-hide snap-x">
-                    <button v-for="cat in categories" :key="cat.id"
+                <!-- <div class="lg:hidden mb-6 -mx-4 px-4 overflow-x-auto flex gap-2 scrollbar-hide snap-x mt-2">
+                    <button v-for="cat in categories" :key="cat.id" @click="getCategoryProducts(cat)"
                         class="flex-none snap-start px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all duration-300"
                         :class="selectedCategory === cat.id
                             ? 'bg-gradient-to-r from-[#16A34A] to-emerald-600 text-white border-[#16A34A] shadow-sm shadow-[#16A34A]/15'
                             : 'bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-100 dark:border-slate-800/60'">
                         {{ cat.name }}
                     </button>
-                </div>
+                </div> -->
 
                 <!-- Mobile & Tablet Coupon Banner -->
-                <div class="lg:hidden mb-8 p-5 rounded-2xl relative overflow-hidden bg-slate-950 dark:bg-slate-900 border border-slate-900 dark:border-slate-800 text-white shadow-lg">
+                <div class="lg:hidden my-4 p-5 rounded-2xl relative overflow-hidden bg-slate-950 dark:bg-slate-900 border border-slate-900 dark:border-slate-800 text-white shadow-lg">
                     <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <span class="text-[9px] font-bold text-[#F97316] uppercase tracking-[0.2em] bg-[#F97316]/10 px-2 py-0.5 rounded border border-[#F97316]/10">Exclusive Offer</span>
@@ -183,7 +181,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
                         
                         <!-- Product Card -->
                         <div v-for="product in products" :key="product.id"
@@ -323,6 +321,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useHead } from '@vueuse/head'
 import api from '../../services/api.js'
 
 import featureProduct from "./feature-product.vue";
@@ -460,23 +459,13 @@ const pagination = ref({
     page: 1,
     lastPage: 1,
     total: 0,
-    perPage: 52,
+    perPage: 50,
     from: 0,
     to: 0,
 });
 
 
 /* ---------- Data Fetching ---------- */
-
-async function fetchCategories() {
-    try {
-        const res = await api.get('/public/get-categories')
-        categories.value = res.data.data || []
-    } catch (err) {
-        console.error('Category error:', err)
-    }
-}
-
 async function fetchProducts(page = 1) {
     loading.value = true
     fetchError.value = false
@@ -488,11 +477,14 @@ async function fetchProducts(page = 1) {
         const response = res.data;
         products.value = response.data.data ?? [];
 
+        // SEO Update
+        setProductListSEO(products.value);
+
         pagination.value = {
             page: response?.data?.current_page ?? 1,
             lastPage: response?.data?.last_page ?? 1,
             total: response?.data?.total ?? 0,
-            perPage: response?.data?.per_page ?? 52,
+            perPage: response?.data?.per_page ?? 50,
             from: response?.data?.from ?? 0,
             to: response?.data?.to ?? 0,
         };
@@ -504,7 +496,7 @@ async function fetchProducts(page = 1) {
             page: 1,
             lastPage: 1,
             total: 0,
-            perPage: 52,
+            perPage: 50,
             from: 0,
             to: 0,
         };  
@@ -564,9 +556,156 @@ function getCategoryProducts(cat) {
 
 
 
+
+
+
+
+
+
+
+
+// seo section
+function setProductListSEO(products = []) {
+
+    useHead({
+
+        title:
+        'Buy Latest Products Online in Bangladesh | Ogrova',
+
+
+        meta:[
+
+            {
+                name:'description',
+                content:
+                'Shop latest products online in Bangladesh. Explore quality electronics, fashion, beauty, grocery and lifestyle products at affordable prices from Ogrova.'
+            },
+
+            {
+                name:'robots',
+                content:'index, follow'
+            },
+
+            {
+                property:'og:type',
+                content:'website'
+            },
+
+            {
+                property:'og:image',
+                content:'https://ogrova.com/images/og-product-banner.jpg'
+            }
+
+        ],
+
+
+        link:[
+
+            {
+                rel:'canonical',
+                href:
+                window.location.origin + window.location.pathname
+            }
+
+        ],
+
+
+        script:[
+
+
+            // Product List Schema
+
+            {
+
+            type:'application/ld+json',
+
+            children:JSON.stringify({
+
+                "@context":"https://schema.org",
+
+                "@type":"ItemList",
+
+                "name":"Ogrova Product Collection",
+
+                "numberOfItems":products.length,
+
+
+                "itemListElement":
+
+                products
+                .slice(0,20)
+                .map((product,index)=>({
+
+                    "@type":"ListItem",
+
+                    "position":index+1,
+
+                    "name":product.name,
+
+                    "url":
+                    `${window.location.origin}/product-details/${product.slug}`
+
+                }))
+
+            })
+
+            },
+
+
+            // Breadcrumb Schema
+
+            {
+
+            type:'application/ld+json',
+
+            children:JSON.stringify({
+
+                "@context":"https://schema.org",
+
+                "@type":"BreadcrumbList",
+
+                "itemListElement":[
+
+                    {
+                        "@type":"ListItem",
+                        "position":1,
+                        "name":"Home",
+                        "item":
+                        window.location.origin
+                    },
+
+
+                    {
+                        "@type":"ListItem",
+                        "position":2,
+                        "name":"Products",
+                        "item":
+                        window.location.href
+                    }
+
+                ]
+
+            })
+
+            }
+
+
+        ]
+
+    })
+
+}
+
+
+
+
+
+
+
+
+
 onMounted(() => {
     fetchProducts()
-    fetchCategories()
 })
 </script>
 
