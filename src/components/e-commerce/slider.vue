@@ -179,7 +179,6 @@ const handleVisibility = () => {
 }
 
 onMounted(() => {
-  const isMobile = window.innerWidth < 768;
 
   const firstSlide = slides[0];
 
@@ -188,7 +187,7 @@ onMounted(() => {
   img.fetchPriority = "high";
   img.decoding = "async";
 
-  startTimer()
+  startTimer();
 
   document.addEventListener("visibilitychange", handleVisibility)
 })
