@@ -472,165 +472,128 @@ function handleSearch(query) {
 
 
 
+/* ---------- SEO (Dynamic + Production Ready) ---------- */
+
+const siteUrl = import.meta.env.VITE_SITE_URL
+
 useHead(() => {
 
-    const c = seoCategory.value;
+    const c = seoCategory.value
+    const page = pagination.value.page
 
-    const title =
+    const baseTitle =
         c?.meta_title ||
         `${c?.name || "Category"} | Ogrova`
 
-    const description =
+    const title =
+        page > 1 ? `${baseTitle} | Page ${page}` : baseTitle
+
+    const baseDescription =
         c?.meta_description ||
-        `Buy ${c?.name || "products"} online in Bangladesh.`
+        `Buy ${c?.name || "products"} online in Bangladesh at best prices from Ogrova.`
+
+    const description =
+        page > 1
+            ? `Page ${page}: ${baseDescription}`
+            : baseDescription
 
     const keywords =
         c?.meta_keywords ||
         `${c?.name}, Ogrova`
 
-    const image =
+    // Absolute image URL (relative path হলে social bots প্রিভিউ দেখাতে পারবে না)
+    const rawImage =
         c?.og_image
             ? makeImg(c.og_image)
             : c?.image
                 ? makeImg(c.image)
                 : "/images/logo.avif"
 
-    const url =
-        c?.canonical_url ||
-        window.location.href
+    const image = rawImage.startsWith('http')
+        ? rawImage
+        : `${siteUrl}${rawImage}`
+
+    // canonical — route-based, window.location নয় (SSR-safe, query-string safe)
+    const baseUrl = `${siteUrl}/category/${c?.slug || route.params.slug}/${route.params.id}`
+    const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl
+
+    // Pagination page 2+ noindex — duplicate content এড়াতে
+    const robotsContent =
+        c?.indexable === false
+            ? "noindex,nofollow"
+            : page > 1
+                ? "noindex,follow"
+                : (c?.robots || "index,follow")
 
     return {
 
         title,
 
         meta: [
+            { name: "description", content: description },
+            { name: "keywords", content: keywords },
+            { name: "robots", content: robotsContent },
 
-            {
-                name: "description",
-                content: description,
-            },
+            // Open Graph
+            { property: "og:title", content: c?.og_title || title },
+            { property: "og:description", content: c?.og_description || description },
+            { property: "og:image", content: image },
+            { property: "og:url", content: canonicalUrl },
+            { property: "og:type", content: "website" },
+            { property: "og:site_name", content: "Ogrova" },
+            { property: "og:locale", content: "en_BD" },
 
-            {
-                name: "keywords",
-                content: keywords,
-            },
+            // Twitter
+            { name: "twitter:card", content: "summary_large_image" },
+            { name: "twitter:title", content: c?.og_title || title },
+            { name: "twitter:description", content: c?.og_description || description },
+            { name: "twitter:image", content: image },
 
-            {
-                name: "robots",
-                content:
-                    c?.indexable === false
-                        ? "noindex,nofollow"
-                        : (c?.robots || "index,follow"),
-            },
-
-            /*
-            |--------------------------------------------------------------------------
-            | Open Graph
-            |--------------------------------------------------------------------------
-            */
-
-            {
-                property: "og:title",
-                content: c?.og_title || title,
-            },
-
-            {
-                property: "og:description",
-                content:
-                    c?.og_description || description,
-            },
-
-            {
-                property: "og:image",
-                content: image,
-            },
-
-            {
-                property: "og:url",
-                content: url,
-            },
-
-            {
-                property: "og:type",
-                content: "website",
-            },
-
-            {
-                property: "og:site_name",
-                content: "Ogrova",
-            },
-
-            /*
-            |--------------------------------------------------------------------------
-            | Twitter
-            |--------------------------------------------------------------------------
-            */
-
-            {
-                name: "twitter:card",
-                content: "summary_large_image",
-            },
-
-            {
-                name: "twitter:title",
-                content: c?.og_title || title,
-            },
-
-            {
-                name: "twitter:description",
-                content:
-                    c?.og_description || description,
-            },
-
-            {
-                name: "twitter:image",
-                content: image,
-            },
-
-            /*
-            |--------------------------------------------------------------------------
-            | Theme
-            |--------------------------------------------------------------------------
-            */
-
-            {
-                name: "theme-color",
-                content: "#16A34A",
-            },
-
+            // Theme
+            { name: "theme-color", content: "#16A34A" },
         ],
 
         link: [
-
-            {
-                rel: "canonical",
-                href: url,
-            },
-
+            { rel: "canonical", href: canonicalUrl },
         ],
 
         script: [
-
             {
                 type: "application/ld+json",
                 children: JSON.stringify({
-
                     "@context": "https://schema.org",
-
                     "@type": "CollectionPage",
-
                     name: c?.name,
-
                     description,
-
-                    url,
-
+                    url: canonicalUrl,
+                    ...(categoryProducts.value.length > 0 && {
+                        mainEntity: {
+                            "@type": "ItemList",
+                            numberOfItems: pagination.value.total,
+                            itemListElement: categoryProducts.value
+                                .slice(0, 20)
+                                .map((product, index) => ({
+                                    "@type": "ListItem",
+                                    position: index + 1,
+                                    url: `${siteUrl}/product-details/${product.slug}`,
+                                    item: {
+                                        "@type": "Product",
+                                        name: product.name,
+                                        image: getProductImage(product),
+                                        url: `${siteUrl}/product-details/${product.slug}`,
+                                        offers: {
+                                            "@type": "Offer",
+                                            priceCurrency: "BDT",
+                                            price: finalPrice(product),
+                                        }
+                                    }
+                                }))
+                        }
+                    })
                 }),
             },
-
         ],
     }
-
 })
 
 

@@ -29,6 +29,7 @@ import NewsLatter from './news-latter.vue';
 import footerSection from "./footer.vue";
 
 const router = useRouter()
+const siteUrl = import.meta.env.VITE_SITE_URL
 
 const isDark = ref(false);
 const mobileMenu = ref(false);
@@ -66,33 +67,54 @@ useHead({
             name: 'keywords',
             content: 'Ogrova, Online Shopping Bangladesh, Electronics, Fashion, Grocery, Mobile, Laptop, Cosmetics, Best Price Bangladesh'
         },
+        { name: 'robots', content: 'index,follow' },
 
         // Open Graph
-        {
-            property: 'og:title',
-            content: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh'
-        },
-        {
-            property: 'og:description',
-            content: 'Shop original products online with fast delivery and Cash on Delivery across Bangladesh.'
-        },
-        {
-            property: 'og:type',
-            content: 'website'
-        },
+        { property: 'og:title', content: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh' },
+        { property: 'og:description', content: 'Shop original products online with fast delivery and Cash on Delivery across Bangladesh.' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: siteUrl },
+        { property: 'og:image', content: `${siteUrl}/images/og-default.jpg` },
+        { property: 'og:site_name', content: 'Ogrova' },
+        { property: 'og:locale', content: 'en_BD' },
 
         // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh' },
+        { name: 'twitter:description', content: 'Shop original products online with fast delivery and Cash on Delivery across Bangladesh.' },
+        { name: 'twitter:image', content: `${siteUrl}/images/og-default.jpg` },
+
+        { name: 'theme-color', content: '#16A34A' },
+    ],
+
+    link: [
+        { rel: 'canonical', href: siteUrl },
+    ],
+
+    script: [
         {
-            name: 'twitter:card',
-            content: 'summary_large_image'
+            type: 'application/ld+json',
+            children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Ogrova",
+                "url": siteUrl,
+                "logo": `${siteUrl}/images/logo.avif`,
+            })
         },
         {
-            name: 'twitter:title',
-            content: 'Buy Electronics, Fashion, Grocery & More | Ogrova Bangladesh'
-        },
-        {
-            name: 'twitter:description',
-            content: 'Shop original products online with fast delivery and Cash on Delivery across Bangladesh.'
+            type: 'application/ld+json',
+            children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Ogrova",
+                "url": siteUrl,
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": `${siteUrl}/search?q={search_term_string}`,
+                    "query-input": "required name=search_term_string"
+                }
+            })
         }
     ]
 })

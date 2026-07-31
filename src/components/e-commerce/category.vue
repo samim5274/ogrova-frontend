@@ -85,7 +85,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useHead } from "@vueuse/head";
 import api from '../../services/api.js';
 
 const router = useRouter();
@@ -124,7 +123,7 @@ async function fetchCategories() {
         categories.value = res.data.data || res.data || [];
 
         categoryKeywords.value = categories.value.map(cat => cat.name).slice(0,10).join(', ')
-        setCategorySEO()
+
     } catch (err) {
         console.error('Category error:', err);
         categories.value = [];
@@ -150,178 +149,6 @@ const scroll = (direction) => {
 
 
 
-
-// seo section
-function setCategorySEO(category, products = []){
-
-    if(!category) return;
-
-
-    useHead({
-
-
-        title:
-        category.meta_title || `${category.name} | Ogrova`,
-
-
-        meta:[
-
-            {
-                name:'description',
-                content:
-                category.meta_description ||
-                `Explore ${category.name} products online from Ogrova Bangladesh.`
-            },
-
-
-            {
-                name:'robots',
-                content:
-                category.robots || 'index,follow'
-            },
-
-
-            {
-                property:'og:title',
-                content:
-                category.og_title || category.name
-            },
-
-
-            {
-                property:'og:image',
-                content:
-                category.og_image
-            }
-
-        ],
-
-
-        link:[
-
-            {
-                rel:'canonical',
-                href:
-                category.canonical_url ||
-                window.location.href
-            }
-
-        ],
-
-
-
-        script:[
-
-
-        // Category Schema
-
-        {
-
-        type:'application/ld+json',
-
-        children:JSON.stringify({
-
-            "@context":"https://schema.org",
-
-            "@type":"CollectionPage",
-
-            "name":category.name,
-
-            "description":
-            category.meta_description,
-
-            "url":
-            window.location.href
-
-
-        })
-
-        },
-
-
-        // Category Product List
-
-        {
-
-        type:'application/ld+json',
-
-        children:JSON.stringify({
-
-            "@context":"https://schema.org",
-
-            "@type":"ItemList",
-
-            "name":
-            category.name + " Products",
-
-
-            "itemListElement":
-
-            products
-            .slice(0,20)
-            .map((product,index)=>({
-
-                "@type":"ListItem",
-
-                "position":index+1,
-
-                "name":product.name,
-
-                "url":
-                `${window.location.origin}/product-details/${product.slug}`
-
-            }))
-
-
-        })
-
-        },
-
-
-        // Breadcrumb
-
-        {
-
-        type:'application/ld+json',
-
-        children:JSON.stringify({
-
-            "@context":"https://schema.org",
-
-            "@type":"BreadcrumbList",
-
-            "itemListElement":[
-
-
-                {
-                "@type":"ListItem",
-                "position":1,
-                "name":"Home",
-                "item":window.location.origin
-                },
-
-
-                {
-                "@type":"ListItem",
-                "position":2,
-                "name":category.name,
-                "item":window.location.href
-                }
-
-
-            ]
-
-        })
-
-        }
-
-
-        ]
-
-
-    })
-
-}
 
 
 

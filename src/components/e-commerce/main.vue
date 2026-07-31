@@ -407,11 +407,6 @@ const copyCoupon = async () => {
 
 const productSectionRef = ref(null)
 
-function scrollToTop() {
-  if (productSectionRef.value) {
-    productSectionRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-}
 
 
 
@@ -478,7 +473,7 @@ async function fetchProducts(page = 1) {
         products.value = response.data.data ?? [];
 
         // SEO Update
-        setProductListSEO(products.value);
+        seoProducts.value = products.value;
 
         pagination.value = {
             page: response?.data?.current_page ?? 1,
@@ -563,138 +558,91 @@ function getCategoryProducts(cat) {
 
 
 
+/* ---------- SEO (Dynamic + Production Ready) ---------- */
 
-// seo section
-function setProductListSEO(products = []) {
+const siteUrl = import.meta.env.VITE_SITE_URL
+const defaultOgImage = `${siteUrl}/images/og-default.jpg`
 
-    useHead({
+const currentPage = computed(() => pagination.value.page)
 
-        title:
-        'Buy Latest Products Online in Bangladesh | Ogrova',
+const seoTitle = computed(() => {
+    return currentPage.value > 1
+        ? `Buy Latest Products Online in Bangladesh | Page ${currentPage.value} | Ogrova`
+        : 'Buy Latest Products Online in Bangladesh | Ogrova'
+})
 
+const seoDescription = computed(() => {
+    return currentPage.value > 1
+        ? `Explore page ${currentPage.value} of our latest products. Quality electronics, fashion, beauty, grocery and lifestyle items at affordable prices from Ogrova.`
+        : 'Shop latest products online in Bangladesh. Explore quality electronics, fashion, beauty, grocery and lifestyle products at affordable prices from Ogrova.'
+})
 
-        meta:[
+const canonicalUrl = computed(() => {
+    return currentPage.value > 1
+        ? `${siteUrl}/products?page=${currentPage.value}`
+        : `${siteUrl}/products`
+})
 
-            {
-                name:'description',
-                content:
-                'Shop latest products online in Bangladesh. Explore quality electronics, fashion, beauty, grocery and lifestyle products at affordable prices from Ogrova.'
-            },
+const seoProducts = ref([])
 
-            {
-                name:'robots',
-                content:'index, follow'
-            },
+useHead({
+    title: seoTitle,
+    meta: [
+        { name: 'description', content: seoDescription },
+        { name: 'robots', content: currentPage.value > 1 ? 'noindex, follow' : 'index, follow' },
 
-            {
-                property:'og:type',
-                content:'website'
-            },
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: seoTitle },
+        { property: 'og:description', content: seoDescription },
+        { property: 'og:url', content: canonicalUrl },
+        { property: 'og:image', content: defaultOgImage },
+        { property: 'og:site_name', content: 'Ogrova' },
+        { property: 'og:locale', content: 'en_BD' },
 
-            {
-                property:'og:image',
-                content:'https://ogrova.com/images/og-product-banner.jpg'
-            }
-
-        ],
-
-
-        link:[
-
-            {
-                rel:'canonical',
-                href:
-                window.location.origin + window.location.pathname
-            }
-
-        ],
-
-
-        script:[
-
-
-            // Product List Schema
-
-            {
-
-            type:'application/ld+json',
-
-            children:JSON.stringify({
-
-                "@context":"https://schema.org",
-
-                "@type":"ItemList",
-
-                "name":"Ogrova Product Collection",
-
-                "numberOfItems":products.length,
-
-
-                "itemListElement":
-
-                products
-                .slice(0,20)
-                .map((product,index)=>({
-
-                    "@type":"ListItem",
-
-                    "position":index+1,
-
-                    "name":product.name,
-
-                    "url":
-                    `${window.location.origin}/product-details/${product.slug}`
-
-                }))
-
-            })
-
-            },
-
-
-            // Breadcrumb Schema
-
-            {
-
-            type:'application/ld+json',
-
-            children:JSON.stringify({
-
-                "@context":"https://schema.org",
-
-                "@type":"BreadcrumbList",
-
-                "itemListElement":[
-
-                    {
-                        "@type":"ListItem",
-                        "position":1,
-                        "name":"Home",
-                        "item":
-                        window.location.origin
-                    },
-
-
-                    {
-                        "@type":"ListItem",
-                        "position":2,
-                        "name":"Products",
-                        "item":
-                        window.location.href
-                    }
-
-                ]
-
-            })
-
-            }
-
-
-        ]
-
-    })
-
-}
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: seoTitle },
+        { name: 'twitter:description', content: seoDescription },
+        { name: 'twitter:image', content: defaultOgImage },
+    ],
+    link: [
+        { rel: 'canonical', href: canonicalUrl },
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": "Ogrova Product Collection",
+                "url": canonicalUrl.value,
+                "numberOfItems": seoProducts.value.length,
+                "itemListElement": seoProducts.value
+                    .slice(0, 20)
+                    .map((product, index) => ({
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "url": `${siteUrl}/product-details/${product.slug}`,
+                        "item": {
+                            "@type": "Product",
+                            "name": product.name,
+                            "image": getProductImage(product),
+                            "url": `${siteUrl}/product-details/${product.slug}`,
+                            "offers": {
+                                "@type": "Offer",
+                                "priceCurrency": "BDT",
+                                "price": finalPrice(product),
+                                "availability": product.stock_quantity > 0
+                                    ? "https://schema.org/InStock"
+                                    : "https://schema.org/OutOfStock"
+                            }
+                        }
+                    }))
+            }))
+        }
+    ]
+})
 
 
 
