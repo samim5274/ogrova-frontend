@@ -120,7 +120,7 @@
                 </div>
 
                 <!-- Product Category Rows -->
-                <div v-else>
+                <div v-else ref="topScroll">
                     <!-- Pagination -->
                     <div class="flex flex-col gap-2 border-slate-200 bg-white dark:bg-slate-900 shadow-sm px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                         <!-- Showing info -->
@@ -319,7 +319,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import api from '../../services/api.js'
@@ -500,9 +500,17 @@ async function fetchProducts(page = 1) {
     }
 }
 
+const topScroll = ref(null);
+
 async function changePage(page) {
     await fetchProducts(page);
-    scrollToTop();
+    
+    await nextTick();
+
+    topScroll.value?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+    });
 }
 /* ---------- Derived State ---------- */
 
