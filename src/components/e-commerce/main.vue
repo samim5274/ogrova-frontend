@@ -58,7 +58,7 @@
                         </h2>
                         <p class="text-[11px] md:text-xs text-slate-400 mt-0.5">Handpicked premium products just for you</p>
                     </div>
-                    <button class="p-2 md:p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <button aria-label="details" class="p-2 md:p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
                         <i class="fa-solid fa-sliders text-xs"></i>
                     </button>
                 </div>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="flex items-center gap-2 bg-white/[0.04] dark:bg-black/40 p-1.5 rounded-xl border border-white/10 dark:border-slate-800 backdrop-blur-md w-full sm:w-auto sm:min-w-[220px]">
                             <span class="text-xs font-mono font-bold tracking-widest text-slate-200 pl-2 select-all">BAZAR2026</span>
-                            <button @click="copyCoupon" class="ml-auto bg-[#16A34A] text-white px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all active:scale-[0.97]">
+                            <button aria-label="copy" @click="copyCoupon" class="ml-auto bg-[#16A34A] text-white px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all active:scale-[0.97]">
                                 {{ couponCopied ? 'Copied!' : 'Copy' }}
                             </button>
                         </div>
@@ -114,7 +114,7 @@
                     <i class="fa-solid fa-triangle-exclamation text-3xl text-orange-500 mb-3"></i>
                     <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1">Products can not be fetched</h4>
                     <p class="text-xs text-slate-400 mb-5">Something went wrong while loading deals. Please try again.</p>
-                    <button @click="fetchProducts" class="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#16A34A]/90 transition-colors">
+                    <button @click="fetchProducts" aria-label="retry" class="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#16A34A]/90 transition-colors">
                         Retry
                     </button>
                 </div>
@@ -135,21 +135,21 @@
 
                         <div class="flex flex-wrap items-center justify-end gap-2">
                             <!-- First -->
-                            <button
+                            <button aria-label="first"
                                 @click="changePage(1)" :disabled="pagination.page === 1 || loading"
                                 class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
                                 <i class="fa-solid fa-angles-left"></i>
                             </button>
 
                             <!-- Prev -->
-                            <button
+                            <button aria-label="preview"
                                 @click="changePage(pagination.page - 1)" :disabled="pagination.page === 1 || loading"
                                 class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </button>
 
                             <!-- Pages -->
-                            <button
+                            <button aria-label="pages"
                                 v-for="page in ProductVisiblePages"
                                 :key="String(page)"
                                 @click="page !== '...' && changePage(page)"
@@ -164,7 +164,7 @@
                             </button>
 
                             <!-- Next -->
-                            <button
+                            <button aria-label="next"
                                 @click="changePage(pagination.page + 1)"
                                 :disabled="pagination.page === pagination.lastPage || loading"
                                 class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
@@ -172,7 +172,7 @@
                             </button>
 
                             <!-- Last -->
-                            <button
+                            <button aria-label="last"
                                 @click="changePage(pagination.lastPage)"
                                 :disabled="pagination.page === pagination.lastPage || loading"
                                 class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
@@ -204,7 +204,7 @@
                                     class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700 ease-out cursor-pointer">
 
                                 <div class="hidden lg:flex absolute inset-0 bg-slate-950/10 dark:bg-slate-950/30 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-all duration-300 items-end p-3">
-                                    <button @click="ProductDetails(product)"
+                                    <button @click="ProductDetails(product)" aria-label="quick-view"
                                         class="w-full bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50 transform translate-y-3 group-hover:translate-y-0 active:scale-[0.97] shadow-md transition-all duration-300
                                         hover:bg-orange-600 hover:text-white hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20
                                         dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
@@ -268,21 +268,21 @@
 
                     <div class="flex flex-wrap items-center justify-end gap-2">
                         <!-- First -->
-                        <button
+                        <button aria-label="first"
                             @click="changePage(1)" :disabled="pagination.page === 1 || loading"
                             class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
                             <i class="fa-solid fa-angles-left"></i>
                         </button>
 
                         <!-- Prev -->
-                        <button
+                        <button aria-label="preview"
                             @click="changePage(pagination.page - 1)" :disabled="pagination.page === 1 || loading"
                             class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
                             <i class="fa-solid fa-chevron-left"></i>
                         </button>
 
                         <!-- Pages -->
-                        <button
+                        <button aria-label="pages"
                             v-for="page in ProductVisiblePages"
                             :key="String(page)"
                             @click="page !== '...' && changePage(page)"
@@ -297,7 +297,7 @@
                         </button>
 
                         <!-- Next -->
-                        <button
+                        <button aria-label="next"
                             @click="changePage(pagination.page + 1)"
                             :disabled="pagination.page === pagination.lastPage || loading"
                             class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">
@@ -305,7 +305,7 @@
                         </button>
 
                         <!-- Last -->
-                        <button
+                        <button aria-label="last"
                             @click="changePage(pagination.lastPage)"
                             :disabled="pagination.page === pagination.lastPage || loading"
                             class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">

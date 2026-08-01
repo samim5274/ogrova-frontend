@@ -1,5 +1,5 @@
 <template>
-    <button
+    <button aria-label="Toggle dark mode"
         class="p-2 rounded-xl transition-all duration-300 relative group
             bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-[#16A34A]
             dark:bg-white/5 dark:hover:bg-white/10 dark:text-gray-300 dark:hover:text-white

@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <button class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
+            <button aria-label="view-feature-products" class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
                 View All <i class="fa-solid fa-arrow-right ml-1"></i>
             </button>
         </div>
