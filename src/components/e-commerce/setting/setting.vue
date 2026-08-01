@@ -69,11 +69,11 @@
                                             </div>
 
                                         
-                                        <!-- <div v-if="activeTab === 'theme'">
-                                            <settingTheme />
-                                        </div>
+                                            <div v-if="activeTab === 'address'">
+                                                <settingAddress />
+                                            </div>
 
-                                        <div v-if="activeTab === 'notification'">
+                                        <!-- <div v-if="activeTab === 'notification'">
                                             <settingNotification />
                                         </div>
 
@@ -125,6 +125,7 @@ const mobileMenu = ref(false);
 
 
 import settingOrders from "./setting-orders.vue";
+import settingAddress from "./setting-address.vue";
 // import settingAbout from "./setting-about.vue";
 // import privacyAndPolicy from "./setting-privacy.vue";
 // import settingSecurity from "./setting-security.vue";
@@ -145,7 +146,7 @@ const activeTab = ref('Orders')
 
 const menus = [
     { key: 'Orders', label: 'Orders', icon: 'fa-brands fa-opencart' },
-    { key: 'theme', label: 'Theme', icon: 'fa-brands fa-affiliatetheme' },
+    { key: 'address', label: 'Address', icon: 'fa-solid fa-location-dot' },
     { key: 'notification', label: 'Notification', icon: 'fa-solid fa-bell' },
     { key: 'security', label: 'Security', icon: 'fa-solid fa-lock' },
     { key: 'privacyAndPolicy', label: 'Privacy & Policy', icon: 'fa-solid fa-shield-halved' },

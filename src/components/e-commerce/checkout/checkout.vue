@@ -327,7 +327,7 @@
                                             </button>
                                         </div>
 
-                                        <!-- Empty State (যখন কোনো অ্যাড্রেস থাকবে না) -->
+                                        <!-- Empty State -->
                                         <div v-if="userAddress.length === 0" class="col-span-full border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center space-y-2">
                                             <div class="h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-full flex items-center justify-center mx-auto text-sm">
                                                 <i class="fa-solid fa-map-location-dot"></i>
