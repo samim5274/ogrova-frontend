@@ -73,9 +73,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                         
                         <div v-for="product in categoryProducts" :key="product.id"
-                            class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5
-                            hover:border-orange-500/60 
-                            hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)]">
+                            class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 hover:border-orange-500 dark:hover:border-orange-500/60 hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)] flex flex-col justify-between cursor-pointer">
                             
                             <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
                                 

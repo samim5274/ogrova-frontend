@@ -100,9 +100,9 @@
                 <!-- TOP BREADCRUMB & AVAILABILITY HEADER -->
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                     <nav class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.25em] text-gray-400">
-                        <router-link to="/" class="hover:text-indigo-500 transition-colors">Shop</router-link>
+                        <router-link to="/" class="hover:text-orange-500 transition-colors">Shop</router-link>
                         <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                        <span class="text-indigo-500">{{ product.category?.name }}</span>
+                        <span class="text-orange-500">{{ product.category?.name }}</span>
                     </nav>
                     
                     <div class="flex items-center gap-4 text-xs font-bold">
@@ -130,7 +130,7 @@
                                 
                                 <div v-if="hasDiscount" class="absolute top-6 left-6 z-10">
                                     <span class="bg-white/80 dark:bg-black/50 backdrop-blur-xl border border-white/20 dark:border-white/10 px-4 py-2 rounded-2xl text-xs font-black text-red-600 dark:text-red-400 shadow-2xl tracking-wider uppercase inline-block">
-                                        -{{ discountPercent }}% OFF X
+                                        -{{ discountPercent }}% OFF
                                     </span>
                                 </div>
                                 
@@ -158,7 +158,7 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between flex-wrap gap-2">
                                     <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-gray-400">
-                                        <span v-if="product.brand?.name" class="text-emerald-600 dark:text-orange-500">{{ product.brand.name }}</span>
+                                        <span v-if="product.brand?.name" class="text-orange-500">{{ product.brand.name }}</span>
                                         <span v-if="product.brand?.name" class="w-1 h-1 bg-gray-300 rounded-full"></span>
                                         <span>{{ product.category?.name }}</span>
                                     </nav>
@@ -443,7 +443,7 @@
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         <div v-for="cat_product in categoryProducts" :key="cat_product.id"
-                            class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 hover:border-emerald-500 dark:hover:border-orange-500/60 hover:shadow-[0_24px_48px_-15px_rgba(16,185,129,0.12)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)] flex flex-col justify-between cursor-pointer"
+                            class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5 hover:border-orange-500 dark:hover:border-orange-500/60 hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)] flex flex-col justify-between cursor-pointer"
                             @click="ProductDetails(cat_product)">
 
                             <!-- Image Container -->
@@ -451,7 +451,9 @@
 
                                 <!-- Discount Badge -->
                                 <span v-if="cat_product.discount > 0"
-                                    class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300 text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20 dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
+                                    class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300 text-white
+                                    /* Light Mode: Emerald Green Gradient */
+                                    bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/30">
                                     -{{ Math.round((cat_product.discount / cat_product.price) * 100) }}% OFF
                                 </span>
 
@@ -467,7 +469,9 @@
                                 <!-- Quick View Overlay (Desktop) -->
                                 <div class="hidden lg:flex absolute inset-0 bg-slate-950/10 dark:bg-slate-950/30 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-all duration-300 items-end p-3">
                                     <button @click.stop="ProductDetails(cat_product)"
-                                        class="w-full bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50 transform translate-y-3 group-hover:translate-y-0 active:scale-[0.97] shadow-md transition-all duration-300 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/20 dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
+                                        class="w-full bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50 transform translate-y-3 group-hover:translate-y-0 active:scale-[0.97] shadow-md transition-all duration-300
+                                        hover:bg-orange-600 hover:text-white hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20
+                                        dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
                                         Quick View
                                     </button>
                                 </div>
@@ -479,17 +483,17 @@
                                     <!-- Category & Points -->
                                     <div class="flex items-center justify-between gap-2 mb-2">
                                         <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider truncate max-w-[65%]">
-                                            {{ cat_product.category?.name || categoryName }}
+                                            {{ truncate(cat_product.category?.name, 15) }}
                                         </span>
 
-                                        <div v-if="cat_product.point" class="flex items-center justify-center px-2 py-0.5 rounded-full border transition-all duration-300 bg-emerald-50 text-emerald-600 border-emerald-200/60 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20">
+                                        <div v-if="cat_product.point" class="flex items-center justify-center px-2 py-0.5 rounded-full border transition-all duration-300 bg-orange-50 text-orange-600 border-orange-200/60 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20">
                                             <i class="fa-solid fa-award text-[9px] mr-1"></i>
                                             <span class="text-[9px] md:text-[10px] font-extrabold tracking-wide">{{ cat_product.point }} Pts</span>
                                         </div>
                                     </div>
 
                                     <!-- Product Name -->
-                                    <h4 class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate transition-colors duration-300 group-hover:text-emerald-600 group-hover:underline dark:group-hover:text-orange-400">
+                                    <h4 class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate cursor-pointer transition-colors duration-300 hover:text-orange-600 hover:underline dark:hover:text-orange-400">
                                         {{ cat_product.name }}
                                     </h4>
 
@@ -827,6 +831,11 @@ const getProductImage = (product) => {
         ?? product?.images?.[0];
 
     return image?.url || defaultProductImage;
+}
+
+const truncate = (text, len) => {
+    if (!text) return 'Products'
+    return text.length > len ? text.slice(0, len) + '...' : text
 }
 
 // cart section
