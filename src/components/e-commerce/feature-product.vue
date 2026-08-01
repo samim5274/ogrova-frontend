@@ -22,17 +22,20 @@
         <!-- Swiper Carousel -->
         <swiper
             :modules="swiperModules"
-            :slides-per-view="1"
+            :slides-per-view="2"
             :space-between="20"
             :loop="enableLoop"
             :autoplay="autoplayConfig"
             :breakpoints="swiperBreakpoints"
-            :observer="true"
-            :observe-parents="true"
-            :resize-observer="true"
-            class="pb-10 GPU-accelerated"> 
-            <swiper-slide v-for="product in formattedProducts" :key="product.id">
-                <div class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-transform duration-300 ease-out hover:-translate-y-1.5 hover:border-emerald-500 dark:hover:border-orange-500/60 hover:shadow-lg transform-gpu" >
+            :observer="false"
+            :observe-parents="false"
+            :resize-observer="false"
+            :update-on-window-resize="false"
+            :watch-overflow="true"
+            :round-lengths="true"
+            class="pb-10 optimized-swiper">
+            <swiper-slide v-for="(product, index) in formattedProducts" :key="product.id">
+                <div class="group relative bg-white dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500 dark:hover:border-orange-500/60 hover:shadow-lg">
                     
                     <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
                         <!-- Badge -->
@@ -42,12 +45,19 @@
                         </span>
 
                         <!-- Image -->
-                        <img @click="ProductDetails(product.slug)" :src="product.imageUrl" :alt="product.name"
-                            @error="onImageError" loading="lazy" decoding="async" width="300" height="300"
-                            class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500 ease-out cursor-pointer transform-gpu" />
+                        <img @click="ProductDetails(product.slug)"
+                            :src="product.imageUrl"
+                            :alt="product.name"
+                            :loading="index < 2 ? 'eager' : 'lazy'"
+                            :fetchpriority="index < 2 ? 'high' : 'low'"
+                            decoding="async"
+                            width="300"
+                            height="300"
+                            @error="onImageError"
+                            class="w-full h-full object-contain p-4 transition-transform duration-300 group-hover:scale-105 ease-out cursor-pointer"/>
 
                         <!-- Quick View Hover -->
-                        <div class="hidden lg:flex absolute inset-0 bg-slate-950/10 dark:bg-slate-950/30 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-opacity duration-300 items-end p-3 pointer-events-none group-hover:pointer-events-auto">
+                        <div class="hidden lg:flex absolute inset-0 bg-slate-950/10 dark:bg-slate-950/30 opacity-0 group-hover:opacity-100 lg:group-hover:backdrop-blur-[2px] transition-opacity duration-300 items-end p-3 pointer-events-none group-hover:pointer-events-auto">
                             <button
                                 @click="ProductDetails(product.slug)"
                                 class="w-full bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50 transform translate-y-3 group-hover:translate-y-0 active:scale-[0.97] shadow-md transition-all duration-300 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500">
@@ -79,7 +89,7 @@
 
                         <span class="text-[9px] md:text-[10px] font-medium text-slate-400 dark:text-slate-500 truncate mb-0.5 block">
                             <i
-                                v-for="n in 5"
+                                v-for="n in stars"
                                 :key="n"
                                 class="fa-solid fa-star"
                                 :class="n <= product.rating ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-700'"
@@ -121,13 +131,18 @@ const props = defineProps({
     }
 });
 
+
+
+const stars = [1,2,3,4,5];
+const formatter = new Intl.NumberFormat("en-BD");
+
 // Optimization 1: Static module & options allocation to prevent re-instantiation
 const swiperModules = [Autoplay];
 
 const autoplayConfig = {
-    delay: 3500,
-    disableOnInteraction: false,
-    pauseOnMouseEnter: true // Prevents layout thrashing on active interaction
+    delay:4000,
+    disableOnInteraction:true,
+    pauseOnMouseEnter:true
 };
 
 const swiperBreakpoints = {
@@ -138,7 +153,7 @@ const swiperBreakpoints = {
     1280: { slidesPerView: 6 }
 };
 
-const enableLoop = computed(() => props.products.length > 6);
+const enableLoop = computed(() => props.products.length > 10);
 
 // Optimization 2: Pre-compute formatted data in computed property
 // Avoids invoking functions during DOM render loops, reducing Layout Thrashing
@@ -163,12 +178,12 @@ const formattedProducts = computed(() => {
 
         return {
         ...product,
-        imageUrl,
-        categoryName,
-        discountPercentage: discountPct,
-        rating: Math.round(Number(product?.ratings_avg_rating || 0)),
-        formattedPrice: price.toLocaleString('en-BD'),
-        formattedFinalPrice: finalPrice.toLocaleString('en-BD')
+            imageUrl,
+            categoryName,
+            discountPercentage: discountPct,
+            rating: Math.round(Number(product?.ratings_avg_rating || 0)),
+            formattedPrice: formatter.format(price),
+            formattedFinalPrice: formatter.format(finalPrice),
         };
     });
 });
@@ -184,19 +199,12 @@ const ProductDetails = (slug) => {
 </script>
 
 <style scoped>
-/* GPU Acceleration and Layer Containment */
 .contain-paint {
-    contain: layout style;
+    contain: layout;
 }
 
-.GPU-accelerated :deep(.swiper-slide) {
-    will-change: transform;
-    transform: translateZ(0);
+.optimized-swiper :deep(.swiper-slide) {
+    transform: translate3d(0,0,0);
     backface-visibility: hidden;
-}
-
-.transform-gpu {
-    transform: translateZ(0);
-    will-change: transform;
 }
 </style>
