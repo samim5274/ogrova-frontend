@@ -620,6 +620,8 @@ onMounted(async () => {
         loadUser(),
         getCartItems()
     ]);
+
+    fetchCheckoutData();
 });
 </script>
 

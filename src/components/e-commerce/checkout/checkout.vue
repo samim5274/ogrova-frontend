@@ -55,8 +55,168 @@
                     </div>
                 </div>
 
+                <!-- Checkout Loading Overlay -->
+                <div v-if="submitting"
+                    class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                    <div class="w-full max-w-sm mx-4 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 text-center border border-slate-200 dark:border-slate-700">
+                        
+                        <!-- Animated Loader -->
+                        <div class="relative mx-auto w-20 h-20 mb-6">
+                            <div class="absolute inset-0 rounded-full border-4 border-emerald-100 dark:border-orange-500/20"></div>
+                            
+                            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-[#16A34A] dark:border-t-[#F97316] animate-spin"></div>
+
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fa-solid fa-bag-shopping text-2xl text-[#16A34A] dark:text-[#F97316] animate-pulse"></i>
+                            </div>
+                        </div>
+
+
+                        <!-- Text -->
+                        <h3 class="text-xl font-black text-gray-900 dark:text-white">
+                            Processing Order
+                        </h3>
+
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            Please wait while we confirm your order...
+                        </p>
+
+
+                        <!-- Progress dots -->
+                        <div class="flex justify-center gap-2 mt-5">
+                            <span class="w-2 h-2 rounded-full bg-[#16A34A] dark:bg-[#F97316] animate-bounce"></span>
+                            <span class="w-2 h-2 rounded-full bg-[#16A34A] dark:bg-[#F97316] animate-bounce [animation-delay:150ms]"></span>
+                            <span class="w-2 h-2 rounded-full bg-[#16A34A] dark:bg-[#F97316] animate-bounce [animation-delay:300ms]"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Checkout Skeleton Loading -->
+                <div v-if="loading" class="grid lg:grid-cols-12 gap-8">
+
+                    <!-- Left Side Skeleton -->
+                    <div class="lg:col-span-8 space-y-6">
+
+                        <!-- Address Skeleton -->
+                        <div class="animate-pulse bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+
+                            <!-- Title -->
+                            <div class="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-5"></div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                                <div 
+                                    v-for="i in 4" 
+                                    :key="i"
+                                    class="p-4 rounded-xl border border-slate-200 dark:border-slate-700"
+                                >
+
+                                    <div class="flex justify-between mb-3">
+                                        <div class="h-5 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                        <div class="h-5 w-5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                                    </div>
+
+
+                                    <div class="space-y-3">
+
+                                        <div class="h-4 w-3/4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                        <div class="h-3 w-1/2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                        <div class="h-3 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                        <div class="h-3 w-5/6 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Payment Method Skeleton -->
+                        <div class="animate-pulse bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+
+                            <div class="h-4 w-36 bg-slate-200 dark:bg-slate-700 rounded mb-5"></div>
+
+                            <div class="grid sm:grid-cols-2 gap-4">
+
+                                <div 
+                                    v-for="i in 2"
+                                    :key="i"
+                                    class="h-20 rounded-xl bg-slate-200 dark:bg-slate-700"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Note Skeleton -->
+                        <div class="animate-pulse bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+
+                            <div class="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+
+                            <div class="h-24 w-full bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Right Side Payment Summary Skeleton -->
+                    <div class="lg:col-span-4">
+
+                        <div class="animate-pulse bg-white dark:bg-slate-900 rounded-xl p-8 border border-gray-200 dark:border-gray-700">
+
+                            <div class="h-6 w-44 bg-slate-200 dark:bg-slate-700 rounded mb-8"></div>
+
+
+                            <div class="space-y-5">
+
+                                <div 
+                                    v-for="i in 6"
+                                    :key="i"
+                                    class="flex justify-between"
+                                >
+
+                                    <div class="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                    <div class="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                </div>
+
+
+                                <!-- Divider -->
+                                <div class="h-px bg-slate-200 dark:bg-slate-700 my-5"></div>
+
+
+                                <!-- Total -->
+                                <div class="flex justify-between items-center">
+
+                                    <div class="h-6 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                    <div class="h-10 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
+
+                                </div>
+
+
+                                <!-- Button -->
+                                <div class="h-14 w-full bg-slate-200 dark:bg-slate-700 rounded-xl mt-6"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
                 <!-- Empty Cart State -->
-                <div v-if="cartItems.length === 0" 
+                <div v-else-if="cartItems.length === 0" 
                     class="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-800 rounded-[2.5rem] border border-dashed border-gray-300 dark:border-gray-700 shadow-xl">
                     <div class="w-24 h-24 bg-[#16A34A]/10 dark:bg-[#F97316]/10 rounded-full flex items-center justify-center mb-6">
                         <i class="fa-solid fa-bag-shopping text-4xl text-[#16A34A] dark:text-[#F97316]"></i>
@@ -494,19 +654,11 @@
                                     <span class="text-gray-900 dark:text-white">৳ {{ subtotal.toLocaleString() }}</span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
-                                    <span class="text-gray-500">Items</span>
-                                    <span
-                                        class="text-[#16A34A] dark:text-[#F97316] uppercase font-black"
-                                    >
-                                        {{ `${cartItems.length} * ${shippingCharge} ৳` }}
-                                    </span>
-                                </div>
-                                <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Shipping</span>
                                     <span
                                         class="text-[#16A34A] dark:text-[#F97316] uppercase font-black"
                                     >
-                                        {{ shippingCharge > 0 ? `৳ ${shippingCharge * cartItems.length}` : 'FREE' }}
+                                        {{ shippingCharge > 0 ? `৳ ${shippingCharge}` : 'FREE' }}
                                     </span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
@@ -700,10 +852,32 @@ const router = useRouter();
 const loading = ref(false);
 const successMsg = ref('');
 const errorMsg = ref('');
+const addressLoading = ref(false);
+const cartLoading = ref(false);
+const checkoutLoading = ref(false);
 
 
+const fetchCheckoutData = async () => {
 
+    loading.value = true;
 
+    try {
+
+        await Promise.all([
+            getAddress(),
+            getCartItems(),
+        ]);
+
+    } catch(error) {
+
+        console.log(error);
+
+    } finally {
+
+        loading.value = false;
+
+    }
+};
 
 
 
@@ -807,7 +981,7 @@ const deleteAddress = async (id) => {
 
 // User address
 async function getAddress() {
-    loading.value = true;
+    addressLoading.value = true;
     errorMsg.value = '';
 
     try{
@@ -827,7 +1001,7 @@ async function getAddress() {
             err.response?.data?.error ||
             "Unable to load your addresses. Please try again.";
     } finally {
-        loading.value = false;
+        addressLoading.value = false;
     }
 }
 
@@ -888,7 +1062,7 @@ const form = reactive({
 // Get order details
 const cartItems = ref([]);
 async function getCartItems() {
-    loading.value = true
+    cartLoading.value = true;
     try {
         const res = await api.get(`/cart`);
         cartItems.value = res.data.data;
@@ -899,7 +1073,7 @@ async function getCartItems() {
             err.response?.data?.error ||
             "Something went wrong.";
     } finally {
-        loading.value = false;
+        cartLoading.value = false;
     }
 }
 
@@ -919,12 +1093,13 @@ const totalPoint = computed(() => {
 
 // Coupon Discount
 const couponDiscount = computed(() => {
-    if (!couponSuccess.value || !couponData.value) {
+    
+    if(!couponData.value){
         return 0;
     }
 
-    if (couponData.value.discount_type === 'percent') {
-        return (subtotal.value * Number(couponData.value.discount)) / 100;
+    if (couponData.value.discount_type === 'percent'){
+        return subtotal.value * couponData.value.discount / 100;
     }
 
     return Number(couponData.value.discount);
@@ -932,7 +1107,10 @@ const couponDiscount = computed(() => {
 
 // Total after coupon
 const total = computed(() => {
-    return Math.max(0, subtotal.value - couponDiscount.value);
+    return Math.max(
+        0,
+        subtotal.value - couponDiscount.value
+    );
 });
 
 // Grand Total = Total + Shipping
@@ -1010,16 +1188,19 @@ const orderConfirmed = ref(false);
 async function confirmPayment() {
 
     if (submitting.value) return;
+    submitting.value = true;
 
     const routeReg = route.params.reg;
 
     if (!routeReg) {
         errorMsg.value = "Something went wrong.";
+        submitting.value = false;
         return;
     }
 
     if (!form.payment_method) {
         errorMsg.value = "Please select a payment method.";
+        submitting.value = false;
         return;
     }
 
@@ -1146,11 +1327,16 @@ function handleSearch(query) {
 }
 
 onMounted(async () => {
-    await Promise.all([
-        getAddress(),
-        loadUser(),
-        getCartItems(),
-    ]);
+    loading.value = true;
+    try {
+        await Promise.all([
+            getAddress(),
+            loadUser(),
+            getCartItems(),
+        ]);
+    } finally {
+        loading.value = false;
+    }
 })
 
 </script>
