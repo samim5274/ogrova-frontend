@@ -17,23 +17,19 @@
 
                 <div class="flex items-center justify-between mb-8 px-2">
                     <div class="flex items-center gap-3">
-                        <div class="h-8 w-1.5 bg-emerald-600 dark:bg-orange-500 rounded-full"></div>
+                        <div class="h-8 w-1.5 bg-orange-500 rounded-full"></div>
                         <div>
-                        <h2 class="text-xl md:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
-                            Category <span class="text-emerald-600 dark:text-orange-500">Products</span>
-                        </h2>
-                        <p class="text-[11px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">
-                            Handpicked collections for you
-                        </p>
+                            <h2 class="text-xl md:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                                Category <span class="text-orange-500">Products</span>
+                            </h2>
+                            <p class="text-[11px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                                Handpicked collections for you
+                            </p>
                         </div>
                     </div>
-
-                    <!-- <button class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
-                        View All <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </button> -->
                 </div>
 
-                <div class="w-full mb-8">
+                <div class="w-full mb-8" ref="topScroll">
                     <div class="flex items-center gap-3 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x">
                         
                         <!-- "All Products" Button -->
@@ -50,7 +46,7 @@
                             class="group flex-none flex items-center gap-2 px-6 py-3 rounded-2xl cursor-pointer transition-all duration-300 border font-semibold text-xs"
                             :class="[
                                 route.params.id == cat.id 
-                                    ? 'bg-emerald-600 border-emerald-600 text-white dark:bg-orange-500 dark:border-orange-500 shadow-lg shadow-emerald-500/20 dark:shadow-orange-500/20' 
+                                    ? 'text-white bg-orange-500 border-orange-500 shadow-lg shadow-emerald-500/20 dark:shadow-orange-500/20' 
                                     : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:scale-105 hover:border-emerald-500 dark:hover:border-orange-500'
                             ]">
                             
@@ -78,17 +74,15 @@
                         
                         <div v-for="product in categoryProducts" :key="product.id"
                             class="group relative bg-white dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800/80 transition-all duration-500 ease-out transform hover:-translate-y-1.5
-                            hover:border-emerald-500 dark:hover:border-orange-500/60 
-                            hover:shadow-[0_24px_48px_-15px_rgba(16,185,129,0.12)] dark:hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)]">
+                            hover:border-orange-500/60 
+                            hover:shadow-[0_24px_48px_-15px_rgba(249,115,22,0.15)]">
                             
                             <div class="relative aspect-square overflow-hidden rounded-xl bg-slate-50/60 dark:bg-slate-900/40 m-2 transition-colors duration-300">
                                 
                                 <span v-if="product.discount" 
                                     class="absolute top-2.5 left-2.5 z-10 font-black text-[9px] md:text-[10px] px-2 py-0.5 rounded-md tracking-wider uppercase shadow-sm transition-all duration-300 text-white
                                     /* Light Mode: Emerald Green Gradient */
-                                    bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/20
-                                    /* Dark Mode: Orange/Amber Gradient */
-                                    dark:from-orange-500 dark:to-amber-500 dark:shadow-orange-500/30">
+                                    bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/30">
                                     -{{ Math.round((product.discount / product.price) * 100) }}% OFF
                                 </span>
 
@@ -100,9 +94,9 @@
                                     class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700 ease-out cursor-pointer">
 
                                 <div class="hidden lg:flex absolute inset-0 bg-slate-950/10 dark:bg-slate-950/30 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-all duration-300 items-end p-3">
-                                    <button @click="ProductDetails(product)" 
+                                    <button @click="ProductDetails(product)"
                                         class="w-full bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl border border-slate-200/50 dark:border-slate-800/50 transform translate-y-3 group-hover:translate-y-0 active:scale-[0.97] shadow-md transition-all duration-300
-                                        hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-600/20
+                                        hover:bg-orange-600 hover:text-white hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20
                                         dark:hover:bg-orange-500 dark:hover:text-white dark:hover:border-orange-500 dark:hover:shadow-lg dark:hover:shadow-orange-500/20">
                                         Quick View
                                     </button>
@@ -112,19 +106,19 @@
                             <div class="p-3.5 pt-1.5">
                                 <div class="flex items-center justify-between gap-2 mb-1.5">
                                     <span class="text-[8px] md:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest truncate max-w-[65%]">
-                                        {{ product.category?.name || 'General' }}
+                                        {{ truncate(product.category?.name, 15) }}
                                     </span>
                                     
-                                    <div v-if="product.point" class="flex items-center gap-0.5 px-2 py-0.5 rounded-md shrink-0 border transition-all duration-300
-                                        bg-emerald-500/10 text-emerald-600 border-emerald-500/5
-                                        dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/10">
-                                        <span class="text-[8px] md:text-[9px] font-extrabold tracking-wide">{{ product.point }} Pts</span>
+                                    <div v-if="product.point" class="flex items-center justify-center px-2 py-0.5 rounded-full border transition-all duration-300
+                                        bg-orange-50 text-orange-600 border-orange-200/60
+                                        dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20">
+                                        <i class="fa-solid fa-award text-[9px] mr-1"></i>
+                                        <span class="text-[9px] md:text-[10px] font-extrabold tracking-wide">{{ product.point }} Pts</span>
                                     </div>
                                 </div>
 
                                 <h4 @click="ProductDetails(product)" 
-                                    class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate cursor-pointer transition-colors duration-300 mb-3
-                                    hover:text-emerald-600 dark:hover:text-orange-400">
+                                    class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 truncate cursor-pointer transition-colors duration-300 hover:text-orange-600 hover:underline dark:hover:text-orange-400">
                                     {{ product.name }}
                                 </h4>
 
@@ -236,7 +230,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import api, { makeImg } from '../../services/api'
@@ -282,6 +276,10 @@ const finalPrice = (product) => {
     return discount > 0 ? price - discount : price
 }
 
+const truncate = (text, len) => {
+    if (!text) return 'Products'
+    return text.length > len ? text.slice(0, len) + '...' : text
+}
 
 
 
@@ -396,7 +394,7 @@ async function getCategoryProducts(page = 1) {
     }
 }
 
-
+const topScroll = ref(null);
 function changePage(page) {
     if (
         page < 1 ||
@@ -405,6 +403,12 @@ function changePage(page) {
     ) return;
 
     getCategoryProducts(page);
+    nextTick();
+
+    topScroll.value?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+    });
 }
 
 
@@ -501,7 +505,6 @@ useHead(() => {
         c?.meta_keywords ||
         `${c?.name}, Ogrova`
 
-    // Absolute image URL (relative path হলে social bots প্রিভিউ দেখাতে পারবে না)
     const rawImage =
         c?.og_image
             ? makeImg(c.og_image)
@@ -513,11 +516,9 @@ useHead(() => {
         ? rawImage
         : `${siteUrl}${rawImage}`
 
-    // canonical — route-based, window.location নয় (SSR-safe, query-string safe)
     const baseUrl = `${siteUrl}/category/${c?.slug || route.params.slug}/${route.params.id}`
     const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl
 
-    // Pagination page 2+ noindex — duplicate content এড়াতে
     const robotsContent =
         c?.indexable === false
             ? "noindex,nofollow"
@@ -607,7 +608,7 @@ useHead(() => {
 
 onMounted(() => {
     fetchCategories();
-    getCategoryProducts();
+    // getCategoryProducts();
 
     const theme = localStorage.getItem("theme");
     if (theme === "dark") {
