@@ -494,11 +494,19 @@
                                     <span class="text-gray-900 dark:text-white">৳ {{ subtotal.toLocaleString() }}</span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
+                                    <span class="text-gray-500">Items</span>
+                                    <span
+                                        class="text-[#16A34A] dark:text-[#F97316] uppercase font-black"
+                                    >
+                                        {{ `${cartItems.length} * ${shippingCharge} ৳` }}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between font-bold text-sm">
                                     <span class="text-gray-500">Shipping</span>
                                     <span
                                         class="text-[#16A34A] dark:text-[#F97316] uppercase font-black"
                                     >
-                                        {{ shippingCharge > 0 ? `৳ ${shippingCharge}` : 'FREE' }}
+                                        {{ shippingCharge > 0 ? `৳ ${shippingCharge * cartItems.length}` : 'FREE' }}
                                     </span>
                                 </div>
                                 <div class="flex justify-between font-bold text-sm">
