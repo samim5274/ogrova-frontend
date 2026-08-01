@@ -57,15 +57,45 @@
                     </div>
                 </div>
 
+                <div v-if="loading" class="grid lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-8 space-y-5">
+                        <div v-for="i in 5" :key="i" class="animate-pulse bg-white dark:bg-slate-800 p-5 rounded-2xl border dark:border-slate-700">
+                            <div class="flex gap-5">
+                                <div class="w-20 h-20 rounded-xl bg-slate-200 dark:bg-slate-700"></div>
+
+                                <div class="flex-1 space-y-3">
+                                    <div class="h-5 w-3/4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div class="h-4 w-1/2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div class="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4">
+                        <div class="animate-pulse bg-white dark:bg-slate-800 p-5 border dark:border-slate-700 rounded-2xl h-96 min-h-[420px]">
+                            <div class="flex gap-5" v-for="i in 3" :key="i">
+                                <div class="w-20 h-20 rounded-xl bg-slate-200 dark:bg-slate-700"></div>
+
+                                <div class="flex-1 space-y-3">
+                                    <div class="h-5 w-3/4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div class="h-4 w-1/2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div class="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Empty Cart State -->
-                <div v-if="cartItems.length === 0" 
+                <div  v-else-if="cartItems.length === 0" 
                     class="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#1f2937] rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-700 shadow-xl">
-                    <div class="w-24 h-24 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mb-6 ring-8 ring-emerald-50/50 dark:ring-emerald-500/5">
-                        <i class="fa-solid fa-bag-shopping text-4xl text-[#16A34A] dark:text-[#0f853a]"></i>
+                    <div class="w-24 h-24 bg-[#16a34a36] dark:bg-[#f9741633] rounded-full flex items-center justify-center mb-6 ring-8 ring-[#16a34a54] dark:ring-[#f9741649]">
+                        <i class="fa-solid fa-bag-shopping text-4xl text-[#16A34A] dark:text-[#F97316]"></i>
                     </div>
                     <h2 class="text-2xl font-black text-zinc-900 dark:text-white">Your cart feels a bit light</h2>
                     <p class="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Add some items to make it happy!</p>
-                    <router-link to="/" class="mt-8 px-8 py-3.5 bg-[#16A34A] text-white rounded-xl font-bold hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-[#16A34A]/20 dark:shadow-none">
+                    <router-link to="/" class="mt-8 px-8 py-3.5 bg-[#16A34A] dark:bg-[#F97316] text-white rounded-xl font-bold hover:bg-emerald-700 dark:hover:bg-[#c75300] active:scale-95 transition-all shadow-lg shadow-[#16A34A]/20 dark:shadow-none">
                         Go Shopping
                     </router-link>
                 </div>
@@ -75,15 +105,15 @@
                     
                     <!-- Cart Items List -->
                     <div class="lg:col-span-8 space-y-5">
-                        <div v-for="item in cartItems" :key="item.id"
+                        <div v-for="item in cartItems" :key="item.id" v-memo="[item.quantity,item.price,item.discount,item.point]"
                             class="group relative bg-white dark:bg-[#1f2937] p-5 rounded-2xl shadow-sm border border-zinc-200/80 dark:border-zinc-700/60 hover:shadow-xl hover:border-[#16A34A] dark:hover:border-[#F97316] transition-all duration-300">
                             
                             <div class="flex flex-col sm:flex-row gap-6">
                                 <!-- Product Image -->
                                 <div @click="ProductDetails(item)" class="relative w-24 h-24 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-zinc-100 dark:bg-[#111827] cursor-pointer flex-shrink-0 mx-auto sm:mx-0">
-                                    <img :src="getProductImage(item)" :alt="item.product?.name || 'Product Image'"
+                                    <img :src="item.image" :alt="item.product?.name || 'Product Image'" loading="lazy" decoding="async"
                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        @error="(e) => e.target.src = defaultProductImage" />
+                                         @error="item.image = defaultProductImage" />
                                 </div>
 
                                 <!-- Item Details -->
@@ -122,9 +152,10 @@
                                         </div>
                                         
                                         <!-- Remove Button -->
-                                        <button @click="remove(item)" 
+                                        <button @click="remove(item)" :disabled="removeLoading[item.id]"
                                             class="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-400 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 transition-all flex-shrink-0">
-                                            <i class="fa-solid fa-trash-can text-sm"></i>
+                                            <i v-if="removeLoading[item.id]" class="fa-solid fa-spinner fa-spin" ></i>
+                                            <i v-else class="fa-solid fa-trash-can" ></i>
                                         </button>
                                     </div>
 
@@ -134,12 +165,12 @@
                                         <!-- Quantity Controls -->
                                         <div class="flex items-center p-1 bg-zinc-50 dark:bg-[#111827] rounded-xl border border-zinc-200 dark:border-zinc-700">
                                             <button @click="decreaseQty(item)" 
-                                                :disabled="item.quantity <= 1"
+                                                :disabled="qtyLoading[item.id] || item.quantity <= 1"
                                                 class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-[#16A34A] dark:hover:text-[#F97316] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                                                 <i class="fa-solid fa-minus text-xs"></i>
                                             </button>
                                             <span class="w-10 text-center font-bold text-zinc-900 dark:text-white">{{ item.quantity }}</span>
-                                            <button @click="increaseQty(item)" 
+                                            <button @click="increaseQty(item)" :disabled="qtyLoading[item.id]"
                                                 class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-[#1f2937] shadow-sm text-zinc-600 dark:text-zinc-300 hover:text-[#16A34A] dark:hover:text-[#F97316] transition-colors">
                                                 <i class="fa-solid fa-plus text-xs"></i>
                                             </button>
@@ -234,9 +265,16 @@
                                     </div>
                                 </div>
 
-                                <button @click="checkOut(cartItems)" class="w-full mt-8 bg-[#16a34a] hover:bg-[#15803d] dark:bg-[#F97316] hover:dark:bg-[#d85a00] text-white py-4 rounded-xl font-black text-base tracking-wide transition-all shadow-lg shadow-[#16a34a]/20 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.99]">
-                                    Checkout Now
-                                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                                <button @click="checkOut(cartItems)" :disabled="checkoutLoading" class="w-full mt-8 bg-[#16a34a] hover:bg-[#15803d] dark:bg-[#F97316] hover:dark:bg-[#d85a00] text-white py-4 rounded-xl font-black text-base tracking-wide transition-all shadow-lg shadow-[#16a34a]/20 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.99]">
+                                    <span v-if="checkoutLoading">
+                                        <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                                        Processing...
+                                    </span>
+
+                                    <span v-else>
+                                        Checkout Now
+                                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                                    </span>
                                 </button>
 
                                 <p class="text-center text-[11px] font-bold text-zinc-400 mt-6 flex items-center justify-center gap-2">
@@ -266,17 +304,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted, computed, defineAsyncComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import api from '../../services/api';
 
-import Message from '../Message/message.vue';
-import Navbar from './navbar.vue';
-import NewsLatter from './news-latter.vue';
-import FooterSection from './footer.vue';
+const Message = defineAsyncComponent(() =>
+    import("../Message/message.vue")
+);
+
+const Navbar = defineAsyncComponent({
+    loader: () => import("./navbar.vue"),
+    delay: 200,
+    timeout: 10000,
+});
+
+const NewsLatter = defineAsyncComponent(() =>
+    import("./news-latter.vue")
+);
+
+const FooterSection = defineAsyncComponent(() =>
+    import("./footer.vue")
+);
 import { useAuth } from '../../stores/auth';
 
-const route = useRoute();
 const router = useRouter();
 
 
@@ -290,15 +340,26 @@ const router = useRouter();
 const loading = ref(false);
 const successMsg = ref('');
 const errorMsg = ref('');
+const checkoutLoading = ref(false);
+const removeLoading = ref({});
+const qtyLoading = ref({});
 
 
 const cartItems = ref([]);
+const defaultProductImage = "/images/product/default-product.webp";
+
 async function getCartItems() {
     loading.value = true
     try {
-        const res = await api.get(`/cart`);
-        cartItems.value = res.data.data;
+        const { data } = await api.get("/cart");
+        // cartItems.value = data.data ?? [];
         // console.log(cartItems.value);
+        cartItems.value = (data.data ?? []).map(item => ({
+            ...item,
+            image:
+                item.product?.images?.[0]?.url ??
+                defaultProductImage,
+        }));
     } catch (err) {
         console.error(err);
         errorMsg.value = err || "Something is wrong";
@@ -334,55 +395,102 @@ const totalPoint = computed(() =>
 )
 
 
-// qty update 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Debounce timer
 const qtyTimers = {};
 
-// 1. Quantity  increaseQty
-async function increaseQty(item) {
-    item.quantity = Number(item.quantity || 1) + 1;
+// Increase
+function increaseQty(item) {
+    if (qtyLoading.value[item.id]) return;
+    item.quantity = Number(item.quantity) + 1;
     queueQtyUpdate(item);
 }
 
-// 2. Quantity  decreaseQty
-async function decreaseQty(item) {
-    if (item.quantity > 1) {
-        item.quantity = Number(item.quantity) - 1;
-        queueQtyUpdate(item);
-    }
+// Decrease
+function decreaseQty(item) {
+    if (qtyLoading.value[item.id]) return;
+    if (item.quantity <= 1) return;
+
+    item.quantity = Number(item.quantity) - 1;
+    queueQtyUpdate(item);
 }
 
-// 3. Debounce 
+// Debounce
 function queueQtyUpdate(item) {
-    // Unique key: reg এবং product_id
-    const key = `${item.reg}_${item.product_id}`;
+    const key = `${item.reg}_${item.product_id}_${item.variant_id ?? 0}`;
 
-    if (qtyTimers[key]) clearTimeout(qtyTimers[key]);
+    clearTimeout(qtyTimers[key]);
 
     qtyTimers[key] = setTimeout(() => {
         updateQty(item);
     }, 500);
 }
 
+// Update Quantity
 async function updateQty(item) {
+    const oldQty = item.quantity;
+    qtyLoading.value[item.id] = true;
+
     try {
-        const res = await api.post(`/cart/qty-update/${item.reg}/${item.product_id}/${item.variant_id}`, {
-            quantity: Number(item.quantity),
-        });
-        if (res?.data?.status === 'success') {
-            item.quantity = Number(res.data.quantity);
-            if (res.data.available_stock !== undefined) {
-                item.available_stock = res.data.available_stock;
+        const { data } = await api.post(
+            `/cart/qty-update/${item.reg}/${item.product_id}/${item.variant_id}`,
+            {
+                quantity: oldQty,
+            }
+        );
+
+        if (data.status === "success") {
+            
+            item.quantity = Number(data.quantity);
+
+            if (data.available_stock !== undefined) {
+                item.available_stock = data.available_stock;
+            }
+
+            if (data.price !== undefined) {
+                item.price = Number(data.price);
+            }
+
+            if (data.discount !== undefined) {
+                item.discount = Number(data.discount);
+            }
+
+            if (data.point !== undefined) {
+                item.point = Number(data.point);
             }
         }
-        await getCartItems(); 
     } catch (err) {
-        await getCartItems();
-        const msg = err?.response?.data?.message || "Something went wrong or Out of stock.";
-        errorMsg.value = msg;
         
+        item.quantity = Number(item.quantity) > oldQty ? oldQty - 1 : oldQty + 1;
+
+        errorMsg.value =
+            err?.response?.data?.message || "Out of stock.";
+
         setTimeout(() => {
             errorMsg.value = "";
         }, 3000);
+    } finally{
+        qtyLoading.value[item.id] = false;
     }
 }
 
@@ -396,6 +504,7 @@ async function updateQty(item) {
 
 
 async function remove(item) {
+    removeLoading.value[item.id] = true;
     try {
         const res = await api.post(`/cart/remove-to-cart/${item.id}/${item.reg}/${item.product_id}/${item.variant_id}`, {
             quantity: Number(item.quantity),
@@ -406,15 +515,18 @@ async function remove(item) {
                 item.available_stock = res.data.available_stock;
             }
         }
-        await getCartItems(); 
+        cartItems.value = cartItems.value.filter(
+            i => i.id !== item.id
+        ); 
     } catch (err) {
-        await getCartItems();
         const msg = err?.response?.data?.message || "Something went wrong.";
         errorMsg.value = msg;
         
         setTimeout(() => {
             errorMsg.value = "";
         }, 3000);
+    } finally {
+        removeLoading.value[item.id] = false;
     }
 }
 
@@ -430,9 +542,9 @@ async function remove(item) {
 
 
 async function  checkOut(cartItems) {
-    loading.value = true;
     errorMsg.value = "";
     successMsg.value = "";
+    checkoutLoading.value = true;
 
     try{
         const reg = cartItems?.[0]?.reg;
@@ -441,13 +553,13 @@ async function  checkOut(cartItems) {
             return;
         }
         
-        router.push(`/checkout/${reg}`);
+        await router.push(`/checkout/${reg}`);
     } catch (err) {
         console.log(err?.response?.data?.message);
         errorMsg.value = err?.response?.data?.message || "Order failed";
         errorMsg.value = "Order failed";
     } finally {
-        loading.value = false;
+        checkoutLoading.value = false;
     }
 }
 
@@ -460,24 +572,14 @@ async function  checkOut(cartItems) {
 
 
 
-const defaultProductImage = "/images/product/default-product.webp";
-
-const getProductImage = (item) => {
-    // Nested optional chaining 
-    const images = item.product?.images;
-    if (images && images.length > 0) {
-        return images[0].url;
-    }
-    return defaultProductImage;
-};
-
 
 
 
 
 
 function ProductDetails(item) {
-    router.push(`/product-details/${item.product.slug}`)
+    if (!item.product?.slug) return;
+    router.push(`/product-details/${item.product.slug}`);
 }
 
 
@@ -506,10 +608,19 @@ function handleSearch(query) {
 
 const { loadUser } = useAuth()
 
-onMounted(() => {
-    loadUser();
-    getCartItems();
-})
+onMounted(async () => {
+    isDark.value = localStorage.getItem("theme") === "dark";
+
+    document.documentElement.classList.toggle(
+        "dark",
+        isDark.value
+    );
+    
+    await Promise.all([
+        loadUser(),
+        getCartItems()
+    ]);
+});
 </script>
 
 <style>
