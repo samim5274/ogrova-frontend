@@ -297,7 +297,6 @@
 
 
 
-        <NewsLatter />
         <FooterSection />
         </div>
     </div>
@@ -317,10 +316,6 @@ const Navbar = defineAsyncComponent({
     delay: 200,
     timeout: 10000,
 });
-
-const NewsLatter = defineAsyncComponent(() =>
-    import("./news-latter.vue")
-);
 
 const FooterSection = defineAsyncComponent(() =>
     import("./footer.vue")
