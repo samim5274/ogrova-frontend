@@ -39,11 +39,11 @@
                 <div class="md:col-span-7 space-y-8 text-center md:text-left">
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
                         <span class="px-4 py-1.5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[10px] font-black uppercase tracking-widest">
-                            Enterprise
+                            Bangladesh's Smart Marketplace
                         </span>
-                        <span class="px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
-                            v1.0 Release
+                        <span class="px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                            Version 1.0
                         </span>
                     </div>
 
@@ -51,72 +51,99 @@
                         <h1 class="text-4xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.1]">
                             The Future of <br>
                             <span class="relative">
-                                <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[#2A7B9A] to-[#2D647C]">
-                                    Dynamic Bazar Merchant BD
+                                <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600">
+                                    Ogrova
                                 </span>
-                                <span class="absolute bottom-2 left-0 w-full h-3 bg-blue-500/10 -z-10 rounded-full"></span>
+                                <span class="absolute bottom-2 left-0 w-full h-3 bg-emerald-500/10 -z-10 rounded-full"></span>
                             </span>
                         </h1>
                         <p class="text-slate-600 dark:text-slate-400 text-lg sm:text-xl leading-relaxed max-w-2xl font-medium">
-                            Redefining the e-commerce landscape in Bangladesh. A powerful, 
-                            <span class="text-slate-900 dark:text-slate-100 font-bold italic">all-in-one ecosystem</span> 
-                            meticulously crafted for modern vendors and smart consumers.
+                            <strong>Bangladesh's Smart Online Marketplace</strong> designed to connect
+                            trusted sellers with smart shoppers through a fast, secure, and seamless
+                            shopping experience. Empowering businesses to grow while making online
+                            shopping simpler, smarter, and more reliable for everyone.
                         </p>
                     </div>
 
                     <div class="grid grid-cols-2 sm:flex items-center justify-center md:justify-start gap-8 pt-4">
                         <div class="group">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-500 transition-colors">Launch Year</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors">
+                                Founded
+                            </p>
                             <div class="flex items-baseline gap-1">
-                                <span class="text-3xl font-black text-slate-800 dark:text-white tracking-tighter">2026</span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                <span class="text-3xl font-black text-slate-800 dark:text-white tracking-tighter">
+                                    2026
+                                </span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                             </div>
                         </div>
-                        
-                        <div class="hidden sm:block h-10 w-px bg-slate-200 dark:bg-slate-800"></div>
 
+                        <div class="hidden sm:block h-10 w-px bg-slate-200 dark:bg-slate-800"></div>
                         <div class="group">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-500 transition-colors">Tech Architecture</p>
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-3xl font-black text-slate-800 dark:text-white tracking-tighter">LVV</span>
-                                <span class="text-[10px] font-bold text-blue-500">Stack</span>
-                            </div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors">
+                                Powered By
+                            </p>
+                            <a href="https://mercuviax.com/" target="_blank" class="flex items-baseline gap-1">
+                                <span class="text-3xl font-black text-slate-800 dark:text-white tracking-tighter">
+                                    Mercuviax
+                                </span>
+                                <span class="text-[10px] font-bold text-emerald-500">
+                                    Software
+                                </span>
+                            </a>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
 
         <div class="bg-white dark:bg-slate-900 p-8 rounded-xl shadow-sm border border-slate-300 dark:border-slate-800">
             <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-white flex items-center gap-2">
-                <span class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">🚀</span> Our Vision
+                <span class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">🚀</span> Our Vision
             </h2>
+
             <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
-                <strong>Dynamic Bazar Merchant BD</strong> is a comprehensive multi-vendor e-commerce solution 
-                designed to bridge the gap between local merchants and digital consumers. We provide 
-                a seamless marketplace experience where security, speed, and user-experience 
-                are our top priorities. Our goal is to digitize traditional commerce and 
-                provide tools for businesses of all sizes to thrive online.
+                <strong>Ogrova</strong> is Bangladesh's Smart Online Marketplace, built to connect
+                customers with trusted sellers through a fast, secure, and seamless shopping
+                experience. Our mission is to empower local businesses by providing a modern
+                multi-vendor e-commerce platform that simplifies online selling while ensuring
+                convenience, transparency, and reliability for every customer. We believe
+                technology should make shopping easier and help businesses grow without limits.
             </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-300 dark:border-slate-800">
-                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">Our Journey</h3>
+                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">
+                    Our Journey
+                </h3>
+
                 <p class="text-slate-600 dark:text-slate-300 italic">
-                    Initiated in <strong>February 2026</strong>, Bazar Merchant BD was built to 
-                    solve the complexities of inventory management, payment processing, and 
-                    logistics for Bangladeshi entrepreneurs.
+                    Founded in <strong>2026</strong>, Ogrova was created with a vision to transform
+                    the online shopping experience in Bangladesh. We are continuously building an
+                    innovative marketplace that enables merchants to reach more customers while
+                    providing buyers with quality products, competitive prices, and dependable
+                    service.
                 </p>
             </div>
+
             <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-300 dark:border-slate-800">
-                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">Our Commitment</h3>
+                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">
+                    Our Commitment
+                </h3>
+
                 <p class="text-slate-600 dark:text-slate-300">
-                    We ensure a <strong>secure payment gateway</strong>, real-time order tracking, 
-                    and a dynamic dashboard for both merchants and customers to maintain 
-                    transparency at every stage.
+                    We are committed to delivering a safe, transparent, and customer-first
+                    marketplace. From secure payments and fast delivery to real-time order
+                    tracking and dedicated customer support, every feature of Ogrova is designed
+                    to provide a smooth shopping experience while helping merchants grow their
+                    business with confidence.
                 </p>
             </div>
+
         </div>
 
         <div class="bg-white dark:bg-slate-900 p-8 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-300 dark:border-slate-800">

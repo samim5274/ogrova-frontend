@@ -31,7 +31,7 @@
                 </div>
             </section>
 
-            <section v-else class="min-h-screen bg-slate-50/50 dark:bg-[#080d1a] py-8 sm:py-12 text-slate-800 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+            <section v-else class="min-h-screen bg-slate-50/50 dark:bg-[#0C1326] py-8 sm:py-12 text-slate-800 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
                 <div class="container mx-auto px-4 sm:px-6 max-w-7xl">
                     <main class="min-w-0 space-y-6">
 

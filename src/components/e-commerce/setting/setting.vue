@@ -18,8 +18,8 @@
             />
 
             <!-- Content -->
-            <section class="min-h-screen bg-slate-50/50 dark:bg-[#080d1a] rounded-2xl  text-slate-800 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
-                <div class="">
+            <section class="min-h-screen bg-slate-50/50 dark:bg-[#0C1326] rounded-2xl  text-slate-800 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+                <div class="container mx-auto px-4 sm:px-6 max-w-10xl">
                     <div class="flex-1 min-w-0">
                         <main class="min-h-screen bg-gray-50 dark:bg-[#0C1326]">
                             <div class="mx-auto px-4 sm:px-6 lg:px-8 py-5">
@@ -73,12 +73,20 @@
                                                 <settingAddress />
                                             </div>
 
-                                        <!-- <div v-if="activeTab === 'notification'">
+                                        <div v-if="activeTab === 'notification'">
                                             <settingNotification />
                                         </div>
 
                                         <div v-if="activeTab === 'privacyAndPolicy'">
                                             <privacyAndPolicy />
+                                        </div>
+
+                                        <div v-if="activeTab === 'returnPolicy'">
+                                            <returnPolicy />
+                                        </div>
+
+                                        <div v-if="activeTab === 'termsCondition'">
+                                            <termsCondition />
                                         </div>
 
                                         <div v-if="activeTab === 'about'">
@@ -87,7 +95,7 @@
 
                                         <div v-if="activeTab === 'security'">
                                             <settingSecurity />
-                                        </div> -->
+                                        </div>
 
 
                                         </div>
@@ -126,15 +134,17 @@ const mobileMenu = ref(false);
 
 import settingOrders from "./setting-orders.vue";
 import settingAddress from "./setting-address.vue";
-// import settingAbout from "./setting-about.vue";
-// import privacyAndPolicy from "./setting-privacy.vue";
-// import settingSecurity from "./setting-security.vue";
-// import settingNotification from "./setting-notification.vue";
-// import settingTheme from "./setting-theme.vue";
+import settingAbout from "./setting-about.vue";
+import privacyAndPolicy from "./setting-privacy.vue";
+import termsCondition from "./setting-trams-and-condition.vue";
+import returnPolicy from "./setting-return-policy.vue"
+
+import settingSecurity from "./setting-security.vue";
+import settingNotification from "./setting-notification.vue";
+import settingTheme from "./setting-theme.vue";
 
 const sidebarOpen = ref(false);
 const active = ref("dashboard");
-
 
 
 
@@ -147,9 +157,11 @@ const activeTab = ref('Orders')
 const menus = [
     { key: 'Orders', label: 'Orders', icon: 'fa-brands fa-opencart' },
     { key: 'address', label: 'Address', icon: 'fa-solid fa-location-dot' },
-    { key: 'notification', label: 'Notification', icon: 'fa-solid fa-bell' },
     { key: 'security', label: 'Security', icon: 'fa-solid fa-lock' },
+    { key: 'returnPolicy', label: 'Return Policy', icon: 'fa-solid fa-arrow-rotate-left' },
+    { key: 'termsCondition', label: 'Terms & Conditions', icon: 'fa-solid fa-key' },
     { key: 'privacyAndPolicy', label: 'Privacy & Policy', icon: 'fa-solid fa-shield-halved' },
+    { key: 'notification', label: 'Notification', icon: 'fa-solid fa-bell' },
     { key: 'about', label: 'About', icon: 'fa-solid fa-info' },
 ]
 

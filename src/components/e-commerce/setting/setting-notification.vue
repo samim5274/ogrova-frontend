@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-500 bg-slate-50/50 dark:bg-[#0C1326] text-gray-800 dark:text-gray-200 rounded-2xl">
         <div class="mx-auto">
             
             <div class="flex items-center justify-between mb-12">
