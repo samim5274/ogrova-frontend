@@ -84,7 +84,7 @@
                         <li><router-link to="/about-us" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">About Us</router-link></li>
                         <li><router-link to="/contact-us" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Contact Us</router-link></li>
                         <li><router-link to="/company-information" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Company Information</router-link></li>
-                        <li><router-link to="terms-and-conditions" aria-label="Terms and Conditions" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</router-link></li>
+                        <li><router-link to="/terms-and-conditions" aria-label="Terms and Conditions" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</router-link></li>
                         <li><router-link to="/privacy-policy" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Privacy Policy</router-link></li>
                     </ul>
                 </div>
