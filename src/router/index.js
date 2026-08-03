@@ -115,6 +115,7 @@ const ProductSetting = () => import('../components/Dashboard/product/product-set
 // =======================
 const AdminOrders = () => import('../components/Dashboard/order/order.vue');
 const AdminOrderDetails = () => import('../components/Dashboard/order/order-details.vue');
+const AdminOrderDetailPrint = () => import('../components/Dashboard/order/print/print-order-details-a4-half.vue');
 const AdminOrderCreate = () => import('../components/Dashboard/order/create-order.vue');
 const AdminCustomerDetails = () => import('../components/Dashboard/order/customer-details.vue');
 const AdminStatus = () => import('../components/Dashboard/order/status.vue');
@@ -260,6 +261,7 @@ const routes = [
   // Order Routes
   { path: '/admin/orders', component: AdminOrders, meta: {requiresAuth: true, roles: ['admin', 'super_admin'], title: "Orders"}},
   { path: '/admin/orders/:reg/:slug', component: AdminOrderDetails, meta: {requiresAuth: true, roles: ['admin', 'super_admin'], title: "Order Details"}},
+  { path: '/admin/order/invoice-print/:reg', component: AdminOrderDetailPrint, meta: {requiresAuth: true, roles: ['admin', 'super_admin'], title: "Print Order Details"}},
   { path: '/admin/customer-details/:user_id', component: AdminCustomerDetails, meta: {requiresAuth: true, roles: ['admin', 'super_admin'], title: "Customer Details"}},
   { path: '/admin/orders/status', component: AdminStatus, meta: {requiresAuth: true, roles: ['admin', 'super_admin'], title: "Status Filter"}},
   { path: '/admin/orders/create', component: AdminOrderCreate, meta: {requiresAuth: true, roles: ['admin', 'super_admin'], title: "Create Order"}},

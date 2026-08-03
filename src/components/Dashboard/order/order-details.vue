@@ -103,7 +103,7 @@
                                     <i class="fa-solid fa-download mr-1.5"></i>
                                     {{ invoiceDownloading ? 'Preparing...' : 'Download Invoice' }}
                                 </button>
-                                <button @click="printOrder" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-indigo-500/20 transition">
+                                <button @click="printOrder(order)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-indigo-500/20 transition">
                                     <i class="fa-solid fa-print mr-1.5"></i>Print Details
                                 </button>
                             </div>
@@ -1668,8 +1668,14 @@ function handleClickOutside(event) {
 // =============================
 // Print / Download invoice
 // =============================
-function printOrder() {
-    window.print();
+function printOrder(order) {
+    const win = window.open("about:blank", "_blank");
+    if(!win){
+        alert("Popup blocked! Allow popups.");
+        return;
+    }
+    console.log(order)
+    win.location.href = `/admin/order/invoice-print/${order.reg}`;
 }
 
 const invoiceDownloading = ref(false);
