@@ -1,7 +1,7 @@
 <template>
     <div class="p-6 md:p-10 min-h-screen">
 
-        <PasswordChange />
+        <PasswordChange class="mb-8" /><hr class="mb-6">
 
         <div class="max-w-5xl mx-auto text-center mb-20 relative">
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-blue-500/10 dark:bg-blue-600/5 blur-[100px] -z-10"></div>
