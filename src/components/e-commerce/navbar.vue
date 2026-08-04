@@ -54,7 +54,7 @@
                             </div>
                             <div class="py-1">
                                 <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
-                                <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('settings')">Setting</button>
+                                <button class="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('accounts')">Account</button>
                                 <button v-if="isLoggedIn" class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10 border-t border-slate-100 dark:border-white/5 mt-1" @click="pickProfile('logout')">Logout</button>
                                 <button v-else class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10 border-t border-slate-100 dark:border-white/5 mt-1" @click="pickProfile('login')">Login</button>
                             </div>
@@ -267,17 +267,48 @@
                                     v-for="notice in notices"
                                     :key="notice.id" 
                                     @click="NoticeDetailsShow(notice)"
-                                    class="relative px-5 py-3.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors flex gap-3.5 items-start">
+                                    :class="[
+                                        'relative px-5 py-3.5 cursor-pointer transition-all flex gap-3.5 items-start border-b border-slate-100 dark:border-slate-800/60 last:border-0',
+                                        notice.is_read 
+                                            ? 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/40 opacity-75 hover:opacity-100' 
+                                            : 'bg-indigo-50/40 dark:bg-indigo-950/20 hover:bg-indigo-50/70 dark:hover:bg-indigo-950/40'
+                                    ]">
+                                    
+                                    <!-- Icon Section -->
                                     <div class="flex-shrink-0 mt-0.5">
-                                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                        </svg>
-                                    </span>
+                                        <span :class="[
+                                            'flex h-9 w-9 items-center justify-center rounded-xl transition-colors',
+                                            notice.is_read 
+                                                ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400' 
+                                                : 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400'
+                                        ]">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                            </svg>
+                                        </span>
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">{{ notice.title }}</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">{{ notice.description }}</p>
+
+                                    <!-- Content Section -->
+                                    <div class="flex-1 min-w-0 pr-3">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <p :class="[
+                                                'text-sm truncate transition-colors',
+                                                notice.is_read 
+                                                    ? 'font-medium text-slate-700 dark:text-slate-300' 
+                                                    : 'font-bold text-slate-900 dark:text-white'
+                                            ]">
+                                                {{ notice.title }}
+                                            </p>
+                                        </div>
+                                        
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed" 
+                                        v-html="notice.description ? notice.description.slice(0, 120) + '...' : ''">
+                                        </p>
+                                    </div>
+
+                                    <!-- Unread Indicator Dot -->
+                                    <div v-if="!notice.is_read" class="flex-shrink-0 self-center">
+                                        <span class="h-2.5 w-2.5 rounded-full bg-indigo-600 dark:bg-indigo-500 inline-block ring-4 ring-indigo-50 dark:ring-indigo-950/50"></span>
                                     </div>
                                 </li>
                             </template>
@@ -328,7 +359,7 @@
                         </div>
                         <div class="py-2">
                             <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
-                            <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('settings')">Setting</button>
+                            <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('accounts')">Account</button>
                         </div>
                         <div v-if="isLoggedIn" class="border-t border-slate-200 dark:border-white/10">
                             <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10" @click="pickProfile('logout')">
@@ -429,7 +460,7 @@ async function pickProfile(action) {
     if (action === "profile") {
         return router.push("/profile");
     }
-    if (action === "settings") {
+    if (action === "accounts") {
         return router.push("/setting"); 
     }
     if (action === "login") {

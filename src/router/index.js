@@ -47,6 +47,7 @@ const Checkout = () => import('../components/e-commerce/checkout/checkout.vue');
 const CategoryProducts = () => import('../components/e-commerce/category-products.vue');
 const SearchProducts = () => import('../components/e-commerce/searchProducts.vue');
 const CustomerSetting = () => import('../components/e-commerce/setting/setting.vue');
+const NotificationDetails = () => import('../components/e-commerce/notice-details.vue');
 
 // Policy
 const PrivacyAndPolicy = () => import('../components/e-commerce/policy/PrivacyPolicy.vue');
@@ -145,7 +146,7 @@ const C_Withdrawal_Reports = () => import('../components/Dashboard/customer/repo
 const C_Sale_Reports = () => import('../components/Dashboard/customer/report/report-sale.vue');
 
 const C_Notice = () => import('../components/Dashboard/customer/notice/notice.vue');
-const C_Notice_details = () => import('../components/Dashboard/customer/notice/notice-details.vue');
+const C_Notice_details = () => import('../components/Dashboard/customer/notice/customer-notice-details.vue');
 const C_MarketingStrategy = () => import('../components/Dashboard/customer/notice/marketing-strategy.vue');
 
 
@@ -179,7 +180,7 @@ const routes = [
   { path: '/faq', component: FAQComponent, meta: { title: "FAQ - OGROVA | Bangladesh's Smart Online Marketplace"} },
   { path: '/cancellation', component: Cancellation, meta: { title: "Cancellation - OGROVA | Bangladesh's Smart Online Marketplace"} },
   { path: '/exchange-policy', component: ExchangePolicy, meta: { title: "Exchange Policy - OGROVA | Bangladesh's Smart Online Marketplace"} },
-  
+  { path: '/notice/:id/details', component: NotificationDetails, meta:{title: 'Notification Details', requiresAuth: true, roles: ['customer', 'admin', 'super_admin']}},
 
 
   // Auth Routes

@@ -89,10 +89,10 @@
 
                         <!-- Description -->
                         <div class="px-6 py-6">
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">Description</h2>
-                            <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                                {{ notice.description || '—' }}
-                            </p>
+                            <div
+                                class="product-content rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 lg:p-10 shadow-sm"
+                                v-html="notice.description">
+                            </div>
                         </div>
 
                         <!-- Attachment -->
