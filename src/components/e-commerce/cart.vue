@@ -616,7 +616,6 @@ onMounted(async () => {
         getCartItems()
     ]);
 
-    fetchCheckoutData();
 });
 </script>
 

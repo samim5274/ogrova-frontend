@@ -257,6 +257,7 @@ const successMsg = ref("");
 const form = ref({
     name: "",
     phone: "",
+    email: "",
     dob: "",
     gender: "",
     blood_group: "",
@@ -327,6 +328,7 @@ async function refreshProfile() {
         // fill form
         form.value.name = user.value?.name ?? "";
         form.value.phone = user.value?.phone ?? "";        
+        form.value.email = user.value?.email ?? "";        
         form.value.dob = rawDob ? String(rawDob).slice(0, 10) : "";
         form.value.gender = rawGender ? String(rawGender).toLowerCase().trim() : "";
         form.value.blood_group = user.value?.blood_group ?? "";
@@ -354,7 +356,7 @@ async function updateProfile() {
 
         if (photoFile.value) fd.append("photo", photoFile.value);
 
-        const res = await api.post("/profile", fd);
+        const res = await api.post("/profile/customer", fd);
         user.value = res.data?.data ?? user.value;
 
         if (user.value) {

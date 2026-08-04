@@ -58,7 +58,7 @@ const copied = ref(false);
 
 const referralLink = computed(() => {
     return props.user?.user_id 
-        ? `https://dynamicbazarmerchantbd.com/register/${props.user.user_id}` 
+        ? `https://ogrova.com/register/${props.user.user_id}` 
         : 'Loading link...';
 });
 

@@ -560,7 +560,7 @@ async function updateProfile() {
 
         if (photoFile.value) fd.append("photo", photoFile.value);
 
-        const res = await api.post("/profile", fd);
+        const res = await api.post("/profile/customer", fd);
         user.value = res.data?.data ?? user.value;
 
         if (user.value) {
