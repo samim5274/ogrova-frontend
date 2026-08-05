@@ -1,147 +1,285 @@
 <template>
-    <div class="p-6 md:p-10 min-h-screen">
-
-        <PasswordChange class="mb-8" /><hr class="mb-6">
-
-        <div class="max-w-5xl mx-auto text-center mb-20 relative">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-blue-500/10 dark:bg-blue-600/5 blur-[100px] -z-10"></div>
+    <div class="py-8 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0C1326] text-slate-800 dark:text-slate-200  rounded-2xl transition-colors duration-300">
+        <div class="max-w-5xl mx-auto">
             
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[10px] font-black uppercase tracking-widest mb-6">
-                <i class="fa-solid fa-lock text-blue-500"></i>
-                Bank-Grade Security
-            </div>
-            
-            <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
-                Your Security is Our <br> 
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Highest Priority</span>
-            </h1>
-            
-            <p class="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto font-medium">
-                We employ multiple layers of defense to ensure your business data, 
-                personal information, and financial transactions stay protected 24/7.
-            </p>
-        </div>
-
-        <div class="max-w-6xl mx-auto space-y-16">
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="group p-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-300 dark:border-slate-800 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10">
-                    <div class="w-14 h-14 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-file-shield text-2xl text-blue-600"></i>
+            <!-- Page Header -->
+            <div class="mb-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="p-2.5 rounded-2xl bg-indigo-600/10 text-indigo-600 dark:text-indigo-400">
+                        <i class="fa-solid fa-shield-halved text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 tracking-tight">End-to-End Encryption</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        Every piece of data transmitted between your device and our servers is protected using 256-bit SSL encryption technology.
-                    </p>
-                </div>
-
-                <div class="group p-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-300 dark:border-slate-800 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10">
-                    <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-fingerprint text-2xl text-emerald-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 tracking-tight">AI Fraud Detection</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        Our intelligent algorithms monitor for suspicious activity in real-time, preventing unauthorized transactions before they happen.
-                    </p>
-                </div>
-
-                <div class="group p-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-300 dark:border-slate-800 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/10">
-                    <div class="w-14 h-14 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-credit-card text-2xl text-orange-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 tracking-tight">PCI DSS Compliance</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        We adhere to the highest international standards for payment security, ensuring your card information is never compromised.
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-slate-900 rounded-2xl overflow-hidden relative">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-                
-                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 p-10 lg:p-20 items-center">
                     <div>
-                        <h2 class="text-3xl font-black text-white mb-6 tracking-tight">Advanced Protection Ecosystem</h2>
-                        <div class="space-y-6">
-                            <div class="flex items-start gap-4">
-                                <div class="p-2 bg-blue-500 rounded-lg mt-1"><i class="fa-solid fa-check text-white text-xs"></i></div>
-                                <div>
-                                    <h4 class="text-white font-bold">Two-Factor Authentication (2FA)</h4>
-                                    <p class="text-slate-400 text-sm">Add an extra layer of security to your account using mobile verification.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="p-2 bg-blue-500 rounded-lg mt-1"><i class="fa-solid fa-check text-white text-xs"></i></div>
-                                <div>
-                                    <h4 class="text-white font-bold">Automated Backups</h4>
-                                    <p class="text-slate-400 text-sm">Your business data is backed up hourly in geographically distributed cloud servers.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="p-2 bg-blue-500 rounded-lg mt-1"><i class="fa-solid fa-check text-white text-xs"></i></div>
-                                <div>
-                                    <h4 class="text-white font-bold">Real-time Threat Monitoring</h4>
-                                    <p class="text-slate-400 text-sm">Active firewalls and DDoS protection are always on guard to block malicious attacks.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="relative flex justify-center">
-                        <div class="w-64 h-64 sm:w-80 sm:h-80 bg-blue-600 rounded-full flex items-center justify-center relative animate-pulse-slow">
-                            <div class="absolute inset-0 rounded-full border-[10px] border-blue-500/30 animate-ping"></div>
-                            <i class="fa-solid fa-shield-halved text-[8rem] text-white"></i>
-                        </div>
-                        <div class="absolute top-0 right-0 bg-white p-3 rounded-2xl shadow-xl transform rotate-12">
-                            <i class="fa-solid fa-vault text-blue-600 text-2xl"></i>
-                        </div>
-                        <div class="absolute bottom-10 -left-5 bg-white p-3 rounded-2xl shadow-xl transform -rotate-12">
-                            <i class="fa-solid fa-key text-blue-600 text-2xl"></i>
-                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                            Security Settings
+                        </h1>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                            Manage your account protection, authentication methods, and active sessions.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center py-10">
-                <h3 class="text-slate-400 uppercase tracking-[0.3em] text-[10px] font-black mb-8">Secured By Industry Leaders</h3>
-                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                    <i class="fa-brands fa-aws text-4xl text-slate-600 dark:text-slate-300"></i>
-                    <i class="fa-brands fa-cloudflare text-4xl text-slate-600 dark:text-slate-300"></i>
-                    <i class="fa-brands fa-stripe text-4xl text-slate-600 dark:text-slate-300"></i>
-                    <i class="fa-brands fa-digital-ocean text-4xl text-slate-600 dark:text-slate-300"></i>
+            <!-- Security Grid Cards (Tabs) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- 1. Change Password Card -->
+                <div 
+                    @click="openModal('password')"
+                    class="group p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 flex items-center gap-1">
+                            Manage <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Password</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                        Change your password regularly to keep your account safe from unauthorized access.
+                    </p>
+                    <div class="text-[11px] font-semibold text-slate-400 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Last updated 3 months ago
+                    </div>
+                </div>
+
+                <!-- 2. Two-Factor Authentication Card -->
+                <div 
+                    @click="openModal('2fa')"
+                    class="group p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400">
+                            Enabled
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Two-Factor Authentication (2FA)</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                        Add an extra layer of security using Google Authenticator or SMS verification.
+                    </p>
+                    <div class="text-[11px] font-semibold text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-check text-emerald-500"></i>
+                        Authenticator App Active
+                    </div>
+                </div>
+
+                <!-- 3. Login Alerts Card -->
+                <div 
+                    @click="openModal('alerts')"
+                    class="group p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 flex items-center gap-1">
+                            Configure <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Login Alerts</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                        Get notified instantly via Email or SMS whenever a login is detected from a new device.
+                    </p>
+                    <div class="text-[11px] font-semibold text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-envelope text-amber-500"></i>
+                        Email Alerts Active
+                    </div>
+                </div>
+
+                <!-- 4. Login Sessions Card -->
+                <div 
+                    @click="openModal('sessions')"
+                    class="group p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 flex items-center gap-1">
+                            View All <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Active Sessions</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                        Review and manage all active devices currently logged into your account.
+                    </p>
+                    <div class="text-[11px] font-semibold text-slate-400 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                        2 Devices Currently Active
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MODAL COMPONENT CONTAINER -->
+            <div v-if="activeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+                <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transform transition-all">
+                    
+                    <!-- Modal Header -->
+                    <div class="p-6 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i :class="modalIcons[activeModal]" class="text-indigo-600 dark:text-indigo-400"></i>
+                            {{ modalTitles[activeModal] }}
+                        </h3>
+                        <button 
+                            @click="closeModal" 
+                            class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body Contents -->
+                    <div class="p-6 max-h-[75vh] overflow-y-auto">
+                        
+                        <!-- 1. Password Modal Content -->
+                        <div v-if="activeModal === 'password'">
+                            <PasswordChange @completed="closeModal" />
+                        </div>
+
+                        <!-- 2. 2FA Modal Content -->
+                        <div v-else-if="activeModal === '2fa'" class="space-y-4">
+                            <p class="text-xs text-slate-500 dark:text-slate-400">
+                                Secure your account using an Authenticator app (like Google Authenticator or Authy).
+                            </p>
+                            <div class="p-4 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl border border-indigo-100 dark:border-indigo-500/20 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-qrcode text-2xl text-indigo-600 dark:text-indigo-400"></i>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-slate-900 dark:text-white">Authenticator App</h4>
+                                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Use generated codes to sign in</p>
+                                    </div>
+                                </div>
+                                <input type="checkbox" checked class="toggle accent-indigo-600 cursor-pointer w-5 h-5" />
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-comment-sms text-2xl text-slate-400"></i>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-slate-900 dark:text-white">SMS Verification</h4>
+                                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Receive OTP via phone message</p>
+                                    </div>
+                                </div>
+                                <button class="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white text-xs font-bold rounded-xl transition-all">
+                                    Setup
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 3. Login Alerts Modal Content -->
+                        <div v-else-if="activeModal === 'alerts'" class="space-y-4">
+                            <p class="text-xs text-slate-500 dark:text-slate-400">
+                                Choose how you want to be alerted when a new login occurs.
+                            </p>
+                            <div class="space-y-3">
+                                <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-envelope text-indigo-500"></i>
+                                        <div>
+                                            <span class="text-sm font-bold text-slate-900 dark:text-white block">Email Notifications</span>
+                                            <span class="text-xs text-slate-400">Send an email to user@example.com</span>
+                                        </div>
+                                    </div>
+                                    <input type="checkbox" v-model="alerts.email" class="w-4 h-4 accent-indigo-600" />
+                                </label>
+
+                                <label class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-mobile-button text-emerald-500"></i>
+                                        <div>
+                                            <span class="text-sm font-bold text-slate-900 dark:text-white block">Push Notifications</span>
+                                            <span class="text-xs text-slate-400">Alert directly on mobile app</span>
+                                        </div>
+                                    </div>
+                                    <input type="checkbox" v-model="alerts.push" class="w-4 h-4 accent-indigo-600" />
+                                </label>
+                            </div>
+                            <button @click="closeModal" class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl text-xs hover:bg-indigo-700 transition-all mt-4">
+                                Save Preferences
+                            </button>
+                        </div>
+
+                        <!-- 4. Active Sessions Modal Content -->
+                        <div v-else-if="activeModal === 'sessions'" class="space-y-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Devices currently logged into your account:</p>
+                                <button class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline">Log Out All</button>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div v-for="session in activeSessions" :key="session.id" class="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <i :class="session.icon" class="text-xl text-slate-600 dark:text-slate-300"></i>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="text-xs font-bold text-slate-900 dark:text-white">{{ session.device }}</h4>
+                                                <span v-if="session.current" class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400">Current</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-400">{{ session.location }} • {{ session.time }}</p>
+                                        </div>
+                                    </div>
+                                    <button v-if="!session.current" class="text-xs text-rose-500 hover:text-rose-700 font-bold">Revoke</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-blue-600 rounded-xl p-10 text-center tex3-white shadow-2xl shadow-blue-500/20">
-                <h2 class="text-3xl font-black mb-4 text-slate-100">Found a Security Vulnerability?</h2>
-                <p class="text-blue-100 mb-8 max-w-xl mx-auto">We take security reports seriously. If you've discovered a bug, please let us know through our Bug Bounty program.</p>
-                <a href="mailto:security@dynamicbazarmerchantbd.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-black rounded-2xl hover:bg-blue-50 transition-all active:scale-95 shadow-xl">
-                    <i class="fa-solid fa-bug"></i>
-                    Report a Vulnerability
-                </a>
-            </div>
-
-        </div>
-
-        <div class="text-center py-10">
-            <p class="text-slate-400 text-xs tracking-wide">
-                &copy; 2026 <strong><a href="https://mercuviax.vercel.app/" target="_blank" class=" hover:underline hover:cursor-pointer">MERCUVIAX</a></strong> Security Operations Center. All Rights Reserved.
-            </p>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import PasswordChange from './PasswordChange.vue';
+
+// Modal State Management
+const activeModal = ref(null);
+
+const openModal = (type) => {
+    activeModal.value = type;
+};
+
+const closeModal = () => {
+    activeModal.value = null;
+};
+
+// Titles & Icons Mapping for Modals
+const modalTitles = {
+    password: 'Change Password',
+    '2fa': 'Two-Factor Authentication',
+    alerts: 'Manage Login Alerts',
+    sessions: 'Active Login Sessions'
+};
+
+const modalIcons = {
+    password: 'fa-solid fa-key',
+    '2fa': 'fa-solid fa-mobile-screen-button',
+    alerts: 'fa-solid fa-bell',
+    sessions: 'fa-solid fa-laptop-code'
+};
+
+// Login Alerts Local State
+const alerts = ref({
+    email: true,
+    push: false
+});
+
+// Mock Active Sessions Data
+const activeSessions = ref([
+    { id: 1, device: 'Chrome on Windows 11', location: 'Dhaka, Bangladesh', time: 'Active Now', icon: 'fa-solid fa-desktop', current: true },
+    { id: 2, device: 'Ogrova Mobile App (iOS)', location: 'Dhaka, Bangladesh', time: '2 hours ago', icon: 'fa-solid fa-mobile-button', current: false }
+]);
 </script>
 
 <style scoped>
-.animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: .9; transform: scale(0.98); }
+.animate-fade-in {
+    animation: fadeIn 0.2s ease-out forwards;
 }
 </style>

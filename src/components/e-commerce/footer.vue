@@ -86,6 +86,7 @@
                         <li><router-link to="/company-information" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Company Information</router-link></li>
                         <li><router-link to="/terms-and-conditions" aria-label="Terms and Conditions" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</router-link></li>
                         <li><router-link to="/privacy-policy" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Privacy Policy</router-link></li>
+                        <li><router-link to="/security" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Security</router-link></li>
                     </ul>
                 </div>
 

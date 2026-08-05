@@ -66,6 +66,7 @@ const ShippingInfo = () => import('../components/e-commerce/information/shipping
 const FAQComponent = () => import('../components/e-commerce/information/faq.vue');
 const Cancellation = () => import('../components/e-commerce/information/cancellation.vue');
 const ExchangePolicy = () => import('../components/e-commerce/information/exchange-policy.vue');
+const Security = () => import('../components/e-commerce/information/security.vue');
 
 
 
@@ -181,6 +182,7 @@ const routes = [
   { path: '/cancellation', component: Cancellation, meta: { title: "Cancellation - OGROVA | Bangladesh's Smart Online Marketplace"} },
   { path: '/exchange-policy', component: ExchangePolicy, meta: { title: "Exchange Policy - OGROVA | Bangladesh's Smart Online Marketplace"} },
   { path: '/notice/:id/details', component: NotificationDetails, meta:{title: 'Notification Details', requiresAuth: true, roles: ['customer', 'admin', 'super_admin']}},
+  { path: '/security', component: Security, meta:{title: 'Security', requiresAuth: true, roles: ['customer', 'admin', 'super_admin']}},
 
 
   // Auth Routes
