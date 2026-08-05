@@ -20,12 +20,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Recipient Name *</label>
-                    <input v-model="form.recipient_name" type="text" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all" placeholder="e.g. John Doe">
+                    <input v-model="form.recipient_name" type="text" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all" placeholder="e.g. John Doe">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Phone Number *</label>
-                    <input v-model="form.phone" type="tel" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all" placeholder="e.g. 017XXXXXXXX">
+                    <input v-model="form.phone" type="tel" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all" placeholder="e.g. 017XXXXXXXX">
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                 <!-- Division -->
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Division *</label>
-                    <select v-model="form.division_id" @change="handleDivisionChange" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer">
+                    <select v-model="form.division_id" @change="handleDivisionChange" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer">
                         <option :value="null" disabled>-- Select Division --</option>
                         <option v-for="division in localDivisions" :key="division.id" :value="division.id">{{ division.name }}</option>
                     </select>
@@ -43,7 +43,7 @@
                 <!-- District -->
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">District *</label>
-                    <select v-model="form.district_id" @change="handleDistrictChange" :disabled="!form.division_id" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    <select v-model="form.district_id" @change="handleDistrictChange" :disabled="!form.division_id" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
                         <option :value="null" disabled>-- Select District --</option>
                         <option v-for="district in districts" :key="district.id" :value="district.id">{{ district.name }}</option>
                     </select>
@@ -52,7 +52,7 @@
                 <!-- Upazila -->
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Upazila *</label>
-                    <select v-model="form.upazila_id" @change="handleUpazilaChange" :disabled="!form.district_id" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    <select v-model="form.upazila_id" @change="handleUpazilaChange" :disabled="!form.district_id" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
                         <option :value="null" disabled>-- Select Upazila --</option>
                         <option v-for="upazila in upazilas" :key="upazila.id" :value="upazila.id">{{ upazila.name }}</option>
                     </select>
@@ -61,7 +61,7 @@
                 <!-- Police Station (Optional) -->
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Police Station (Optional)</label>
-                    <select v-model="form.police_station_id" :disabled="!form.upazila_id" class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    <select v-model="form.police_station_id" :disabled="!form.upazila_id" class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
                         <option :value="null">-- Select Police Station --</option>
                         <option v-for="station in policeStations" :key="station.id" :value="station.id">{{ station.name }}</option>
                     </select>
@@ -72,7 +72,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Postal Code (Optional)</label>
-                    <input v-model="form.postal_code" type="text" class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all" placeholder="e.g. 1200">
+                    <input v-model="form.postal_code" type="text" class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 transition-all" placeholder="e.g. 1200">
                 </div>
 
                 <div class="space-y-1">
@@ -94,7 +94,7 @@
             <!-- Complete Street Address Textarea -->
             <div class="space-y-1">
                 <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Street Address *</label>
-                <textarea v-model="form.address" rows="3" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 resize-none transition-all" placeholder="House no, Road no, Village, Area details..."></textarea>
+                <textarea v-model="form.address" rows="3" required class="w-full px-4 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-orange-500/20 focus:border-emerald-500 dark:focus:border-orange-500 text-slate-800 dark:text-slate-100 resize-none transition-all" placeholder="House no, Road no, Village, Area details..."></textarea>
             </div>
 
             <!-- Set as Default Checkbox -->

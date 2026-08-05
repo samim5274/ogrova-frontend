@@ -948,7 +948,7 @@
                     <select
                     v-model="paymentForm.payment_method"
                     required
-                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
+                    class="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500">
                     <option value="cod">Cash on delivery</option>
                     <option value="cash">Cash</option>
                     <option value="bank_transfer">Bank transfer</option>
