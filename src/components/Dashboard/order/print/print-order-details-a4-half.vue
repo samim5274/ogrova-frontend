@@ -134,7 +134,10 @@
 
                 <!-- Signatures -->
                 <div class="signatures">
-                    <div class="sig"><div class="sig-line"></div><span>Prepared By</span></div>
+                    <div class="sig">
+                        <span class="pb-2">{{ user.name }}</span>
+                        <div class="sig-line"></div><span>Prepared By</span>
+                    </div>
                     <div class="sig"><div class="sig-line"></div><span>Approved By</span></div>
                 </div>
 
@@ -168,6 +171,7 @@ const payments = ref([]);
 const payment = ref(null);
 const deliveryCharge = ref(null);
 const cartItems = ref([]);
+const user = ref(null);
 
 // ==========================================
 // 2. Helper Functions (Formatters)
@@ -218,6 +222,7 @@ async function fetchOrderDetails() {
         const responseData = res.data?.data || {};
 
         order.value = responseData.order || null;
+        user.value = responseData.user || null;
 
         if (!order.value) {
             errorMsg.value = "Order not found.";
